@@ -1,19 +1,17 @@
-# survea
+# SURVEA
+SISTEMA DE ENCUESTA
 
-## Project setup
+## INSTALACION DE PROYECTO
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### COMPILAR EN DESARROLLO
 ```
+npm run dev
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
 
 ### Lints and fixes files
 ```
