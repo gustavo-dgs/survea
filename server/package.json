@@ -11,7 +11,9 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "connect-flash": "^0.1.1",
+    "connect-history-api-fallback": "^1.6.0",
     "core-js": "^3.6.5",
+    "cors": "^2.8.5",
     "express": "^4.17.2",
     "express-mysql-session": "^2.1.7",
     "express-session": "^1.17.2",
