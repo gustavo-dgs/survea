@@ -11,7 +11,9 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "connect-flash": "^0.1.1",
+    "connect-history-api-fallback": "^1.6.0",
     "core-js": "^3.6.5",
+    "cors": "^2.8.5",
     "express": "^4.17.2",
     "express-mysql-session": "^2.1.7",
     "express-session": "^1.17.2",
@@ -20,21 +22,13 @@
     "mysql": "^2.18.1",
     "passport": "^0.5.2",
     "passport-local": "^1.0.0",
-    "timeago.js": "^4.0.2",
-    "vue": "^3.0.0",
-    "vue-router": "^4.0.0-0",
-    "vuex": "^4.0.0-0"
+    "timeago.js": "^4.0.2"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-plugin-router": "~4.5.0",
-    "@vue/cli-plugin-vuex": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.0.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^7.0.0"
+    "eslint-plugin-vue": "^7.0.0",
+    "nodemon": "^2.0.15"
   },
   "eslintConfig": {
     "root": true,
