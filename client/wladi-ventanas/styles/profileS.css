@@ -1,0 +1,211 @@
+/* primary: colors.red.darken1, // #E53935
+secondary: colors.red.lighten4, // #FFCDD2
+accent: colors.indigo.base, // #3F51B5 */
+
+/* object-fit: cover; */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,600;1,100&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+body{
+    background: #2c2525;
+    overflow-x: hidden;
+}
+body::-webkit-scrollbar{
+    width: 8px;
+    margin-right: 5px;
+}
+body::-webkit-scrollbar-thumb{
+    background: #edeaf1;
+    border-radius: 4px;
+    border-right: 5px solid #2c2525;
+    /* margin-right: 10px; */
+}
+body::-webkit-scrollbar-thumb:active {
+    background-color: #d6d3da;
+}
+.header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /*  */
+    height: 60px;
+    width: 100%;
+    background: #44974f;
+}
+.header__primario{
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+.header__primario--menu-icon{
+    margin-right: 15px;
+    /*  */
+    font-size: 40px;
+    /*  */
+    color: #ffffff;
+}
+.header__primario__logo{
+    display: flex;
+    align-items: center;
+    /*  */
+    color: #ffffff;
+}
+.header__primario__logo ion-icon{
+    font-size: 30px;
+}
+.header__primario__logo p{
+    display: none;
+}
+.header__secundario{
+    display: flex;
+    align-items: center;
+    /*  */
+    margin-right: 10px;
+}
+.header__secundario ion-icon{
+    margin-right: 10px;
+    /*  */
+    font-size: 30px;
+    color: #fff;
+}
+.header__secundario button{
+    padding: 5px;
+    border-radius: 10px;
+    /*  */
+    border: solid #fff;
+    background: transparent;
+    color: #fff;
+}
+.header__secundario button:hover{
+    text-decoration: underline 3px;
+    background: #fff;
+    color: #44974f;
+}
+/* --------------- MAIN --------------- */
+.main{
+    display: flex;
+}
+/* ---- menu ---- */
+.main__profile-menu{
+    /*  */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    /*  */
+    margin-top: 35px;
+    width: 0;
+    /*  */
+    transition: 0.3s;
+    overflow-x: hidden;
+}
+.main__profile-menu.active{
+    width: 100%;
+}
+.main__profile-menu--imagen{
+    width: 200px;
+    height: 200px;
+    border-radius: 100%;
+    /*  */
+    object-fit: cover;
+    border: solid;
+}
+.main__profile-Menu__carrousel{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    /*  */
+    margin-top: 25px;
+}
+.main__profile-Menu__carrousel ul{
+    margin-bottom: 25px;
+}
+.main__profile-Menu__carrousel ul li{
+    margin-bottom: 15px;
+    /*  */
+    color: #fff;
+    list-style: none;
+}
+.main__profile-Menu__carrousel ul li:hover{
+    text-decoration: underline 3px;
+}
+.main__profile-Menu__carrousel p{
+    color: #ffffff25;
+}
+/* ---- Tablon ---- */
+.main__tablon{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    /*  */
+    width: 100%;
+    height: 100%;
+}
+.main__tablon.active{
+    display: none;
+}
+.main__tablon__cabecera{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    /*  */
+    margin-top: 5%;
+    /*  */
+    width: 100%;
+}
+.main__tablon__cabecera button{
+    padding: 5px;
+    border-radius: 10px;
+    /*  */
+    border: solid #fff;
+    background: transparent;
+    color: #fff;
+}
+.main__tablon__cabecera button:hover{
+    text-decoration: underline 3px;
+    background: #fff;
+    color: #44974f;
+}
+.main__tablon__feed{
+    margin-top: 5%;
+    /*  */
+    width: 80%;
+    /*  */
+    border-radius: 5%;
+}
+.main__tablon__feed__titulos{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /*  */
+    margin-top: 5%;
+    padding: 0 5%;
+    width: 100%;
+    /*  */
+    color: #fff;
+    text-decoration: solid underline;
+}
+.main__tablon__feed__carrousel{
+    display: grid;
+    width: 100%;
+}
+.main__tablon__feed__carrousel .element{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /*  */
+    padding: 5% 5%;
+    /*  */
+    color: #fff;
+    transition: 0.3s;
+}
+.main__tablon__feed__carrousel .element:hover{
+    border: solid 3px ;
+    transform: scale(1.2);
+}
