@@ -5,15 +5,20 @@
 
     <div class="container__2">
       <VerticalNavbar />
+
       <div class="containter__3">
+
+
         <nav class="nav">
           <a class="nav-link active" href="#">Active</a>
           <a class="nav-link" href="#">Link</a>
           <a class="nav-link" href="#">Link</a>
           <a class="nav-link disabled" href="#">Disabled</a>
-          <button type="button" class="btn btn-primary">Sort</button>
-          <button type="button" class="btn btn-primary">Display</button>
+          <button type="button" class="btn btn-secundary">Display</button>
+          <button type="button" class="btn btn-primary">NEW</button>
         </nav>
+
+
         <table class="table">
           <thead>
             <tr>
@@ -25,15 +30,17 @@
           </thead>
           <tbody>
             <tr v-for="i in 5" :key="i">
-              <router-link :to="/editor/+i">
-                <th scope="row"> {{ i }} </th>
-                <td>Encuesta {{ i }} </td>
-                <td>Mi primera encuesta</td>
-                <td>15/01/2022</td>
-              </router-link>
+              
+                <th scope="row"> <router-link :to="/editor/+i"> {{ i }} </router-link></th>
+                <td><router-link :to="/editor/+i"> Encuesta {{ i }} </router-link></td>
+                <td><router-link :to="/editor/+i"> Mi primera encuesta </router-link></td>
+                <td><router-link :to="/editor/+i"> 15/01/2022 </router-link></td>
+              
             </tr>
           </tbody>
         </table>
+
+
       </div>
     </div>
   </div>
