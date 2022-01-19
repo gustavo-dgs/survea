@@ -1,81 +1,304 @@
 <template>
-  <div id="container">
+    <div class="home-container">
+        <header class="header">
+            <div class="header__primario">
+                <ion-icon @click="toggle" class="header__primario--menu-icon" name="menu-outline"></ion-icon>
+                <div class="header__primario__logo">
+                    <ion-icon name="newspaper-outline"></ion-icon>
+                    <p>Survea</p>
+                </div>
+            </div>
+            <div class="header__secundario">
+                <ion-icon name="search-outline"></ion-icon>
+                <button>Mis encuestas</button>
+            </div>
+        </header>
 
-    <HorizontalNavbar id="horizontal-navbar" />
-
-    <div class="container__2">
-      <VerticalNavbar />
-
-      <div class="containter__3">
-
-
-        <nav class="nav">
-          <a class="nav-link active" href="#">Active</a>
-          <a class="nav-link" href="#">Link</a>
-          <a class="nav-link" href="#">Link</a>
-          <a class="nav-link disabled" href="#">Disabled</a>
-          <button type="button" class="btn btn-secundary">Display</button>
-          <button type="button" class="btn btn-primary">NEW</button>
-        </nav>
-
-
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Title</th>
-              <th scope="col">Description</th>
-              <th scope="col">Creation Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="i in 5" :key="i">
-              
-                <th scope="row"> <router-link :to="/editor/+i"> {{ i }} </router-link></th>
-                <td><router-link :to="/editor/+i"> Encuesta {{ i }} </router-link></td>
-                <td><router-link :to="/editor/+i"> Mi primera encuesta </router-link></td>
-                <td><router-link :to="/editor/+i"> 15/01/2022 </router-link></td>
-              
-            </tr>
-          </tbody>
-        </table>
+        <article class="main">
+            <section class="main__profile-menu" :class="{active: navegationActive}">
+                <img class="main__profile-menu--imagen" src="../assets/profile/profile_02.jpg" alt="profile_02.jpg">
+                <div class="main__profile-Menu__carrousel">
+                    <ul>
+                        <li>Example</li>
+                        <li>Example</li>
+                        <li>Example</li>
+                        <li>Example</li>
+                        <li>Example</li>
+                        <li>Example</li>
+                        <li>Example</li>
+                        <li>Example</li>
+                        <li>Example</li>
+                        <li>Example</li>
+                    </ul>
+                    <p>(C)2022 - UCAB Extension Guayana</p>
+                </div>
+            </section>
+            <section class="main__tablon" :class="{active: mainActive}">
+                <div class="main__tablon__cabecera">
+                    <button>Nuevo</button>
+                    <button>Vista</button>
+                </div>
 
 
-      </div>
+                <div class="main__tablon__feed">
+                    <div class="main__tablon__feed__titulos">
+                        <p>Numero</p>
+                        <p>Descripcion</p>
+                        <p>Fecha</p>
+                        <p>Edit</p>
+                    </div>
+
+
+                    <div class="main__tablon__feed__carrousel">
+                        <div @click="goToEditor(i)" class="element" v-for="i in 5" :key="i">
+                            <p>Encuesta {{ i }}</p>
+                            <p>Descripcion</p>
+                            <p>Fecha</p>
+                            <ion-icon name="settings-outline"></ion-icon>
+                        </div>
+                    </div>
+                </div>
+
+
+            </section>
+        </article>
     </div>
-  </div>
 </template>
 
 <script>
-import HorizontalNavbar from "../components/HorizontalNavbar.vue";
-import VerticalNavbar from "../components/VerticalNavbar.vue";
 
-export default {
-  components: {
-    HorizontalNavbar,
-    VerticalNavbar,
-  },
-};
+    export default {
+        data() {
+            return {
+                navegationActive: false,
+                mainActive: false
+            }
+        },
+        methods: {
+            toggle (){
+                this.navegationActive = !this.navegationActive;
+                this.mainActive = !this.mainActive;
+            },
+
+            goToEditor(i) {
+                this.$router.push(`/editor/${i}`);
+            }
+        }
+    }
 </script>
 
 <style>
-.container__2 {
-  display: inline-flex;
-  /*width: auto;*/
-  margin-left: 0px;
-}
+    /* primary: colors.red.darken1, // #E53935
+    secondary: colors.red.lighten4, // #FFCDD2
+    accent: colors.indigo.base, // #3F51B5 */
 
-.container__2 table {
-  width: auto;
-  margin: 0px;
-}
+    /* object-fit: cover; */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,600;1,100&display=swap');
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+    body{
+        background: #2c2525;
+        overflow-x: hidden;
+    }
+    body::-webkit-scrollbar{
+        width: 8px;
+        margin-right: 5px;
+    }
+    body::-webkit-scrollbar-thumb{
+        background: #edeaf1;
+        border-radius: 4px;
+        border-right: 5px solid #2c2525;
+        /* margin-right: 10px; */
+    }
+    body::-webkit-scrollbar-thumb:active {
+        background-color: #d6d3da;
+    }
+    .header{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        /*  */
+        height: 60px;
+        width: 100%;
+        background: #44974f;
+    }
+    .header__primario{
+        display: flex;
+        align-items: center;
+        margin-left: 10px;
+    }
+    .header__primario--menu-icon{
+        margin-right: 15px;
+        /*  */
+        font-size: 40px;
+        /*  */
+        color: #ffffff;
+    }
+    .header__primario__logo{
+        display: flex;
+        align-items: center;
+        /*  */
+        color: #ffffff;
+    }
+    .header__primario__logo ion-icon{
+        font-size: 30px;
+    }
+    .header__primario__logo p{
+        display: none;
+    }
+    .header__secundario{
+        display: flex;
+        align-items: center;
+        /*  */
+        margin-right: 10px;
+    }
+    .header__secundario ion-icon{
+        margin-right: 10px;
+        /*  */
+        font-size: 30px;
+        color: #fff;
+    }
+    .header__secundario button{
+        padding: 5px;
+        border-radius: 10px;
+        /*  */
+        border: solid #fff;
+        background: transparent;
+        color: #fff;
+    }
+    .header__secundario button:hover{
+        text-decoration: underline 3px;
+        background: #fff;
+        color: #44974f;
+    }
+    /* --------------- MAIN --------------- */
+    .main{
+        display: flex;
+    }
+    /* ---- menu ---- */
+    .main__profile-menu{
+        /*  */
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        /*  */
+        margin-top: 35px;
+        width: 0;
+        /*  */
+        transition: 0.3s;
+        overflow-x: hidden;
+    }
+    .main__profile-menu.active{
+        width: 100%;
+    }
+    .main__profile-menu--imagen{
+        width: 200px;
+        height: 200px;
+        border-radius: 100%;
+        /*  */
+        object-fit: cover;
+        border: solid;
+    }
+    .main__profile-Menu__carrousel{
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: flex-start;
+        /*  */
+        margin-top: 25px;
+    }
+    .main__profile-Menu__carrousel ul{
+        margin-bottom: 25px;
+    }
+    .main__profile-Menu__carrousel ul li{
+        margin-bottom: 15px;
+        /*  */
+        color: #fff;
+        list-style: none;
+    }
+    .main__profile-Menu__carrousel ul li:hover{
+        text-decoration: underline 3px;
+    }
+    .main__profile-Menu__carrousel p{
+        color: #ffffff25;
+    }
+    /* ---- Tablon ---- */
+    .main__tablon{
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: flex-start;
+        /*  */
+        width: 100%;
+        height: 100%;
+    }
+    .main__tablon.active{
+        display: none;
+    }
+    .main__tablon__cabecera{
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        /*  */
+        margin-top: 5%;
+        /*  */
+        width: 100%;
+    }
+    .main__tablon__cabecera button{
+        padding: 5px;
+        border-radius: 10px;
+        /*  */
+        border: solid #fff;
+        background: transparent;
+        color: #fff;
+    }
+    .main__tablon__cabecera button:hover{
+        text-decoration: underline 3px;
+        background: #fff;
+        color: #44974f;
+    }
+    .main__tablon__feed{
+        margin-top: 5%;
+        /*  */
+        width: 80%;
+        /*  */
+        border-radius: 5%;
+    }
+    .main__tablon__feed__titulos{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        /*  */
+        margin-top: 5%;
+        padding: 0 5%;
+        width: 100%;
+        /*  */
+        color: #fff;
+        text-decoration: solid underline;
+    }
+    .main__tablon__feed__carrousel{
+        display: grid;
+        width: 100%;
+    }
+    .main__tablon__feed__carrousel .element{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        /*  */
+        padding: 5% 5%;
+        /*  */
+        color: #fff;
+        transition: 0.3s;
+    }
+    .main__tablon__feed__carrousel .element:hover{
+        border: solid 3px ;
+        transform: scale(1.2);
+        cursor: pointer;
+    }
 
-.container__2 VerticalNavbar {
-  margin-left: 0;
-  width: 50px;
-}
-
-.container__3 nav {
-  height: 200px;
-}
 </style>
