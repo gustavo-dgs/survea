@@ -1,30 +1,54 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div class="main-container">
+    <Header class="main-container__header"/>
+    <router-view class="main-container__router-view"/>
   </div>
-  <router-view/>
+  
 </template>
 
+<script>
+import Header from './components/Header.vue'
+
+export default {
+  components: {
+    Header
+  }
+}
+</script>
+
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  #app {
+  }
 
-#nav {
-  padding: 30px;
-}
+   @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,600;1,100&display=swap');
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+    body{
+        background: #2c2525;
+        overflow-x: hidden;
+    }
+    body::-webkit-scrollbar{
+        width: 8px;
+        margin-right: 5px;
+    }
+    body::-webkit-scrollbar-thumb{
+        background: #edeaf1;
+        border-radius: 4px;
+        border-right: 5px solid #2c2525;
+        /* margin-right: 10px; */
+    }
+    body::-webkit-scrollbar-thumb:active {
+        background-color: #d6d3da;
+    }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>
