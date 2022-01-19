@@ -4,7 +4,7 @@
                         <!--OJO AQUI :class="{active: mainActive}" -->
         <section class="main__tablon" >
             <div class="main__tablon__cabecera">
-                <button>Nuevo</button>
+                <button @click="newCard">Nuevo</button>
                 <button>Vista</button>
             </div>
 
@@ -51,6 +51,10 @@
 
             goToEditor(i) {
                 this.$router.push(`/editor/${i}`);
+            },
+
+            newCard() {
+                this.$router.push(`/create`);
             }
         }
     }

@@ -20,8 +20,8 @@ import QuestionCard from '../components/Question-card.vue';
 export default {
     data() {
         return {
-            questionType: 'checkbox',
-            questionArr: ['checkbox', 'radio', 'text', 'date', 'textarea']
+            questionArr: ['select', 'checkbox', 'radio', 'text', 'date', 
+                            'textarea', 'email','number', 'time', 'tel']
         }
     },
     components: {

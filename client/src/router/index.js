@@ -7,6 +7,11 @@ const routes = [
     component: () => import('../views/Home.vue')
   },
   {
+    path: '/create',
+    name: 'Create',
+    component: () => import('../views/Editor.vue')
+  },
+  {
     path: '/editor/:id',
     name: 'Editor',
     component: () => import('../views/Editor.vue')

@@ -23,11 +23,11 @@
 
         <form v-else-if="questionType === 'checkbox'" class="question-form question-form_type_checkbox">
             <input class="input checkbox" type="checkbox" value="1">
-            <label for="1">1</label><br>
+            <label class="label" for="1">1</label><br>
             <input class="input checkbox" type="checkbox" value="2">
-            <label for="2">2</label><br>
+            <label class="label" for="2">2</label><br>
             <input class="input checkbox" type="checkbox" value="3">
-            <label for="3">3</label><br>
+            <label class="label" for="3">3</label><br>
         </form>
 
         <form v-else-if="questionType === 'date'" class="question-form question-form_type_date">
@@ -35,24 +35,24 @@
         </form>
 
         <form v-else-if="questionType === 'email'" class="question-form question-form_type_email">
-            <input class="input email" type="email">
+            <input class="input email" type="email" placeholder="ingrese su correo electronico">
         </form>
 
         <form v-else-if="questionType === 'number'" class="question-form question-form_type_number">
-            <input class="input number" type="number">
+            <input class="input number" type="number" placeholder="ingrese su numero">
         </form>
 
         <form v-else-if="questionType === 'radio'" class="question-form question-form_type_radio">
             <input class="input radio" name="some_name" type="radio" value="1">
-            <label for="1">1</label><br>
+            <label class="label" for="1">1</label><br>
             <input class="input radio" name="some_name" type="radio" value="2">
-            <label for="2">2</label><br>
+            <label class="label" for="2">2</label><br>
             <input class="input radio" name="some_name" type="radio" value="3">  
-            <label for="3">3</label><br>
+            <label class="label" for="3">3</label><br>
         </form>
 
         <form v-else-if="questionType === 'text'" class="question-form question-form_type_text">
-            <input class="input text" type="text">
+            <input class="input text" type="text" placeholder="ingrese un texto">
         </form>
 
         <form v-else-if="questionType === 'time'" class="question-form question-form_type_time">
@@ -60,7 +60,8 @@
         </form>
 
         <form v-else-if="questionType === 'tel'" class="question-form question-form_type_tel">
-            <input class="input tel" type="tel" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}">
+            <input class="input tel" type="tel" placeholder="ingrese su numero de telefono" 
+            pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}">
         </form>
 
     </div>
@@ -82,6 +83,10 @@ export default {
         margin: 10px 0px;
         width: 100%;
         padding: 20px;
+    }
+
+    .input {
+        margin-right: 10px;
     }
 
     .textarea {
