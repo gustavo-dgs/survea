@@ -2,13 +2,26 @@
 
   <div class="editor-container">
 
-    <h1 class="editor-container__title">Encuesta {{ $route.params.id }}</h1>
+    <div class="question-list">
+        <h1 class="editor-container__title">
+            Encuesta {{ $route.params.id }}
+        </h1>
 
-    <div class="question_list">
+        <QuestionCard
+            v-for="q in questionArr"
+            :key="q.id"
+            :question="q"
+        />
 
-        <question-card v-for="type of questionArr" :key="type" :questionType="type"/>
+        <button
+            class="editor-container__button"
+            @click="createNewQuestionCard"
+        >+
+        </button>
 
     </div>
+
+    
 
   </div>
 
@@ -17,15 +30,39 @@
 <script>
 import QuestionCard from '../components/Question-card.vue';
 
+class Question {
+    // constructor(id, type = 'select', title = 'Question title', description = 'Question description', 
+    //             options = ['option 1', 'option 2', 'option 3']) {
+    //     this.id = id;
+    //     this.type = type;
+    //     this.title = title;
+    //     this.description = description;
+    //     this.options = options;
+    // }
+
+    constructor(id) {
+        this.id = id;
+        this.type = 'select';
+        this.title ='Question title';
+        this.description = 'Question description';
+        this.options = ['option 1', 'option 2', 'option 3'];
+    }
+}
+
 export default {
     data() {
         return {
-            questionArr: ['select', 'checkbox', 'radio', 'text', 'date', 
-                            'textarea', 'email','number', 'time', 'tel']
+            qustionsId: 0,
+            questionArr: []
         }
     },
     components: {
-        'question-card': QuestionCard
+        QuestionCard
+    },
+    methods: {
+        createNewQuestionCard() {
+            this.questionArr.push(new Question(this.qustionsId++));
+        }
     }
 };
 </script>
@@ -34,9 +71,11 @@ export default {
 <style>
     .editor-container {
         display: flex;
-        flex-direction: column;
-        align-items: center;
+        flex-direction: row;
+        justify-content: center;
         padding: 20px;
+        width: 100%;
+        margin: auto;
     }
 
     .editor-container__title {
@@ -45,10 +84,32 @@ export default {
 
     .question-list {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
         justify-content: center;
         align-content: flex-start;
-        max-width: 500px;
+        flex-grow: 1;
+        min-width: 300px;
+        max-width: 600px;
+        outline: 1px solid red;
+    }
+
+    .editor-container__button {
+        width: 100%;
+        height: 35px;
+        border-radius: 30px;
+        border: none;
+        background: #44974f;
+        font-size: 30px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        color: white;
+    }
+
+    .editor-container__button:active {
+        background: #75a77b;
     }
     
 </style>
