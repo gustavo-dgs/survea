@@ -16,13 +16,13 @@
         </select>
 
         <div class="resizable-input">
-            <span class="resizable-input__span resizable-input__span--title" contenteditable>
+            <span @input="updateTitle" class="resizable-input__span resizable-input__span--title" contenteditable>
                 {{ question.title }}
             </span>
         </div>
         <hr/>
         <div class="resizable-input">
-            <span class="resizable-input__span resizable-input__span--p" contenteditable>
+            <span @input="updateDescription" class="resizable-input__span resizable-input__span--p" contenteditable>
                 {{ question.description }}
             </span>
         </div>
@@ -103,8 +103,14 @@ export default {
         question: Object
     },
     methods: {
-        saludar (){
-            alert("HOLA");
+        updateTitle (){
+            const qTitle = document.querySelector('.resizable-input__span--title');
+            this.question.title = qTitle.innerHTML;
+        },
+
+        updateDescription (){
+            const qDescription = document.querySelector('.resizable-input__span--p');
+            this.question.description = qDescription.innerHTML;
         }
     }
 }

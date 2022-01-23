@@ -1,6 +1,6 @@
 <template>
   <div class="main-container">
-    <Header class="main-container__header"/>
+    <Header/>
     <router-view class="main-container__router-view"/>
   </div>
   
@@ -23,8 +23,9 @@ export default {
     padding: 0;
     box-sizing: border-box;
   }
-  #app {
-  }
+  
+  /* #app {
+  } */
 
    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,600;1,100&display=swap');
     *{
