@@ -14,7 +14,7 @@
                 {{ type }}
             </option>
         </select>
-
+    
         <resizable-textarea
             class="question-card__title"
             placeholder="Question title"
@@ -28,38 +28,30 @@
             placeholder="Question description"
             v-model="question.description"
         ></resizable-textarea>
-
-        {{ question.options }}
         
         <!-- FORMS -->
 
-        <form v-if="question.type === 'select'" class="question-form question-form--type--select">
-            <select class="input select">
-                <option 
-                    class="select_opction"
-                    v-for="option of question.options"
-                    :key="option"
-                    :value="option"
-                >
-                    {{ option }}
-                </option>
-            </select>
-        </form>
+        <div v-if="question.type === 'select'" class="question-form question-form--type--select">
+            <options-list
+                iconName="caret-down-circle-outline"
+                :options="question.options"
+            ></options-list>
+        </div>
 
-        <form v-else-if="question.type === 'checkbox'" class="question-form question-form--type--checkbox">
+        <div v-else-if="question.type === 'checkbox'" class="question-form question-form--type--checkbox">
             <options-list
                 iconName="checkbox-outline"
-                v-model="question.options"
+                :options="question.options"
             ></options-list>
-        </form>
+        </div>
 
-        <form v-else-if="question.type === 'radio'" class="question-form question-form--type--radio">
+        <div v-else-if="question.type === 'radio'" class="question-form question-form--type--radio">
             <options-list
                 iconName="ellipse-outline"
-                v-model="question.options"
+                :options="question.options"
             ></options-list>
 
-        </form>
+        </div>
 
         <form v-else-if="question.type === 'textarea'" class="question-form question-form--type--textarea">
             <resizable-textarea

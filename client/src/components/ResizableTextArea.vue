@@ -3,7 +3,8 @@
         class="resizable-textarea"
         @input="resizeTextArea($event)"
         rows="1"
-    >{{ modelValue }}</textarea>
+        :value="modelValue"
+    ></textarea>
 </template>
 
 <script>

@@ -3,14 +3,16 @@
 
         <div class="options-list__options">
 
-            <div class="options-list__wrapper" v-for="(option,i) of modelValue" :key="option">
+            <div class="options-list__wrapper" v-for="(option,i) of options" :key="option">
                 <ion-icon class="options-list__icon" :name="iconName"></ion-icon>
+
                 <resizable-textarea
-                    class="options-list__option"
                     placeholder="Write an option"
-                    @input="updateOption()"
-                    v-model="modelValue[i]"
+                    class="options-list__option"
+                    v-model="options[i]"
                 ></resizable-textarea>
+
+                
                 <ion-icon
                     class="options-list__icon options-list__icon--delete"
                     name="close-circle-outline"
@@ -19,7 +21,6 @@
             </div>
 
         </div>
-        
 
         <div 
             class="options-list__wrapper options-list__wrapper--create"
@@ -32,7 +33,6 @@
                 class="options-list__option options-list__option--create"
                 placeholder="Write an option"
                 @input="createOption($event)"
-                v-model="createText"
             ></resizable-textarea>
         </div>
         
@@ -41,26 +41,17 @@
 
 <script>
     export default {
-        data() {
-            return {
-                createText: ''
-            }
-        },
         props: {
             iconName: String,
-            modelValue: Array
+            options: Array
         },
-        emits: ['update:modelValue'],
         methods: {
             createOption(event) {
-                this.modelValue.push('');
+                this.options.push('');
                 event.target.value = '';
             },
             deleteOption(i) {
-                this.modelValue.splice(i, 1);
-            },
-            updateOption() {
-                this.$emit('update:modelValue', this.modelValue);
+                this.options.splice(i, 1);
             }
         },
         updated () {
@@ -79,13 +70,15 @@
     .options-list__options {
         width: 100%;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
     }
 
     .options-list__wrapper {
         width: 100%;
         display: flex;
         flex-direction: row;
+        
         margin: 4px 0;
     }
 
