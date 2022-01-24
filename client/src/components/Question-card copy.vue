@@ -43,26 +43,17 @@
             </select>
         </form>
 
-        <form v-else-if="question.type === 'checkbox'" class="question-form question-form--type--checkbox">
-            <options-list
-                :options="question.options"
-                iconName="checkbox-outline"
-            ></options-list>
-        </form>
-
-        <form v-else-if="question.type === 'radio'" class="question-form question-form--type--radio">
-            <options-list
-                :options="question.options"
-                iconName="ellipse-outline"
-            ></options-list>
-
-        </form>
-
         <form v-else-if="question.type === 'textarea'" class="question-form question-form--type--textarea">
-            <resizable-textarea
-                class="question-form__textarea"
-                placeholder="Write an awswer"
-            ></resizable-textarea>
+            <textarea class="input textarea" placeholder="Escriba su respuesta"></textarea>
+        </form>
+
+        <form v-else-if="question.type === 'checkbox'" class="question-form question-form--type--checkbox">
+            
+            <template v-for="option of question.options" :key="option">
+                <input class="input checkbox" type="checkbox" :value="option">
+                <label class="label" :for="option"> {{ option }} </label><br>
+            </template>
+            
         </form>
 
         <form v-else-if="question.type === 'date'" class="question-form question-form--type--date">
@@ -75,6 +66,18 @@
 
         <form v-else-if="question.type === 'number'" class="question-form question-form--type--number">
             <input class="input number" type="number" placeholder="ingrese su numero">
+        </form>
+
+        <form v-else-if="question.type === 'radio'" class="question-form question-form--type--radio">
+            <template v-for="option of question.options" :key="option">
+                <!-- <input class="input radio" :name="option" type="radio" :value="option">
+                <label class="label" :for="option"> {{ option }} </label><br> -->
+                <i class="fa-regular fa-circle"></i>
+                <resizable-textarea
+                    class="question-form__option"
+                    placeholder="Write an option"
+                ></resizable-textarea>
+            </template>
         </form>
 
         <form v-else-if="question.type === 'text'" class="question-form question-form--type--text">
@@ -95,7 +98,7 @@
 </template>
 
 <script>
-    import OptionsList from '../components/OptionsList.vue'
+    import ResizableTextArea from '../components/ResizableTextArea.vue'
     
     export default {
         data() {
@@ -109,7 +112,8 @@
             question: Object
         },
         components: {
-            'options-list': OptionsList
+            // 'resizable-textarea': () => import('../components/ResizableTextArea.vue')
+            'resizable-textarea': ResizableTextArea
         },
         methods: {
             saludar() {
@@ -144,12 +148,6 @@
 
     .question-card__description {
         font-size: 15px;
-    }
-
-    .question-form {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
     }
 
     .label {

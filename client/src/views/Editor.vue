@@ -43,9 +43,9 @@ class Question {
     constructor(id) {
         this.id = id;
         this.type = 'select';
-        this.title ='Question title';
-        this.description = 'Question description';
-        this.options = ['option 1', 'option 2', 'option 3'];
+        this.title ='';
+        this.description = '';
+        this.options = [];
     }
 }
 
