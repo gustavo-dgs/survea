@@ -1,15 +1,15 @@
 <template>
     <div class="options-list">
 
-        <!-- FALTA EL V-MODEL -->
-
         <div class="options-list__options">
 
-            <div class="options-list__wrapper" v-for="(option,i) of options" :key="option">
+            <div class="options-list__wrapper" v-for="(option,i) of modelValue" :key="option">
                 <ion-icon class="options-list__icon" :name="iconName"></ion-icon>
                 <resizable-textarea
                     class="options-list__option"
                     placeholder="Write an option"
+                    @input="updateOption()"
+                    v-model="modelValue[i]"
                 ></resizable-textarea>
                 <ion-icon
                     class="options-list__icon options-list__icon--delete"
@@ -47,20 +47,21 @@
             }
         },
         props: {
-            options: Array,
-            iconName: String
+            iconName: String,
+            modelValue: Array
         },
+        emits: ['update:modelValue'],
         methods: {
             createOption(event) {
-                this.options.push('');
+                this.modelValue.push('');
                 event.target.value = '';
             },
             deleteOption(i) {
-                this.options.splice(i, 1);
+                this.modelValue.splice(i, 1);
             },
-        },
-        computed: {
-
+            updateOption() {
+                this.$emit('update:modelValue', this.modelValue);
+            }
         },
         updated () {
             const node = document.querySelector('.options-list__options').lastElementChild;

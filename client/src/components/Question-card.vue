@@ -28,7 +28,10 @@
             placeholder="Question description"
             v-model="question.description"
         ></resizable-textarea>
+
+        {{ question.options }}
         
+        <!-- FORMS -->
 
         <form v-if="question.type === 'select'" class="question-form question-form--type--select">
             <select class="input select">
@@ -45,15 +48,15 @@
 
         <form v-else-if="question.type === 'checkbox'" class="question-form question-form--type--checkbox">
             <options-list
-                :options="question.options"
                 iconName="checkbox-outline"
+                v-model="question.options"
             ></options-list>
         </form>
 
         <form v-else-if="question.type === 'radio'" class="question-form question-form--type--radio">
             <options-list
-                :options="question.options"
                 iconName="ellipse-outline"
+                v-model="question.options"
             ></options-list>
 
         </form>
