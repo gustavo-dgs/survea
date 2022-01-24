@@ -4,7 +4,7 @@
         <div class="options-list__options">
 
             <div class="options-list__wrapper" v-for="(option,i) of options" :key="option">
-                <ion-icon class="options-list__icon" :name="iconName"></ion-icon>
+                <ion-icon class="options-list__icon icon" :name="iconName"></ion-icon>
 
                 <resizable-textarea
                     placeholder="Write an option"
@@ -14,7 +14,7 @@
 
                 
                 <ion-icon
-                    class="options-list__icon options-list__icon--delete"
+                    class="options-list__icon icon icon--delete"
                     name="close-circle-outline"
                     @click="deleteOption(i)"
                 ></ion-icon>
@@ -26,7 +26,7 @@
             class="options-list__wrapper options-list__wrapper--create"
         >
             <ion-icon
-                class="options-list__icon options-list__icon--create"
+                class="options-list__icon icon icon--create"
                 name="create-outline"
             ></ion-icon>
             <resizable-textarea
@@ -84,16 +84,6 @@
 
     .options-list__icon {
         flex-grow: 0;
-        font-size: 20px;
-    }
-
-    .options-list__icon--create {
-        color: #44974f;
-    }
-
-    .options-list__icon--delete {
-        color: #bb2924;
-        cursor: pointer;
     }
 
     .options-list__option {

@@ -11,6 +11,7 @@
             v-for="q in questionArr"
             :key="q.id"
             :question="q"
+            @delete-question-card="deleteQuestionCard($event)"
         />
 
         <button
@@ -62,6 +63,9 @@ export default {
     methods: {
         createNewQuestionCard() {
             this.questionArr.push(new Question(this.qustionsId++));
+        },
+        deleteQuestionCard(question) {
+            this.questionArr.splice( this.questionArr.indexOf(question) , 1);
         }
     }
 };

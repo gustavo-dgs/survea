@@ -52,4 +52,24 @@ export default {
         background-color: #d6d3da;
     }
 
+    /* ICONS */
+
+    .icon {
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .icon--create {
+        color: #44974f;
+    }
+
+    .icon--delete {
+        color: #bb2924;
+        
+    }
+
+    .icon--secundary {
+        color: #0d8bd4;
+    }
+
 </style>
