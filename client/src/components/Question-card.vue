@@ -1,12 +1,16 @@
 <template>
 
-    <div class="question-card">
-
+    <div class="question-card"
+        :draggable="isDraggable"
+        @dragstart="dragStart($event)"
+        @dragend="dragEnd($event)"
+    >
         <div class="toolbar">
             <ion-icon 
                 class="toolbar__icon icon" 
                 name="apps"
                 @click="showMenu($event)"
+                @mousedown="isDraggable=true"
             ></ion-icon>
         </div>
 
@@ -110,7 +114,8 @@
             </form>
 
         </div>
-        </div>
+
+    </div>
 
         
 
@@ -129,10 +134,16 @@
                     display: 'none',
                     top: 0,
                     bottom: 0
-                }
+                },
+                isDraggable: false
             }
         },
-        emits: ['delete-question-card'],
+        emits: [
+            'delete-question-card', 
+            'show-dropzones',
+            'hide-dropzones',
+            'dragged-card'
+        ],
         props: {
             question: Object
         },
@@ -147,7 +158,17 @@
                     this.menuStyle.display = 'none';
                 }
             },
-        }
+            dragStart(event) {
+                event.target.style.opacity = .2;
+                this.$emit('show-dropzones');
+                this.$emit('dragged-card', this.question);
+            },  
+            dragEnd(event) {
+                event.target.style.opacity = 1;
+                this.isDraggable = false;
+                this.$emit('hide-dropzones');
+            }
+        },
     }
 </script>
 
@@ -155,8 +176,7 @@
     .question-card {
         background: #fff;
         border-radius: 20px;
-        margin: 10px 0px;
-        flex-basis: 100%;
+        width: 100%;
         display: grid;
         grid-template-columns: max-content 1fr;
         grid-template-rows: max-content max-content;
@@ -192,6 +212,7 @@
         align-items: center;
         background: #e0e3e7;
         padding: 10px;
+        border-radius: 0 20px 0 0;
     }
 
     .menu__select {
