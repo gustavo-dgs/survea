@@ -72,4 +72,37 @@ export default {
         color: #0d8bd4;
     }
 
+    /* BUTTON */
+
+    .button {
+        padding: 5px;
+        border-radius: 10px;
+        height: 35px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        border: none;
+    }
+
+    .button--primary {
+        background: #44974f;
+    }
+
+    .button--primary:active {
+        background: #75a77b;
+    }
+
+    .button--secondary{
+        border: solid #fff;
+        background: transparent;
+        color: #fff;
+    }
+
+    .button--secondary:hover{
+        text-decoration: underline 3px;
+        background: #fff;
+        color: #44974f;
+    }
+
 </style>

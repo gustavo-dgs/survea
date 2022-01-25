@@ -23,7 +23,7 @@
             ></ion-icon>
             
             <select class="menu__select"
-                v-model="question.type"
+                v-model="question.Type"
             >
                 <option class="menu__option"
                     v-for="type of questionsTypesArr"
@@ -46,7 +46,7 @@
             <resizable-textarea
                 class="body__title"
                 placeholder="Question title"
-                v-model="question.title"
+                v-model="question.Question"
             ></resizable-textarea>
             
             <hr/>
@@ -54,61 +54,61 @@
             <resizable-textarea
                 class="body__description"
                 placeholder="Question description"
-                v-model="question.description"
+                v-model="question.Description"
             ></resizable-textarea>
             
             <!-- FORMS -->
 
-            <div v-if="question.type === 'select'" class="question-form question-form--type--select">
+            <div v-if="question.Type === 'select'" class="question-form question-form--type--select">
                 <options-list
                     iconName="caret-down-circle-outline"
-                    :options="question.options"
+                    :options="answers"
                 ></options-list>
             </div>
 
-            <div v-else-if="question.type === 'checkbox'" class="question-form question-form--type--checkbox">
+            <div v-else-if="question.Type === 'checkbox'" class="question-form question-form--type--checkbox">
                 <options-list
                     iconName="checkbox-outline"
-                    :options="question.options"
+                    :options="answers"
                 ></options-list>
             </div>
 
-            <div v-else-if="question.type === 'radio'" class="question-form question-form--type--radio">
+            <div v-else-if="question.Type === 'radio'" class="question-form question-form--type--radio">
                 <options-list
                     iconName="ellipse-outline"
-                    :options="question.options"
+                    :options="answers"
                 ></options-list>
 
             </div>
 
-            <form v-else-if="question.type === 'textarea'" class="question-form question-form--type--textarea">
+            <form v-else-if="question.Type === 'textarea'" class="question-form question-form--type--textarea">
                 <resizable-textarea
                     class="question-form__textarea"
                     placeholder="Write an awswer"
                 ></resizable-textarea>
             </form>
 
-            <form v-else-if="question.type === 'date'" class="question-form question-form--type--date">
+            <form v-else-if="question.Type === 'date'" class="question-form question-form--type--date">
                 <input class="input date" type="date">
             </form>
 
-            <form v-else-if="question.type === 'email'" class="question-form question-form--type--email">
+            <form v-else-if="question.Type === 'email'" class="question-form question-form--type--email">
                 <input class="input email" type="email" placeholder="ingrese su correo electronico">
             </form>
 
-            <form v-else-if="question.type === 'number'" class="question-form question-form--type--number">
+            <form v-else-if="question.Type === 'number'" class="question-form question-form--type--number">
                 <input class="input number" type="number" placeholder="ingrese su numero">
             </form>
 
-            <form v-else-if="question.type === 'text'" class="question-form question-form--type--text">
+            <form v-else-if="question.Type === 'text'" class="question-form question-form--type--text">
                 <input class="input text" type="text" placeholder="ingrese un texto">
             </form>
 
-            <form v-else-if="question.type === 'time'" class="question-form question-form--type--time">
+            <form v-else-if="question.Type === 'time'" class="question-form question-form--type--time">
                 <input class="input time" type="time">
             </form>
 
-            <form v-else-if="question.type === 'tel'" class="question-form question-form--type--tel">
+            <form v-else-if="question.Type === 'tel'" class="question-form question-form--type--tel">
                 <input class="input tel" type="tel" placeholder="ingrese su numero de telefono" 
                 pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}">
             </form>
@@ -145,7 +145,8 @@
             'dragged-card'
         ],
         props: {
-            question: Object
+            question: Object,
+            answers: Array
         },
         components: {
             'options-list': OptionsList

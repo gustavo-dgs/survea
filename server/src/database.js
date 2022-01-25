@@ -21,5 +21,5 @@ db.getConnection((err,connection)=>{
     console.log('BASE DE DATOS CONECTADA');
     return;
 });
-// db.query = promisify(db.query);
+db.query = promisify(db.query);
 module.exports= db;

@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
+
 const routes = [
   {
     path: '/',
@@ -12,7 +13,7 @@ const routes = [
     component: () => import('../views/Editor.vue')
   },
   {
-    path: '/editor/:id',
+    path: '/editor/:ID_Survey',
     name: 'Editor',
     component: () => import('../views/Editor.vue')
   }

@@ -1,11 +1,11 @@
 <template>
     <div class="main">
             
-                        <!--OJO AQUI :class="{active: mainActive}" -->
+        <!--OJO AQUI :class="{active: mainActive}" -->
         <section class="main__tablon" >
             <div class="main__tablon__cabecera">
-                <button @click="newCard">Nuevo</button>
-                <button>Vista</button>
+                <button class="button button--secondary"   @click="newCard">Nuevo</button>
+                <button class="button button--secondary">Vista</button>
             </div>
 
 
@@ -19,10 +19,13 @@
 
 
                 <div class="main__tablon__feed__carrousel">
-                    <div @click="goToEditor(i)" class="element" v-for="i in 5" :key="i">
-                        <p>Encuesta {{ i }}</p>
-                        <p>Descripcion</p>
-                        <p>Fecha</p>
+                    <div class="element"
+                        v-for="survey of surveys" :key="survey.ID_Survey"
+                        @click="goToEditor(survey.ID_Survey)"
+                    >
+                        <p>{{ survey.Title }}</p>
+                        <p>{{ survey.Description }}</p>
+                        <p>{{ survey.StartDate }}</p>
                         <ion-icon name="settings-outline"></ion-icon>
                     </div>
                 </div>
@@ -40,8 +43,19 @@
         data() {
             return {
                 navegationActive: false,
-                mainActive: false
+                mainActive: false,
+                ID_User: 1,
+                surveys: []
             }
+        },
+        created() {
+            this.axios
+                .get('survey')
+                .then(res => {
+                    this.surveys = res.data;
+                }).catch(error => {
+                    console.log(error);
+                });
         },
         methods: {
             toggle (){
@@ -49,8 +63,8 @@
                 this.mainActive = !this.mainActive;
             },
 
-            goToEditor(i) {
-                this.$router.push(`/editor/${i}`);
+            goToEditor(ID_Survey) {
+                this.$router.push(`/editor/${ID_Survey}`);
             },
 
             newCard() {
@@ -94,19 +108,7 @@
         /*  */
         width: 100%;
     }
-    .main__tablon__cabecera button{
-        padding: 5px;
-        border-radius: 10px;
-        /*  */
-        border: solid #fff;
-        background: transparent;
-        color: #fff;
-    }
-    .main__tablon__cabecera button:hover{
-        text-decoration: underline 3px;
-        background: #fff;
-        color: #44974f;
-    }
+
     .main__tablon__feed{
         margin-top: 5%;
         /*  */

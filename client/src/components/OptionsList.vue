@@ -1,15 +1,17 @@
 <template>
     <div class="options-list">
 
+        <span> {{ options }} </span>
+
         <div class="options-list__options">
 
-            <div class="options-list__wrapper" v-for="(option,i) of options" :key="option">
+            <div class="options-list__wrapper" v-for="(option,i) of options" :key="option.ID_Answer">
                 <ion-icon class="options-list__icon icon" :name="iconName"></ion-icon>
 
                 <resizable-textarea
                     placeholder="Write an option"
                     class="options-list__option"
-                    v-model="options[i]"
+                    v-model="options[i].Answer"
                 ></resizable-textarea>
 
                 
@@ -47,11 +49,12 @@
         },
         methods: {
             createOption(event) {
-                this.options.push('');
+                this.options.push({});
                 event.target.value = '';
             },
             deleteOption(i) {
-                this.options.splice(i, 1);
+                this.options.splice(0, 1);
+                console.log(this.options);
             }
         },
         updated () {
