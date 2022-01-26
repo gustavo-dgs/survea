@@ -20,7 +20,7 @@
                 placeholder="Survey Description"
             ></resizable-textarea>
 
-            <span> {{ this.survey.questions }} </span>
+            <!-- <span> {{ this.survey.questions }} </span> -->
         </header>
 
        
@@ -67,8 +67,27 @@
 
 <script>
 import QuestionCard from '../components/Question-card.vue';
+import { provide, reactive,  readonly } from 'vue'
 
 export default {
+    setup() {
+        const survey= reactive({
+            ID_Survey: 0,
+            Title: 'untitle',
+            Description: '',
+            ID_User: 1,
+            StartDate: new Date,
+            FinalDate: new Date,
+            questions: []
+        });
+
+        provide('survey', survey);
+
+        return {
+            survey
+        }
+
+    },
     data() {
         return {
             questionsId: 0,
@@ -76,33 +95,24 @@ export default {
             draggedCard: null,
             updateStatus: 'All save',
             lastTimeOut: null,
-            survey: {
-                ID_Survey: 0,
-                Title: '',
-                Description: '',
-                ID_User: 1,
-                StartDate: '',
-                FinalDate: '',
-                Order: 0,
-                questions: []
-            },
+            lastStatusTimeOut: null,
         }
     },
     created() {
 
-        // Cuando survey se actualice
-        let watchSurvey = (property, callback) => {
-            this.$watch(property, () => {
-                if (this.lastTimeOut) {
-                    clearTimeout(this.lastTimeOut);
+        let watchAll = () => {
+            this.$watch('survey', () => {
+                if (this.lastStatusTimeOut) {
+                    clearTimeout(this.lastStatusTimeOut);
                 }
                 this.updateStatus = 'Updating changes ...';
-                this.lastTimeOut = setTimeout( () => callback( res => {
-                    this.lastTimeOut = null;
-                    this.updateStatus = res.data;
-                }), 3000);
+                this.lastStatusTimeOut = setTimeout( () => {
+                    this.lastStatusTimeOut = null;
+                    this.updateStatus = 'All save';
+                }, 3000);
                 
             }, {
+                deep: true,
                 flush: 'post',
             });
         };
@@ -113,8 +123,9 @@ export default {
                 .post('survey', this.survey)
                 .then(res => {
                     this.survey.ID_Survey = res.data;
-                    watchSurvey('survey.Title', this.updateSurvey);
-                    watchSurvey('survey.Description', this.updateSurvey);
+                    this.watchSurvey('survey.Title', this);
+                    this.watchSurvey('survey.Description', this);
+                    watchAll();
                 })
                 .catch(err => {
                     console.log(err);
@@ -126,21 +137,41 @@ export default {
                 .get(`survey/${this.$route.params.ID_Survey}`)
                 .then( res => {
                     this.splitResulSet(res.data);
-                    watchSurvey('survey.Title', this.updateSurvey);
-                    watchSurvey('survey.Description', this.updateSurvey);
+                    this.watchSurvey('survey.Title', this);
+                    this.watchSurvey('survey.Description', this);
+                    watchAll();
                 })
                 .catch(err => {
                     console.log(err);
                 });
 
         }
-        
     },
     components: {
         QuestionCard
     },
+    provide() {
+        return {
+            watchSurvey: this.watchSurvey,
+        }
+    },
     methods: {
-        updateSurvey(resolve) {
+        watchSurvey(property, vue, deepValue) {
+            let options = {flush: 'post', deep: deepValue ? true : false}
+            vue.$watch(property, (newVal, oldVal) => {
+                if (vue.lastTimeOut) {
+                    clearTimeout(vue.lastTimeOut);
+                }
+                vue.lastTimeOut = setTimeout( () => vue.updateData( res => {
+                    vue.lastTimeOut = null;
+                    console.log(res.data);
+                }, newVal, oldVal), 3000);
+                
+            }, options);
+        },
+
+        updateData(resolve) {
+            
             this.axios
                 .put(`survey/${this.survey.ID_Survey}`, this.survey)
                 .then(resolve)
@@ -149,6 +180,8 @@ export default {
                 });
         },
         splitResulSet(resulSet) {
+
+            console.log(resulSet);
 
             let removeDuplicates = (originalArr, property) => {
                 let newArr = [];
@@ -186,7 +219,7 @@ export default {
                     'ID_Question': row.ID_Question,
                     'Question': row.Question,
                     'Type': row.Type,
-                    'Order': row.qOrder,
+                    'qOrder': row.qOrder,
                     'Description': row.qDescription
                 });
 
@@ -194,7 +227,7 @@ export default {
                     'ID_Question': row.ID_Question,
                     'ID_Answer': row.ID_Answer,
                     'Answer': row.Answer,
-                    'Order': row.aOrder
+                    'aOrder': row.aOrder
                 });
             }
 
@@ -204,17 +237,32 @@ export default {
 
 
             let sortArr = Array.from(questionArr);
-            sortArr.sort((a,b) => b.ID_Question - a.ID_Question)
-            this.questionsId = questionArr[0].ID_Question + 1;
-            this.questionsOrder = sortArr.length;
+            sortArr.sort((a,b) => b.ID_Question - a.ID_Question);
+            this.questionsId = sortArr[0].ID_Question + 1;
         },
         createNewQuestionCard() {
             let question = {
                 ID_Question: this.questionsId++,
                 Type: 'select',
-                answers: []
+                Question: 'untitle',
+                ID_Survey: this.survey.ID_Survey,
+                ID_User: this.survey.ID_User,
+                qOrder: this.survey.questions.length,
+                Description: null
             }
-            this.survey.questions.push(question);
+
+            this.axios
+                .post('survey/question', question)
+                .then( res => {
+                    //console.log(res);
+                    question.answers = [];
+                    //delete question.ID_Survey;
+                    //delete question.ID_User
+                    this.survey.questions.push(question);
+                })
+                .catch(err => {
+                    //console.log(err);
+                });
         },
         deleteQuestionCard(question) {
             this.survey.questions.splice( this.survey.questions.indexOf(question) , 1);
@@ -238,7 +286,7 @@ export default {
                 this.draggedCard = null;
 
                 for (let i=0; i<this.survey.questions.length; i++){
-                    this.survey.questions[i].Order = i;
+                    this.survey.questions[i].qOrder = i;
                 }
             }
         }

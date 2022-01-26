@@ -63,6 +63,7 @@
                 <options-list
                     iconName="caret-down-circle-outline"
                     :options="question.answers"
+                    :question="question"
                 ></options-list>
             </div>
 
@@ -70,6 +71,7 @@
                 <options-list
                     iconName="checkbox-outline"
                     :options="question.answers"
+                    :question="question"
                 ></options-list>
             </div>
 
@@ -77,6 +79,7 @@
                 <options-list
                     iconName="ellipse-outline"
                     :options="question.answers"
+                    :question="question"
                 ></options-list>
 
             </div>
@@ -135,7 +138,8 @@
                     top: 0,
                     bottom: 0
                 },
-                isDraggable: false
+                isDraggable: false,
+                lastTimeOut: null
             }
         },
         emits: [
@@ -150,6 +154,12 @@
         components: {
             'options-list': OptionsList
         },
+        provide() {
+            return {
+                ID_Question: this.question.ID_Question
+            }
+        },
+        inject: ['watchSurvey', 'survey'],
         methods: {
             showMenu() {
                 if ( this.menuStyle.display === 'none') {
@@ -167,10 +177,21 @@
                 event.target.style.opacity = 1;
                 this.isDraggable = false;
                 this.$emit('hide-dropzones');
+            },
+            updateData(resolve){
+                this.axios
+                    .put(`survey/question/${this.question.ID_Question}`, this.question)
+                    .then(resolve)
+                    .catch(err => {
+                        console.log(err);
+                    });
             }
         },
-        created() {
-            
+        created (){
+            let properties = ['Question', 'Type', 'qOrder', 'Description'];
+            for (let p of properties) {
+                this.watchSurvey('question.' + p, this);
+            }
         }
     }
 </script>

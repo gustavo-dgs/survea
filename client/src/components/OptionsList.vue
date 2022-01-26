@@ -24,6 +24,7 @@
                 <resizable-textarea class="option__resizable-textarea"
                     placeholder="Write an option"
                     v-model="options[i].Answer"
+                    @input="modifiedOptions.add(options[i])"
                 ></resizable-textarea>
 
                 
@@ -66,19 +67,65 @@
                 isNewOptionCreated: false,
                 firstLetter: '',
                 isDropzoneVisible: false,
-                draggedOption: null
+                draggedOption: null,
+                lastTimeOut: null,
+                modifiedOptions: new Set()
             }
+        },
+        created() {
+            this.watchSurvey('options', this, true);
         },
         props: {
             iconName: String,
             options: Array
         },
+        inject: ['watchSurvey', 'survey', 'ID_Question'],
         methods: {
+            updateData(resolve) {
+                const myIterator = this.modifiedOptions.values();
+                for (let o of myIterator) {
+                    this.axios
+                        .put(`survey/answer/${o.ID_Answer}`, {
+                            ID_Question: this.ID_Question,
+                            ID_Survey: this.survey.ID_Survey,
+                            ID_User: this.survey.ID_User,
+                            Answer: o.Answer,
+                            aOrder: o.aOrder
+                        })
+                        .then(resolve)
+                        .catch(err => {
+                            console.log(err);
+                        });
+                }
+            },
             createOption(event) {
                 this.firstLetter =  event.target.value;
                 event.target.value = '';
                 this.isNewOptionCreated = true;
-                this.options.push({});
+                
+
+                let copy = Array.from(this.options);
+                copy.sort((a, b) => b.ID_Answer - a.ID_Answer);
+
+                let answer = {
+                    ID_Answer: copy[0].ID_Answer + 1,
+                    Answer: event.target.value,
+                    ID_Question: this.ID_Question,
+                    ID_Survey: this.survey.ID_Survey,
+                    ID_User: this.survey.ID_User,
+                    aOrder: this.options.length
+                }
+
+                this.options.push({ID_Answer: answer.ID_Answer, Answer: answer.Answer, aOrder: answer.aOrder});
+
+                this.axios
+                .post('survey/answer', answer)
+                .then( res => {
+                    //console.log(res);
+                })
+                .catch(err => {
+                    //console.log(err);
+                });
             },
             deleteOption(i) {
                 this.options.splice(i, 1);
