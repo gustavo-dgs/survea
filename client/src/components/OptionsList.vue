@@ -81,10 +81,15 @@
         },
         inject: ['watchSurvey', 'survey', 'ID_Question'],
         methods: {
+
             updateData(resolve) {
+
                 const myIterator = this.modifiedOptions.values();
                 for (let o of myIterator) {
-                    this.axios
+                    // Si la anwser NO es nueva
+                    if (o.ID_Answer > 0) {
+                        //UPDATE
+                        this.axios
                         .put(`survey/answer/${o.ID_Answer}`, {
                             ID_Question: this.ID_Question,
                             ID_Survey: this.survey.ID_Survey,
@@ -96,40 +101,59 @@
                         .catch(err => {
                             console.log(err);
                         });
+
+                    //Si la answer es nueva
+                    } else {
+                        //INSERT
+                        //Buscar el ID_Answer mas alto
+                        let id = 1;
+                        if (this.options.length > 1) {
+                            let sortArr = Array.from(this.options);
+                            sortArr.sort((a, b) => b.ID_Answer - a.ID_Answer);
+                            id = sortArr[0].ID_Answer + 1;
+                        }
+
+                        this.unwatch.options();
+                        o.ID_Answer = id;
+                        this.watchSurvey('options', this, true);
+
+                        
+                  
+                        this.axios
+                        .post('survey/answer', {
+                            ID_Answer: id,
+                            ID_Question: this.ID_Question,
+                            ID_Survey: this.survey.ID_Survey,
+                            ID_User: this.survey.ID_User,
+                            Answer: o.Answer,
+                            aOrder: o.aOrder
+                        })
+                        .then( res => {                            
+                            console.log(res.data);
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        });
+                    }
+                    
                 }
             },
+
             createOption(event) {
                 this.firstLetter =  event.target.value;
                 event.target.value = '';
                 this.isNewOptionCreated = true;
-                
-
-                let copy = Array.from(this.options);
-                copy.sort((a, b) => b.ID_Answer - a.ID_Answer);
-
-                let answer = {
-                    ID_Answer: copy[0].ID_Answer + 1,
-                    Answer: event.target.value,
-                    ID_Question: this.ID_Question,
-                    ID_Survey: this.survey.ID_Survey,
-                    ID_User: this.survey.ID_User,
+                let option = {
+                    ID_Answer: 0, 
+                    Answer: this.firstLetter,
                     aOrder: this.options.length
                 }
-
-                this.options.push({ID_Answer: answer.ID_Answer, Answer: answer.Answer, aOrder: answer.aOrder});
-
-                this.axios
-                .post('survey/answer', answer)
-                .then( res => {
-                    //console.log(res);
-                })
-                .catch(err => {
-                    //console.log(err);
-                });
+                this.modifiedOptions.add(option)
+                this.options.push(option);
             },
+
             deleteOption(i) {
                 this.options.splice(i, 1);
-                console.log(i, this.options);
             },
             setItemRef(el) {
                 if (el) {

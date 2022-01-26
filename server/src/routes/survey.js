@@ -19,15 +19,11 @@ router.get('/', (req,res) =>{
 router.get('/:id', (req,res) =>{
     const {id} = req.params;
     const query = `SELECT s.*, q.ID_Question, q.Question, q.Type, a.ID_Answer, a.Answer
-                    FROM question q, survey s, answer a
-                    WHERE s.ID_Survey = ?
-                    AND s.ID_User = 1
-                    AND q.ID_Survey = s.ID_Survey
-                    AND q.ID_User = s.ID_User
-                    AND a.ID_User = q.ID_User
-                    AND a.ID_Survey = q.ID_Survey
-                    AND a.ID_Question = q.ID_Question
-                    ORDER BY s.ID_User, s.ID_Survey`
+                    FROM survey s
+                    LEFT JOIN question q ON q.ID_Survey = s.ID_Survey
+                    LEFT JOIN answer a ON a.ID_Question = q.ID_Question
+                    WHERE s.ID_Survey = 25
+                    AND s.ID_User = 1`
     
     db.query( query ,[id], (err, rows, fields) =>{
         if(!err){
@@ -87,7 +83,7 @@ router.post('/question', (req,res) =>{
 
     const query = `INSERT INTO Question(ID_Question, Type, Question, 
                     ID_Survey, ID_User) 
-                    VALUES (?,?,?,?,?,?,?)`
+                    VALUES (?,?,?,?,?)`
 
     db.query(query,
         [ID_Question, Type, Question, ID_Survey, ID_User], (err,rows,fields) =>{
@@ -118,6 +114,25 @@ router.put('/question/:id', (req,res)=> {
 
 /******   ANSWER ********/
 
+router.post('/answer', (req,res) =>{
+    const {ID_Answer, Answer, ID_Question, ID_Survey,ID_User}  = req.body;
+
+    console.log('ID_Answer', ID_Answer);
+
+    const query = `INSERT INTO Answer(ID_Answer, Answer, ID_Question, ID_Survey, ID_User) 
+                    VALUES (?,?,?,?,?)`
+
+    db.query(query,
+        [ID_Answer, Answer, ID_Question, ID_Survey,ID_User], (err,rows,fields) =>{
+        if(!err){
+            res.send('Answer Added');  
+        }else{
+            //res.send(err);
+            console.log(err);
+        }
+    });
+})
+
 router.put('/answer/:id', (req,res)=> {
     //const {ID_Answer, ID_Question, ID_Survey, ID_User} = req.params;
     const {id} = req.params;
@@ -138,21 +153,5 @@ router.put('/answer/:id', (req,res)=> {
 
 });
 
-router.post('/answer', (req,res) =>{
-    const {ID_Answer, Answer, ID_Question, ID_Survey,ID_User}  = req.body;
-
-    const query = `INSERT INTO Answer(ID_Answer, Answer, ID_Question, ID_Survey, ID_User) 
-                    VALUES (?,?,?,?,?,?)`
-
-    db.query(query,
-        [ID_Answer, Answer, ID_Question, ID_Survey,ID_User], (err,rows,fields) =>{
-        if(!err){
-            res.send('Answer Added');  
-        }else{
-            //res.send(err);
-            console.log(err);
-        }
-    });
-})
 
 module.exports= router;

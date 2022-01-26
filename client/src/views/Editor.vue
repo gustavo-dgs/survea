@@ -73,7 +73,7 @@ export default {
     setup() {
         const survey= reactive({
             ID_Survey: 0,
-            Title: 'untitle',
+            Title: '',
             Description: '',
             ID_User: 1,
             StartDate: new Date,
@@ -157,8 +157,11 @@ export default {
     },
     methods: {
         watchSurvey(property, vue, deepValue) {
-            let options = {flush: 'post', deep: deepValue ? true : false}
-            vue.$watch(property, (newVal, oldVal) => {
+            let options = {flush: 'post', deep: deepValue ? true : false};
+            if (vue.unwatch === undefined) {
+                vue.unwatch = {};
+            }
+            vue.unwatch[property] = vue.$watch(property, (newVal, oldVal) => {
                 if (vue.lastTimeOut) {
                     clearTimeout(vue.lastTimeOut);
                 }
@@ -180,8 +183,6 @@ export default {
                 });
         },
         splitResulSet(resulSet) {
-
-            console.log(resulSet);
 
             let removeDuplicates = (originalArr, property) => {
                 let newArr = [];
@@ -220,49 +221,47 @@ export default {
                     'Question': row.Question,
                     'Type': row.Type,
                     'qOrder': row.qOrder,
-                    'Description': row.qDescription
+                    'Description': row.qDescription,
+                    'answers': []
                 });
 
-                answers.push({
-                    'ID_Question': row.ID_Question,
-                    'ID_Answer': row.ID_Answer,
-                    'Answer': row.Answer,
-                    'aOrder': row.aOrder
-                });
+                if (row.ID_Answer != null) {
+                    answers.push({
+                        'ID_Question': row.ID_Question,
+                        'ID_Answer': row.ID_Answer,
+                        'Answer': row.Answer,
+                        'aOrder': row.aOrder
+                    });
+                }
+                
             }
+
+
+            // for (let row of resulSet) {
+            //             this.survey.ID_Survey = row.ID_Survey;
+            //             this.survey.Title = row.Title;
+            //             this.survey.Description = row.Description;
+            //             this.survey.Description = row.Description;
+            //             this.survey.StartDate = row.StartDate;
+            //             this.survey.FinalDate = row.FinalDate;
+            //             this.survey.ID_User = row.ID_User
+            //             this
+            //         }
 
             questionArr = removeDuplicates(questionArr, 'ID_Question');
             questionArr = includeArray(questionArr, answers, 'answers', 'ID_Question');
             this.survey.questions = questionArr;
 
-
-            let sortArr = Array.from(questionArr);
-            sortArr.sort((a,b) => b.ID_Question - a.ID_Question);
-            this.questionsId = sortArr[0].ID_Question + 1;
         },
         createNewQuestionCard() {
-            let question = {
-                ID_Question: this.questionsId++,
+            this.survey.questions.push({
+                ID_Question: 0,
                 Type: 'select',
-                Question: 'untitle',
-                ID_Survey: this.survey.ID_Survey,
-                ID_User: this.survey.ID_User,
+                Question: '',
                 qOrder: this.survey.questions.length,
-                Description: null
-            }
-
-            this.axios
-                .post('survey/question', question)
-                .then( res => {
-                    //console.log(res);
-                    question.answers = [];
-                    //delete question.ID_Survey;
-                    //delete question.ID_User
-                    this.survey.questions.push(question);
-                })
-                .catch(err => {
-                    //console.log(err);
-                });
+                Description: '',
+                answers: []
+            });
         },
         deleteQuestionCard(question) {
             this.survey.questions.splice( this.survey.questions.indexOf(question) , 1);
