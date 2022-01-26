@@ -62,21 +62,21 @@
             <div v-if="question.Type === 'select'" class="question-form question-form--type--select">
                 <options-list
                     iconName="caret-down-circle-outline"
-                    :options="answers"
+                    :options="question.answers"
                 ></options-list>
             </div>
 
             <div v-else-if="question.Type === 'checkbox'" class="question-form question-form--type--checkbox">
                 <options-list
                     iconName="checkbox-outline"
-                    :options="answers"
+                    :options="question.answers"
                 ></options-list>
             </div>
 
             <div v-else-if="question.Type === 'radio'" class="question-form question-form--type--radio">
                 <options-list
                     iconName="ellipse-outline"
-                    :options="answers"
+                    :options="question.answers"
                 ></options-list>
 
             </div>
@@ -146,7 +146,6 @@
         ],
         props: {
             question: Object,
-            answers: Array
         },
         components: {
             'options-list': OptionsList
@@ -170,6 +169,9 @@
                 this.$emit('hide-dropzones');
             }
         },
+        created() {
+            
+        }
     }
 </script>
 

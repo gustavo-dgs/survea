@@ -19,6 +19,8 @@
                 v-model="survey.Description"
                 placeholder="Survey Description"
             ></resizable-textarea>
+
+            <span> {{ this.survey.questions }} </span>
         </header>
 
        
@@ -26,18 +28,17 @@
         <div class="question-list">
 
             <div class="question-list__inner"
-                v-for="q in questionArr"
-                :key="q.id"
+                v-for="(q, i) of this.survey.questions"
+                :key="q.ID_Survey"
             >
                 <dropzone class="editor__dropzone"
                     v-show="isDropzoneVisible"
-                    :index="questionArr.indexOf(q)"
-                    @order-question-card="orderQuestionCard($event)"
+                    :index="i"
+                    @order-item="orderQuestionCard($event)"
                 ></dropzone>
 
                 <QuestionCard class="question-list__question-card"
                     :question="q"
-                    :answers="answers.filter(x => x.ID_Question === q.ID_Question)"
                     @delete-question-card="deleteQuestionCard($event)"
                     @show-dropzones="isDropzoneVisible=true"
                     @hide-dropzones="isDropzoneVisible=false"
@@ -49,7 +50,7 @@
             <dropzone class="editor__dropzone"
                 v-show="isDropzoneVisible"
                 :index="-1"
-                @order-question-card="orderQuestionCard($event)"
+                @order-item="orderQuestionCard($event)"
             ></dropzone>
 
             <button
@@ -66,7 +67,6 @@
 
 <script>
 import QuestionCard from '../components/Question-card.vue';
-import Dropzone from '../components/Dropzone.vue';
 
 export default {
     data() {
@@ -82,25 +82,27 @@ export default {
                 Description: '',
                 ID_User: 1,
                 StartDate: '',
-                FinalDate: ''
+                FinalDate: '',
+                Order: 0,
+                questions: []
             },
-            questionArr: [],
-            answers: []
         }
     },
     created() {
 
-         // Cuando survey se actualice
-        let watchSurvey = () => {
-            this.$watch('survey', () => {
+        // Cuando survey se actualice
+        let watchSurvey = (property, callback) => {
+            this.$watch(property, () => {
                 if (this.lastTimeOut) {
                     clearTimeout(this.lastTimeOut);
                 }
                 this.updateStatus = 'Updating changes ...';
-                this.lastTimeOut = setTimeout( this.updateSurvey, 3000);
+                this.lastTimeOut = setTimeout( () => callback( res => {
+                    this.lastTimeOut = null;
+                    this.updateStatus = res.data;
+                }), 3000);
                 
             }, {
-                deep: true,
                 flush: 'post',
             });
         };
@@ -111,7 +113,8 @@ export default {
                 .post('survey', this.survey)
                 .then(res => {
                     this.survey.ID_Survey = res.data;
-                    watchSurvey();
+                    watchSurvey('survey.Title', this.updateSurvey);
+                    watchSurvey('survey.Description', this.updateSurvey);
                 })
                 .catch(err => {
                     console.log(err);
@@ -123,7 +126,8 @@ export default {
                 .get(`survey/${this.$route.params.ID_Survey}`)
                 .then( res => {
                     this.splitResulSet(res.data);
-                    watchSurvey();
+                    watchSurvey('survey.Title', this.updateSurvey);
+                    watchSurvey('survey.Description', this.updateSurvey);
                 })
                 .catch(err => {
                     console.log(err);
@@ -133,17 +137,13 @@ export default {
         
     },
     components: {
-        QuestionCard,
-        'dropzone': Dropzone
+        QuestionCard
     },
     methods: {
-        updateSurvey() {
+        updateSurvey(resolve) {
             this.axios
                 .put(`survey/${this.survey.ID_Survey}`, this.survey)
-                .then(res => {
-                    this.lastTimeOut = null;
-                    this.updateStatus = res.data;
-                })
+                .then(resolve)
                 .catch(err => {
                     console.log(err);
                 });
@@ -159,53 +159,86 @@ export default {
                 }
                 return newArr;
             };
+
+            let includeArray = (firstArray, secondArray, propertyName, link) => {
+                for (let i=0; i<firstArray.length; i++) {
+                    firstArray[i][propertyName] = secondArray.filter(x => x[link] === firstArray[i][link]);
+                }
+
+                for (let i=0; i<firstArray.length; i++) {
+                    for (let j=0; j<firstArray[i][propertyName].length; j++){
+                        delete firstArray[i][propertyName][j][link];  
+                    }
+                }
+
+                return firstArray;
+            };
             
             for (let col in resulSet[0]) {
                 this.survey[col] = resulSet[0][col];
             }
             
+            let questionArr = [];
+            let answers = [];
             for (let row of resulSet) {
-                this.questionArr.push({
+                
+                questionArr.push({
                     'ID_Question': row.ID_Question,
                     'Question': row.Question,
-                    'Type': row.Type
+                    'Type': row.Type,
+                    'Order': row.qOrder,
+                    'Description': row.qDescription
                 });
 
-                this.answers.push({
+                answers.push({
                     'ID_Question': row.ID_Question,
                     'ID_Answer': row.ID_Answer,
                     'Answer': row.Answer,
+                    'Order': row.aOrder
                 });
             }
 
-            this.questionArr = removeDuplicates(this.questionArr, 'ID_Question');
+            questionArr = removeDuplicates(questionArr, 'ID_Question');
+            questionArr = includeArray(questionArr, answers, 'answers', 'ID_Question');
+            this.survey.questions = questionArr;
+
+
+            let sortArr = Array.from(questionArr);
+            sortArr.sort((a,b) => b.ID_Question - a.ID_Question)
+            this.questionsId = questionArr[0].ID_Question + 1;
+            this.questionsOrder = sortArr.length;
         },
         createNewQuestionCard() {
-            this.questionArr.push(new Question(this.questionsId++, this.questionArr.length));
+            let question = {
+                ID_Question: this.questionsId++,
+                Type: 'select',
+                answers: []
+            }
+            this.survey.questions.push(question);
         },
         deleteQuestionCard(question) {
-            this.questionArr.splice( this.questionArr.indexOf(question) , 1);
+            this.survey.questions.splice( this.survey.questions.indexOf(question) , 1);
         },
         orderQuestionCard(newIndex) {
             if (this.draggedCard !== null){
 
 
-                let oldIndex = this.questionArr.indexOf(this.draggedCard);
+                let oldIndex = this.survey.questions.indexOf(this.draggedCard);
 
                 if (newIndex === -1) {
-                    newIndex = this.questionArr.length;
+                    newIndex = this.survey.questions.length;
                 }
                 if (newIndex < oldIndex) {
                     oldIndex++;
                 }
 
-                this.questionArr.splice(newIndex, 0, this.draggedCard);
-                this.questionArr.splice(oldIndex, 1);
+                this.survey.questions.splice(newIndex, 0, this.draggedCard);
+                this.survey.questions.splice(oldIndex, 1);
 
                 this.draggedCard = null;
 
-                for (let i=0; i<this.questionArr.length; i++){
-                    this.questionArr[i].order = i;
+                for (let i=0; i<this.survey.questions.length; i++){
+                    this.survey.questions[i].Order = i;
                 }
             }
         }

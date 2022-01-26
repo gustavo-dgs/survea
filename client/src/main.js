@@ -6,12 +6,14 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
  
 import ResizableTextArea from './components/ResizableTextArea.vue';
+import Dropzone from './components/Dropzone.vue';
 
 // Agregamos la URL base de nuestra API
 axios.defaults.baseURL = 'http://localhost:4000/api';
 
 createApp(App)
     .component('resizable-textarea', ResizableTextArea)
+    .component('dropzone', Dropzone)
     .use(store)
     .use(router)
     .use(VueAxios, axios)

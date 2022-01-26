@@ -16,7 +16,8 @@ router.get('/', (req,res) =>{
 
 router.get('/:id', (req,res) =>{
     const {id} = req.params;
-    const query = `SELECT s.*, q.ID_Question, q.Question, q.Type, a.ID_Answer, a.Answer
+    const query = `SELECT s.*, q.ID_Question, q.Question, q.Type, q.Description as qDescription,
+                        q.Order as qOrder, a.ID_Answer, a.Answer, a.Order as aOrder
                     FROM question q, survey s, answer a
                     WHERE s.ID_Survey = ?
                     AND s.ID_User = 1
@@ -25,7 +26,7 @@ router.get('/:id', (req,res) =>{
                     AND a.ID_User = q.ID_User
                     AND a.ID_Survey = q.ID_Survey
                     AND a.ID_Question = q.ID_Question
-                    ORDER BY s.ID_User, s.ID_Survey, q.ID_Question, a.ID_Answer`
+                    ORDER BY s.ID_User, s.ID_Survey, q.Order, a.Order`
     
     db.query( query ,[id], (err, rows, fields) =>{
         if(!err){

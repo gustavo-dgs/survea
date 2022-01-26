@@ -12,17 +12,12 @@
         props: {
             index: Number,
         },
-        emits: ['order-question-card'],
+        emits: ['order-item'],
         methods: {
             drop(event){
                 event.preventDefault();
                 event.target.style.opacity = .2;
-
-                const obj = {
-                    question: this.question,
-                    index: this.index
-                };
-                this.$emit('order-question-card', this.index);
+                this.$emit('order-item', this.index);
             }
         }
     }
