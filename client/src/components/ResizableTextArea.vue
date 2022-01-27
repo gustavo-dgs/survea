@@ -4,6 +4,7 @@
         @input="resizeTextArea($event)"
         rows="1"
         :value="modelValue"
+        ref="textArea"
     ></textarea>
 </template>
 
@@ -19,6 +20,9 @@
                 textArea.style.height = "auto";
                 textArea.style.height = (textArea.scrollHeight) + "px";
                 this.$emit('update:modelValue', textArea.value);
+            },
+            focus() {
+                this.$refs.textArea.focus();
             }
         }
     }

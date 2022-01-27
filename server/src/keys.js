@@ -3,6 +3,7 @@ module.exports={
         host: 'localhost',
         user: 'root',
         password: '',
-        database:'survea'
+        database:'survea',
+        multipleStatements: true
     }
 }

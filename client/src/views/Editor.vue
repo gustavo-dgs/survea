@@ -4,9 +4,24 @@
 
         <header class="editor__header">
 
-            <h4 class="editor__upadate-status">
-                {{ updateStatus }}
-            </h4>
+            <div class="menu"
+                :style="menuStyle"
+            >
+                <ion-icon
+                    class="menu__copy icon icon--secundary"
+                    name="copy"
+                ></ion-icon>
+                
+                <h4 class="editor__upadate-status">
+                    {{ updateStatus }}
+                </h4>
+
+                <ion-icon class="menu__delete icon icon--delete"
+                    name="trash"
+                    @click="deleteSurvey()"
+                ></ion-icon>
+
+            </div>
 
             <resizable-textarea
                 class="editor__title"
@@ -99,7 +114,7 @@ export default {
         }
     },
     created() {
-
+        
         let watchAll = () => {
             this.$watch('survey', () => {
                 if (this.lastStatusTimeOut) {
@@ -140,6 +155,7 @@ export default {
                     this.watchSurvey('survey.Title', this);
                     this.watchSurvey('survey.Description', this);
                     watchAll();
+                  
                 })
                 .catch(err => {
                     console.log(err);
@@ -167,7 +183,7 @@ export default {
                 }
                 vue.lastTimeOut = setTimeout( () => vue.updateData( res => {
                     vue.lastTimeOut = null;
-                    console.log(res.data);
+                    console.log('Updated:', property, 'Status:', res.data);
                 }, newVal, oldVal), 3000);
                 
             }, options);
@@ -216,14 +232,16 @@ export default {
             let answers = [];
             for (let row of resulSet) {
                 
-                questionArr.push({
-                    'ID_Question': row.ID_Question,
-                    'Question': row.Question,
-                    'Type': row.Type,
-                    'qOrder': row.qOrder,
-                    'Description': row.qDescription,
-                    'answers': []
-                });
+                if (row.ID_Question != null) {
+                    questionArr.push({
+                        'ID_Question': row.ID_Question,
+                        'Question': row.Question,
+                        'Type': row.Type,
+                        'qOrder': row.qOrder,
+                        'Description': row.qDescription,
+                        'answers': []
+                    });
+                }
 
                 if (row.ID_Answer != null) {
                     answers.push({
@@ -281,6 +299,20 @@ export default {
         },
         deleteQuestionCard(question) {
             this.survey.questions.splice( this.survey.questions.indexOf(question) , 1);
+
+            this.axios
+                .delete(`survey/question/${question.ID_Question}`, {
+                    data: {
+                        ID_Survey: this.survey.ID_Survey,
+                        ID_User: this.survey.ID_User
+                    }
+                })
+                .then( res => {
+                    console.log(res);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         },
         orderQuestionCard(newIndex) {
             if (this.draggedCard !== null){
@@ -304,6 +336,9 @@ export default {
                     this.survey.questions[i].qOrder = i;
                 }
             }
+        },
+        deleteSurvey() {
+            
         }
     }
 };

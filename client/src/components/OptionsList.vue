@@ -1,42 +1,31 @@
 <template>
     <div class="options-list">
 
-        <template class="options-list__wrapper"
+        <template
             v-for="(option,i) of options" 
             :key="option.ID_Answer"
         >
 
-            <dropzone class="option__dropzone"
+            <dropzone class="option-list__dropzone"
                 v-show="isDropzoneVisible"
                 :index="i"
                 @order-item="orderOption($event)"
             ></dropzone>
 
-            <div class="option"  
+            <Option class="option-list__option"
+                :answer="options[i]"
+                :question="question"
                 :ref="setItemRef"
+                :iconName="iconName"
                 draggable="true"
                 @dragstart="dragStart($event)"
                 @dragend="dragEnd($event)"
-            >
-                <ion-icon class="icon option__icon option__icon--form-type" 
-                    :name="iconName"></ion-icon>
-
-                <resizable-textarea class="option__resizable-textarea"
-                    placeholder="Write an option"
-                    v-model="options[i].Answer"
-                    @input="modifiedOptions.add(options[i])"
-                ></resizable-textarea>
-
-                
-                <ion-icon class="icon icon--delete option__icon option__icon--delete"
-                    name="close-circle-outline"
-                    @click="deleteOption(i)"
-                ></ion-icon>
-            </div>
+                @delete-option="deleteOption($event)"
+            />
 
         </template>
 
-        <dropzone class="option__dropzone"
+        <dropzone class="option-list__dropzone"
             v-show="isDropzoneVisible"
             :index="-1"
             @order-item="orderOption($event)"
@@ -60,6 +49,8 @@
 </template>
 
 <script>
+    import Option from '../components/Option.vue'
+
     export default {
         data() {
             return {
@@ -68,93 +59,78 @@
                 firstLetter: '',
                 isDropzoneVisible: false,
                 draggedOption: null,
-                lastTimeOut: null,
-                modifiedOptions: new Set()
             }
         },
-        created() {
-            this.watchSurvey('options', this, true);
+        components: {
+            Option
         },
         props: {
             iconName: String,
             options: Array,
             question: Object
         },
-        inject: ['watchSurvey', 'survey', 'ID_Question'],
+        inject: ['watchSurvey', 'survey'],
         methods: {
 
-            updateData(resolve) {
-
-                const myIterator = this.modifiedOptions.values();
-                for (let o of myIterator) {
-                    // Si la anwser NO es nueva
-                    if (o.ID_Answer > 0) {
-                        //UPDATE
-                        this.axios
-                        .put(`survey/answer/${o.ID_Answer}`, {
-                            ID_Question: this.question.ID_Question,
-                            ID_Survey: this.survey.ID_Survey,
-                            ID_User: this.survey.ID_User,
-                            Answer: o.Answer,
-                            aOrder: o.aOrder
-                        })
-                        .then(resolve)
-                        .catch(err => {
-                            console.log(err);
-                        });
-
-                    //Si la answer es nueva
-                    } else {
-                        //INSERT
-                        //Buscar el ID_Answer mas alto
-                        let id = 1;
-                        if (this.options.length > 1) {
-                            let sortArr = Array.from(this.options);
-                            sortArr.sort((a, b) => b.ID_Answer - a.ID_Answer);
-                            id = sortArr[0].ID_Answer + 1;
-                        }
-
-                        this.unwatch.options();
-                        o.ID_Answer = id;
-                        this.watchSurvey('options', this, true);
-
-                        
-                  
-                        this.axios
-                        .post('survey/answer', {
-                            ID_Answer: id,
-                            ID_Question: this.question.ID_Question,
-                            ID_Survey: this.survey.ID_Survey,
-                            ID_User: this.survey.ID_User,
-                            Answer: o.Answer,
-                            aOrder: o.aOrder
-                        })
-                        .then( res => {                            
-                            console.log(res.data);
-                        })
-                        .catch(err => {
-                            console.log(err);
-                        });
-                    }
-                    
-                }
-            },
-
             createOption(event) {
+
                 this.firstLetter =  event.target.value;
                 event.target.value = '';
                 this.isNewOptionCreated = true;
-                let option = {
-                    ID_Answer: 0, 
+
+                let id = 1;
+                if (this.options.length > 0) {
+                    let sortArr = Array.from(this.options);
+                    sortArr.sort((a, b) => b.ID_Answer - a.ID_Answer);
+                    id = sortArr[0].ID_Answer + 1;
+                }
+
+                let answer = {
+                    ID_Answer: id, 
                     Answer: this.firstLetter,
                     aOrder: this.options.length
                 }
-                this.modifiedOptions.add(option)
-                this.options.push(option);
+
+                this.options.push(answer);
+            
+                this.axios
+                .post('survey/answer', {
+                    ID_Question: this.question.ID_Question,
+                    ID_Survey: this.survey.ID_Survey,
+                    ID_User: this.survey.ID_User,
+                    ID_Answer: answer.ID_Answer,
+                    Answer: answer.Answer,
+                    aOrder: answer.aOrder
+                })
+                .then( res => {                            
+                    console.log(res);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+
             },
 
-            deleteOption(i) {
-                this.options.splice(i, 1);
+            deleteOption(answer) {
+                this.options.splice(this.options.indexOf(answer), 1);
+
+                
+                this.axios
+                    .delete(`survey/answer/${answer.ID_Answer}`, {
+                        data: {
+                            ID_Question: this.question.ID_Question,
+                            ID_Survey: this.survey.ID_Survey,
+                            ID_User: this.survey.ID_User
+                        }
+                    })
+                    .then(res => {
+                        console.log(res);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+              
+
             },
             setItemRef(el) {
                 if (el) {
@@ -196,11 +172,12 @@
         updated () {
             if (this.isNewOptionCreated) {
               
-                const node = this.itemRefs[this.itemRefs.length - 1];
-                const resizableTextarea = node.querySelector('.option__resizable-textarea');
-                resizableTextarea.value = this.firstLetter;
-                resizableTextarea.focus();
+                this.itemRefs[this.itemRefs.length - 1].focus();
                 this.isNewOptionCreated = false;
+                
+                // const resizableTextarea = node.querySelector('.option__resizable-textarea');
+                // resizableTextarea.value = this.firstLetter;
+                // resizableTextarea.focus();
             }
         }
     }
@@ -212,39 +189,13 @@
         flex-direction: column;
     }
 
-    .options-list__wrapper {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
+    .option-list_option {
+        outline: 1px solid red;
     }
 
-    .option {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        margin: 3px 0;
-    }
-
-    .option:active {
-        cursor: grabbing;
-    }
-
-    .option__dropzone {
+    .option-list__dropzone {
         width: 100%;
         margin: 3px 0;
-    }
-
-    .option__icon {
-        flex-grow: 0;
-        width: 20px;
-    }
-
-    .option__resizable-textarea {
-        flex-basis: 100px;
-        flex-grow: 1;
-        margin: 0 10px;
     }
 
 </style>

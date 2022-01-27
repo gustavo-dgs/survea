@@ -98,15 +98,41 @@ router.post('/question', (req,res) =>{
 
 router.put('/question/:id', (req,res)=> {
     const {id} = req.params;
-    const {Question, Type} = req.body;
-    const query = `UPDATE Question q SET Question = ?, Type = ?
-                    WHERE ID_Question = ?`
-    db.query( query ,[Question, Type, id], (err,rows,fields) =>{
+    const {Question, Type, ID_Survey, ID_User} = req.body;
+    const query = `UPDATE Question SET Question = ?, Type = ?
+                    WHERE ID_Question = ?
+                    AND ID_Survey = ?
+                    AND ID_USer = ?`
+    db.query( query ,[Question, Type, id, ID_Survey, ID_User], (err,rows,fields) =>{
         if(!err){
-            res.send('Question save');
+            res.send('Question update');
         }else{
             console.log(err);
             res.send('Error updating');
+        }
+    });
+
+});
+
+router.delete('/question/:id', (req,res)=> {
+    const {id} = req.params;
+    const {ID_Survey, ID_User} = req.body;
+    const query = `DELETE FROM Answer
+                    WHERE ID_Question = ?
+                    AND ID_Survey = ?
+                    AND ID_User = ?;
+                    
+                    DELETE FROM Question
+                    WHERE ID_Question = ?
+                    AND ID_Survey = ?
+                    AND ID_User = ?`
+
+    db.query( query ,[id, ID_Survey, ID_User, id, ID_Survey, ID_User], (err,rows,fields) =>{
+        if(!err){
+            res.send('Question deleted');
+        }else{
+            console.log(err);
+            res.send('Error deleting');
         }
     });
 
@@ -153,5 +179,24 @@ router.put('/answer/:id', (req,res)=> {
 
 });
 
+router.delete('/answer/:id', (req,res)=> {
+    console.log(req.body);
+    const {id} = req.params;
+    const {ID_Question, ID_Survey, ID_User} = req.body;
+    const query = `DELETE FROM Answer
+                    WHERE ID_Answer = ?
+                    AND ID_Question = ?
+                    AND ID_Survey = ?
+                    AND ID_User = ?`
+    db.query( query ,[id, ID_Question, ID_Survey, ID_User], (err,rows,fields) =>{
+        if(!err){
+            res.send('Answer delete');
+        }else{
+            console.log(err);
+            res.send('Error updating');
+        }
+    });
+
+});
 
 module.exports= router;
