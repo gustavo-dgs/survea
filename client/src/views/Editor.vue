@@ -236,32 +236,48 @@ export default {
                 
             }
 
-
-            // for (let row of resulSet) {
-            //             this.survey.ID_Survey = row.ID_Survey;
-            //             this.survey.Title = row.Title;
-            //             this.survey.Description = row.Description;
-            //             this.survey.Description = row.Description;
-            //             this.survey.StartDate = row.StartDate;
-            //             this.survey.FinalDate = row.FinalDate;
-            //             this.survey.ID_User = row.ID_User
-            //             this
-            //         }
-
             questionArr = removeDuplicates(questionArr, 'ID_Question');
             questionArr = includeArray(questionArr, answers, 'answers', 'ID_Question');
             this.survey.questions = questionArr;
 
         },
         createNewQuestionCard() {
-            this.survey.questions.push({
-                ID_Question: 0,
+
+            let id = 1;
+            if (this.survey.questions.length > 0) {
+                let sortArr = Array.from(this.survey.questions);
+                sortArr.sort((a,b) => b.ID_Question - a.ID_Question);
+                id = sortArr[0].ID_Question + 1;
+            }
+
+            let question = {
+                ID_Question: id,
                 Type: 'select',
                 Question: '',
                 qOrder: this.survey.questions.length,
                 Description: '',
                 answers: []
-            });
+            }
+
+            this.survey.questions.push(question);
+
+            this.axios
+                .post('survey/question', {
+                    ID_Question: id,
+                    Type: question.Type,
+                    Question: question.Question,
+                    qOrder: this.survey.questions.length,
+                    Description: question.Description,
+                    ID_Survey: this.survey.ID_Survey,
+                    ID_User: this.survey.ID_User
+                })
+                .then( res => {
+                    console.log(res);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+
         },
         deleteQuestionCard(question) {
             this.survey.questions.splice( this.survey.questions.indexOf(question) , 1);

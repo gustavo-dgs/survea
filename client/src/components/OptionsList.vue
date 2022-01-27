@@ -77,7 +77,8 @@
         },
         props: {
             iconName: String,
-            options: Array
+            options: Array,
+            question: Object
         },
         inject: ['watchSurvey', 'survey', 'ID_Question'],
         methods: {
@@ -91,7 +92,7 @@
                         //UPDATE
                         this.axios
                         .put(`survey/answer/${o.ID_Answer}`, {
-                            ID_Question: this.ID_Question,
+                            ID_Question: this.question.ID_Question,
                             ID_Survey: this.survey.ID_Survey,
                             ID_User: this.survey.ID_User,
                             Answer: o.Answer,
@@ -122,7 +123,7 @@
                         this.axios
                         .post('survey/answer', {
                             ID_Answer: id,
-                            ID_Question: this.ID_Question,
+                            ID_Question: this.question.ID_Question,
                             ID_Survey: this.survey.ID_Survey,
                             ID_User: this.survey.ID_User,
                             Answer: o.Answer,

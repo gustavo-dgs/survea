@@ -42,7 +42,7 @@
         </div>
 
         <div class="body">
-            <span>{{ question.ID_Question }}</span>
+            
             <resizable-textarea
                 class="body__title"
                 placeholder="Question title"
@@ -154,11 +154,6 @@
         components: {
             'options-list': OptionsList
         },
-        provide() {
-            return {
-                ID_Question: this.question.ID_Question
-            }
-        },
         inject: ['watchSurvey', 'survey'],
         methods: {
             showMenu() {
@@ -180,53 +175,19 @@
             },
             updateData(resolve){
 
-                //Si la pregunta NO es nueva
-                if (this.question.ID_Question > 0) {
-                    //UPDATE
-                    this.axios
-                    .put(`survey/question/${this.question.ID_Question}`, {
-                        Type: this.question.Type,
-                        Question: this.question.Question,
-                        qOrder: this.survey.questions.length,
-                        Description: this.question.Description,
-                        ID_Survey: this.survey.ID_Survey,
-                        ID_User: this.survey.ID_User
-                    })
-                    .then(resolve)
-                    .catch(err => {
-                        console.log(err);
-                    });
-                
-                 //Si la pregunta es nueva
-                } else {
-                    //INSERT
-                    //Buscar el ID_Question mas alto
-                    let id = 1;
-                    if (this.survey.questions.length !== 1) {
-                        let sortArr = Array.from(this.survey.questions);
-                        sortArr.sort((a,b) => b.ID_Question - a.ID_Question);
-                        id = sortArr[0].ID_Question + 1;
-                    }
-
-                    this.question.ID_Question = id;
-
-                    this.axios
-                        .post('survey/question', {
-                            ID_Question: this.question.ID_Question,
-                            Type: this.question.Type,
-                            Question: this.question.Question,
-                            qOrder: this.survey.questions.length,
-                            Description: this.question.Description,
-                            ID_Survey: this.survey.ID_Survey,
-                            ID_User: this.survey.ID_User
-                        })
-                        .then( res => {
-                            console.log(res);
-                        })
-                        .catch(err => {
-                            console.log(err);
-                        });
-                }
+                this.axios
+                .put(`survey/question/${this.question.ID_Question}`, {
+                    Type: this.question.Type,
+                    Question: this.question.Question,
+                    qOrder: this.survey.questions.length,
+                    Description: this.question.Description,
+                    ID_Survey: this.survey.ID_Survey,
+                    ID_User: this.survey.ID_User
+                })
+                .then(resolve)
+                .catch(err => {
+                    console.log(err);
+                });
             }
         },
         created (){
