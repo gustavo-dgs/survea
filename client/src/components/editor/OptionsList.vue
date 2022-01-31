@@ -49,7 +49,7 @@
 </template>
 
 <script>
-    import Option from '../components/Option.vue'
+    import Option from './Option.vue'
 
     export default {
         data() {
@@ -69,7 +69,7 @@
             options: Array,
             question: Object
         },
-        inject: ['watchSurvey', 'survey'],
+        inject: ['survey'],
         methods: {
 
             createOption(event) {

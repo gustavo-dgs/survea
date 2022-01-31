@@ -76,7 +76,7 @@ export default {
 
     .button {
         padding: 5px;
-        border-radius: 10px;
+        border-radius: 20px;
         height: 35px;
         display: flex;
         flex-direction: row;
@@ -85,11 +85,16 @@ export default {
         border: none;
     }
 
-    .button--primary {
-        background: #44974f;
+    button:hover {
+        cursor: pointer;
     }
 
-    .button--primary:active {
+    .button--primary {
+        background: #44974f;
+        color: #fff;
+    }
+
+    .button--primary:hover {
         background: #75a77b;
     }
 

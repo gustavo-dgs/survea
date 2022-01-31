@@ -6,7 +6,7 @@ const db = require('../database');
 /******   SURVEY  ********/
 
 router.get('/', (req,res) =>{
-    
+
     db.query('SELECT * FROM Survey', (err, rows, fields) =>{
         if(!err){
             res.json(rows);
@@ -17,13 +17,13 @@ router.get('/', (req,res) =>{
 });
 
 router.get('/:id', (req,res) =>{
+    
     const {id} = req.params;
     const query = `SELECT s.*, q.ID_Question, q.Question, q.Type, a.ID_Answer, a.Answer
                     FROM survey s
                     LEFT JOIN question q ON q.ID_Survey = s.ID_Survey
                     LEFT JOIN answer a ON a.ID_Question = q.ID_Question
-                    WHERE s.ID_Survey = 25
-                    AND s.ID_User = 1`
+                    WHERE s.ID_Survey = ?`
     
     db.query( query ,[id], (err, rows, fields) =>{
         if(!err){
@@ -64,16 +64,26 @@ router.put('/:id', (req,res)=> {
 
 });
 
-
-router.delete('/:id', (req,res)=>{
+router.delete('/:id', (req,res)=> {
     const {id} = req.params;
-    db.query('DELETE FROM Survey WHERE ID_Survey = ?',[id], (err,rows,fields) =>{
-        if (!err){
-            res.json({status: 'Survey deleted'})
+    const query = `DELETE FROM Answer
+                    WHERE ID_Survey = ?;
+                    
+                    DELETE FROM Question
+                    WHERE ID_Survey = ?;
+                    
+                    DELETE FROM Survey
+                    WHERE ID_Survey = ?`
+
+    db.query( query ,[id, id, id], (err,rows,fields) =>{
+        if(!err){
+            res.send('Survey deleted');
         }else{
-            console.log(err)
+            console.log(err);
+            res.send('Error deleting');
         }
     });
+
 });
 
 /******   QUESTION ********/
@@ -142,8 +152,6 @@ router.delete('/question/:id', (req,res)=> {
 
 router.post('/answer', (req,res) =>{
     const {ID_Answer, Answer, ID_Question, ID_Survey,ID_User}  = req.body;
-
-    console.log('ID_Answer', ID_Answer);
 
     const query = `INSERT INTO Answer(ID_Answer, Answer, ID_Question, ID_Survey, ID_User) 
                     VALUES (?,?,?,?,?)`

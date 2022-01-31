@@ -88,32 +88,56 @@
                 <resizable-textarea
                     class="question-form__textarea"
                     placeholder="Write an awswer"
+                    disabled
                 ></resizable-textarea>
             </form>
 
             <form v-else-if="question.Type === 'date'" class="question-form question-form--type--date">
-                <input class="input date" type="date">
+                <resizable-textarea
+                    class="question-form__textarea"
+                    placeholder="Write a date"
+                    disabled
+                ></resizable-textarea>
             </form>
 
             <form v-else-if="question.Type === 'email'" class="question-form question-form--type--email">
-                <input class="input email" type="email" placeholder="ingrese su correo electronico">
+                <resizable-textarea
+                    class="question-form__textarea"
+                    placeholder="ingrese su correo electronico"
+                    disabled
+                ></resizable-textarea>
             </form>
 
             <form v-else-if="question.Type === 'number'" class="question-form question-form--type--number">
-                <input class="input number" type="number" placeholder="ingrese su numero">
+                <resizable-textarea
+                    class="question-form__textarea"
+                    placeholder="ingrese un numero"
+                    disabled
+                ></resizable-textarea>
             </form>
 
             <form v-else-if="question.Type === 'text'" class="question-form question-form--type--text">
-                <input class="input text" type="text" placeholder="ingrese un texto">
+                <resizable-textarea
+                    class="question-form__textarea"
+                    placeholder="ingrese un texto corto"
+                    disabled
+                ></resizable-textarea>
             </form>
 
             <form v-else-if="question.Type === 'time'" class="question-form question-form--type--time">
-                <input class="input time" type="time">
+                <resizable-textarea
+                    class="question-form__textarea"
+                    placeholder="ingrese una hora"
+                    disabled
+                ></resizable-textarea>
             </form>
 
             <form v-else-if="question.Type === 'tel'" class="question-form question-form--type--tel">
-                <input class="input tel" type="tel" placeholder="ingrese su numero de telefono" 
-                pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}">
+                <resizable-textarea
+                    class="question-form__textarea"
+                    placeholder="ingrese su numero de telefono"
+                    disabled
+                ></resizable-textarea>
             </form>
 
         </div>
@@ -125,7 +149,7 @@
 </template>
 
 <script>
-    import OptionsList from '../components/OptionsList.vue'
+    import OptionsList from './OptionsList.vue'
     
     export default {
         data() {
@@ -154,7 +178,7 @@
         components: {
             'options-list': OptionsList
         },
-        inject: ['watchSurvey', 'survey'],
+        inject: ['survey'],
         methods: {
             showMenu() {
                 if ( this.menuStyle.display === 'none') {
@@ -193,7 +217,7 @@
         created (){
             let properties = ['Question', 'Type', 'qOrder', 'Description'];
             for (let p of properties) {
-                this.watchSurvey('question.' + p, this);
+                this.$watchSurvey('question.' + p, this);
             }
         }
     }

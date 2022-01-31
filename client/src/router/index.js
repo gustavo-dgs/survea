@@ -16,6 +16,11 @@ const routes = [
     path: '/editor/:ID_Survey',
     name: 'Editor',
     component: () => import('../views/Editor.vue')
+  },
+  {
+    path: '/survey/:ID_Survey',
+    name: 'Survey',
+    component: () => import('../views/Survey.vue')
   }
 ]
 

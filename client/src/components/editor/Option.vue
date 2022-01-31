@@ -18,7 +18,7 @@
 
 <script>
 export default {
-    inject: ['watchSurvey', 'survey'],
+    inject: ['survey'],
     props: {
         answer: Object,
         question: Object,
@@ -48,7 +48,7 @@ export default {
         }
     },
     created() {
-        this.watchSurvey('answer.Answer', this);
+        this.$watchSurvey('answer.Answer', this);
     }
 }
 </script>
@@ -60,6 +60,7 @@ export default {
         flex-direction: row;
         flex-wrap: wrap;
         margin: 3px 0;
+        align-items: center;
     }
 
     .option:active {

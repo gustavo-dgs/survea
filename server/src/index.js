@@ -29,6 +29,7 @@ app.use(express.urlencoded({extended : true}));
 //RUTAS
 app.use('/api/survey', require('./routes/survey'));
 app.use('/api', require('./routes/authentication'));
+app.use('/api/surveyed', require('./routes/surveyed'));
 
 //Public
 app.use(history());
