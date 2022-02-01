@@ -178,7 +178,7 @@
         components: {
             'options-list': OptionsList
         },
-        inject: ['survey'],
+        inject: ['surveyReact'],
         methods: {
             showMenu() {
                 if ( this.menuStyle.display === 'none') {
@@ -203,10 +203,10 @@
                 .put(`survey/question/${this.question.ID_Question}`, {
                     Type: this.question.Type,
                     Question: this.question.Question,
-                    qOrder: this.survey.questions.length,
+                    qOrder: this.surveyReact.survey.questions.length,
                     Description: this.question.Description,
-                    ID_Survey: this.survey.ID_Survey,
-                    ID_User: this.survey.ID_User
+                    ID_Survey: this.surveyReact.survey.ID_Survey,
+                    ID_User: this.surveyReact.survey.ID_User
                 })
                 .then(resolve)
                 .catch(err => {
@@ -259,7 +259,7 @@
         width: 100%;
         display: flex;
         flex-direction: row;
-        justify-content: space-around;
+        justify-content: space-evenly;
         align-items: center;
         background: #e0e3e7;
         padding: 10px;

@@ -1,52 +1,57 @@
 <template>
 
     <div class="editor">
+        
+        <div class="menu editor__menu">
+
+            <ion-icon class="menu__chart icon icon--create"
+                name="bar-chart"
+                @click="goToResults"
+            ></ion-icon>
+            
+            <ion-icon class="menu__preview icon icon--secundary"
+                name="eye"
+                @click="previewSurvey"
+            ></ion-icon>
+            
+            <h4 class="menu__upadate-status">
+                {{ updateStatus }}
+            </h4>
+
+            <ion-icon
+                class="menu__copy icon icon--secundary"
+                name="copy"
+            ></ion-icon>
+
+            <ion-icon class="menu__delete icon icon--delete"
+                name="trash"
+                @click="deleteSurvey()"
+            ></ion-icon>
+            
+        </div>
 
         <header class="editor__header">
 
-            <div class="menu">
-                <ion-icon
-                    class="menu__copy icon icon--secundary"
-                    name="copy"
-                ></ion-icon>
-                
-                <h4 class="editor__upadate-status">
-                    {{ updateStatus }}
-                </h4>
-
-                <ion-icon class="menu__delete icon icon--delete"
-                    name="trash"
-                    @click="deleteSurvey()"
-                ></ion-icon>
-
-                <ion-icon class="menu__preview icon icon--secundary"
-                    name="eye-outline"
-                    @click="previewSurvey()"
-                ></ion-icon>
-
-            </div>
-
             <resizable-textarea
                 class="editor__title"
-                v-model="survey.Title"
+                v-model="surveyReact.survey.Title"
                 placeholder="Survey Title"
             ></resizable-textarea>
 
             <resizable-textarea
                 class="editor__description"
-                v-model="survey.Description"
+                v-model="surveyReact.survey.Description"
                 placeholder="Survey Description"
             ></resizable-textarea>
 
-            <!-- <span> {{ this.survey.questions }} </span> -->
         </header>
 
        
 
         <div class="question-list">
 
-            <div class="question-list__inner"
-                v-for="(q, i) of this.survey.questions"
+            <template class="question-list__inner"
+                v-for="(q, i) of this.surveyReact.survey.questions"
                 :key="q.ID_Survey"
             >
                 <dropzone class="editor__dropzone"
@@ -63,7 +68,7 @@
                     @dragged-card="draggedCard=$event"
                 />
 
-            </div>
+            </template>
 
             <dropzone class="editor__dropzone"
                 v-show="isDropzoneVisible"
@@ -104,20 +109,18 @@ export default {
             }
         });
 
-        let {survey} = toRefs(surveyReact);
-
-        //provide('survey', survey);
+        provide('surveyReact', surveyReact);
 
         return {
-            survey
+            surveyReact
         }
 
     },
-    provide() {
-        return {
-            survey: this.survey
-        }
-    },
+    // provide() {
+    //     return {
+    //         survey: this.surveyReact.survey
+    //     }
+    // },
     data() {
         return {
             questionsId: 0,
@@ -138,10 +141,11 @@ export default {
         if (this.$route.name === 'Create'){
 
             this.axios
-                .post('survey', this.survey)
+                .post('survey', this.surveyReact.survey)
                 .then(res => {
-                    this.survey.ID_Survey = res.data;
+                    this.surveyReact.survey.ID_Survey = res.data;
                     watchEditor();
+                    this.$router.replace(`/editor/${res.data}`)
                 })
                 .catch(err => {
                     console.log(err);
@@ -153,7 +157,7 @@ export default {
                 .get(`survey/${this.$route.params.ID_Survey}`)
                 .then( res => {
                     
-                    this.survey = this.$splitResulSet(res.data, [
+                    this.surveyReact.survey = this.$splitResulSet(res.data, [
                         {
                             thisId: 'ID_Survey',
                             son: 'questions',
@@ -203,7 +207,7 @@ export default {
         updateData(resolve) {
             
             this.axios
-                .put(`survey/${this.survey.ID_Survey}`, this.survey)
+                .put(`survey/${this.surveyReact.survey.ID_Survey}`, this.surveyReact.survey)
                 .then(resolve)
                 .catch(err => {
                     console.log(err);
@@ -213,8 +217,8 @@ export default {
         createNewQuestionCard() {
 
             let id = 1;
-            if (this.survey.questions.length > 0) {
-                let sortArr = Array.from(this.survey.questions);
+            if (this.surveyReact.survey.questions.length > 0) {
+                let sortArr = Array.from(this.surveyReact.survey.questions);
                 sortArr.sort((a,b) => b.ID_Question - a.ID_Question);
                 id = sortArr[0].ID_Question + 1;
             }
@@ -223,22 +227,22 @@ export default {
                 ID_Question: id,
                 Type: 'select',
                 Question: '',
-                qOrder: this.survey.questions.length,
+                qOrder: this.surveyReact.survey.questions.length,
                 Description: '',
                 answers: []
             }
 
-            this.survey.questions.push(question);
+            this.surveyReact.survey.questions.push(question);
 
             this.axios
                 .post('survey/question', {
                     ID_Question: id,
                     Type: question.Type,
                     Question: question.Question,
-                    qOrder: this.survey.questions.length,
+                    qOrder: this.surveyReact.survey.questions.length,
                     Description: question.Description,
-                    ID_Survey: this.survey.ID_Survey,
-                    ID_User: this.survey.ID_User
+                    ID_Survey: this.surveyReact.survey.ID_Survey,
+                    ID_User: this.surveyReact.survey.ID_User
                 })
                 .then( res => {
                     console.log(res);
@@ -249,13 +253,13 @@ export default {
 
         },
         deleteQuestionCard(question) {
-            this.survey.questions.splice( this.survey.questions.indexOf(question) , 1);
+            this.surveyReact.survey.questions.splice( this.surveyReact.survey.questions.indexOf(question) , 1);
 
             this.axios
                 .delete(`survey/question/${question.ID_Question}`, {
                     data: {
-                        ID_Survey: this.survey.ID_Survey,
-                        ID_User: this.survey.ID_User
+                        ID_Survey: this.surveyReact.survey.ID_Survey,
+                        ID_User: this.surveyReact.survey.ID_User
                     }
                 })
                 .then( res => {
@@ -269,22 +273,22 @@ export default {
             if (this.draggedCard !== null){
 
 
-                let oldIndex = this.survey.questions.indexOf(this.draggedCard);
+                let oldIndex = this.surveyReact.survey.questions.indexOf(this.draggedCard);
 
                 if (newIndex === -1) {
-                    newIndex = this.survey.questions.length;
+                    newIndex = this.surveyReact.survey.questions.length;
                 }
                 if (newIndex < oldIndex) {
                     oldIndex++;
                 }
 
-                this.survey.questions.splice(newIndex, 0, this.draggedCard);
-                this.survey.questions.splice(oldIndex, 1);
+                this.surveyReact.survey.questions.splice(newIndex, 0, this.draggedCard);
+                this.surveyReact.survey.questions.splice(oldIndex, 1);
 
                 this.draggedCard = null;
 
-                for (let i=0; i<this.survey.questions.length; i++){
-                    this.survey.questions[i].qOrder = i;
+                for (let i=0; i<this.surveyReact.survey.questions.length; i++){
+                    this.surveyReact.survey.questions[i].qOrder = i;
                 }
             }
         },
@@ -293,7 +297,7 @@ export default {
         },
         deleteSurvey() {
             this.axios
-                .delete(`survey/${this.survey.ID_Survey}`)
+                .delete(`survey/${this.surveyReact.survey.ID_Survey}`)
                 .then(res => {
                     console.log(res);
                     this.$router.push('/');
@@ -301,6 +305,9 @@ export default {
                 .catch(err => {
                     console.log(err);
                 })
+        },
+        goToResults() {
+            this.$router.push(`/results/${this.$route.params.ID_Survey}`);
         }
     }
 };
@@ -318,6 +325,15 @@ export default {
 
     .editor > * {
         width: 100%;
+    }
+
+    .editor__menu {
+        border-radius: 0px;
+    }
+
+    .menu__upadate-status {
+        width: 230px;
+        text-align: center;
     }
 
     .editor__header {
@@ -352,14 +368,7 @@ export default {
         flex-grow: 1;
         min-width: 300px;
         max-width: 600px;
-        outline: 1px solid red;
         margin: 20px 0;
-    }
-
-    .question-list__inner {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
     }
 
     .question-list__question-card {

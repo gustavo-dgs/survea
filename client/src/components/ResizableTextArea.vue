@@ -46,4 +46,18 @@
         background: #b6b5b59d;
         border-bottom: 3px solid #44974f;
     }
+
+    .resizable-textarea:disabled {
+        background: transparent;
+    }
+
+    .resizable-textarea--title {
+        font-size: 23px;
+        color: #000;
+    }
+
+    .resizable-textarea--description {
+        font-size: 15px;
+        color: #3e454d;
+    }
 </style>

@@ -4,8 +4,6 @@
 
         <div class="body">
 
-            {{ question.Answer }}
-
             <resizable-textarea
                 class="body__title"
                 placeholder="Question title"
@@ -30,7 +28,7 @@
                     v-model="question.Answer"
                 >
                     <option 
-                        class="select_opction"
+                        class="select__opction"
                         v-for="answer of question.answers"
                         :key="answer.Answer"
                         :value="answer.Answer"

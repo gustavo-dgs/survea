@@ -68,6 +68,10 @@ export default {
         
     }
 
+    .icon--primary {
+      color: #fff;
+    }
+
     .icon--secundary {
         color: #0d8bd4;
     }
@@ -109,5 +113,20 @@ export default {
         background: #fff;
         color: #44974f;
     }
+
+  /*** CARDS ***/
+
+  .card {
+    background: #fff;
+    border-radius: 20px;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card > * {
+    margin: 5px 0;
+  }
 
 </style>

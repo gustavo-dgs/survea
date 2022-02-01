@@ -65,13 +65,6 @@ export default {
         }
 
     },
-    data() {
-        return {
-            updateStatus: 'All save',
-            lastTimeOut: null,
-            lastStatusTimeOut: null,
-        }
-    },
     created() {
 
            
@@ -206,7 +199,6 @@ export default {
         flex-grow: 1;
         min-width: 300px;
         max-width: 600px;
-        outline: 1px solid red;
         margin: 20px 0;
     }
 

@@ -18,7 +18,7 @@
 
 <script>
 export default {
-    inject: ['survey'],
+    inject: ['surveyReact'],
     props: {
         answer: Object,
         question: Object,
@@ -30,8 +30,8 @@ export default {
             this.axios
                 .put(`survey/answer/${this.answer.ID_Answer}`, {
                     ID_Question: this.question.ID_Question,
-                    ID_Survey: this.survey.ID_Survey,
-                    ID_User: this.survey.ID_User,
+                    ID_Survey: this.surveyReact.survey.ID_Survey,
+                    ID_User: this.surveyReact.survey.ID_User,
                     Answer: this.answer.Answer,
                     aOrder: this.answer.aOrder
                 })

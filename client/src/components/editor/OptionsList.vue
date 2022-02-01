@@ -69,7 +69,7 @@
             options: Array,
             question: Object
         },
-        inject: ['survey'],
+        inject: ['surveyReact'],
         methods: {
 
             createOption(event) {
@@ -96,8 +96,8 @@
                 this.axios
                 .post('survey/answer', {
                     ID_Question: this.question.ID_Question,
-                    ID_Survey: this.survey.ID_Survey,
-                    ID_User: this.survey.ID_User,
+                    ID_Survey: this.surveyReact.survey.ID_Survey,
+                    ID_User: this.surveyReact.survey.ID_User,
                     ID_Answer: answer.ID_Answer,
                     Answer: answer.Answer,
                     aOrder: answer.aOrder
@@ -119,8 +119,8 @@
                     .delete(`survey/answer/${answer.ID_Answer}`, {
                         data: {
                             ID_Question: this.question.ID_Question,
-                            ID_Survey: this.survey.ID_Survey,
-                            ID_User: this.survey.ID_User
+                            ID_Survey: this.surveyReact.survey.ID_Survey,
+                            ID_User: this.surveyReact.survey.ID_User
                         }
                     })
                     .then(res => {
