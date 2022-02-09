@@ -133,9 +133,9 @@ export default {
     },
     created() {
         let watchEditor = () => {
-            this.$watchSurvey('survey.Title', this);
-            this.$watchSurvey('survey.Description', this);
-            this.$watchAll('survey', this);
+            this.$watchSurvey('surveyReact.survey.Title', this);
+            this.$watchSurvey('surveyReact.survey.Description', this);
+            this.$watchAll('surveyReact.survey', this);
         }
 
         if (this.$route.name === 'Create'){

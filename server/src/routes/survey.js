@@ -20,9 +20,9 @@ router.get('/:id', (req,res) =>{
     
     const {id} = req.params;
     const query = `SELECT s.*, q.ID_Question, q.Question, q.Type, a.ID_Answer, a.Answer
-                    FROM survey s
-                    LEFT JOIN question q ON q.ID_Survey = s.ID_Survey
-                    LEFT JOIN answer a ON a.ID_Question = q.ID_Question
+                    FROM Survey s
+                    LEFT JOIN Question q ON q.ID_Survey = s.ID_Survey
+                    LEFT JOIN Answer a ON a.ID_Question = q.ID_Question
                         AND a.ID_Survey = q.ID_Survey
                     WHERE s.ID_Survey = ?`
     
@@ -97,14 +97,14 @@ router.delete('/:id', (req,res)=> {
 /******   QUESTION ********/
 
 router.post('/question', (req,res) =>{
-    const {ID_Question, Type, Question, ID_Survey, ID_User}  = req.body;
+    const {ID_Question, Type, Question, ID_Survey}  = req.body;
 
     const query = `INSERT INTO Question(ID_Question, Type, Question, 
-                    ID_Survey, ID_User) 
-                    VALUES (?,?,?,?,?)`
+                    ID_Survey) 
+                    VALUES (?,?,?,?)`
 
     db.query(query,
-        [ID_Question, Type, Question, ID_Survey, ID_User], (err,rows,fields) =>{
+        [ID_Question, Type, Question, ID_Survey], (err,rows,fields) =>{
         if(!err){
             res.send('Question Added');  
         }else{
@@ -117,12 +117,11 @@ router.post('/question', (req,res) =>{
 router.put('/question/:id', (req,res)=> {
     
     const {id} = req.params;
-    const {Question, Type, ID_Survey, ID_User} = req.body;
+    const {Question, Type, ID_Survey} = req.body;
     const query = `UPDATE Question SET Question = ?, Type = ?
                     WHERE ID_Question = ?
-                    AND ID_Survey = ?
-                    AND ID_User = ?`
-    db.query( query ,[Question, Type, id, ID_Survey, ID_User], (err,rows,fields) =>{
+                    AND ID_Survey = ?`
+    db.query( query ,[Question, Type, id, ID_Survey], (err,rows,fields) =>{
         if(!err){
             res.send('Question update');
         }else{
@@ -135,18 +134,16 @@ router.put('/question/:id', (req,res)=> {
 
 router.delete('/question/:id', (req,res)=> {
     const {id} = req.params;
-    const {ID_Survey, ID_User} = req.body;
+    const {ID_Survey} = req.body;
     const query = `DELETE FROM Answer
                     WHERE ID_Question = ?
-                    AND ID_Survey = ?
-                    AND ID_User = ?;
+                    AND ID_Survey = ?;
                     
                     DELETE FROM Question
                     WHERE ID_Question = ?
-                    AND ID_Survey = ?
-                    AND ID_User = ?`
+                    AND ID_Survey = ?`
 
-    db.query( query ,[id, ID_Survey, ID_User, id, ID_Survey, ID_User], (err,rows,fields) =>{
+    db.query( query ,[id, ID_Survey, id, ID_Survey], (err,rows,fields) =>{
         if(!err){
             res.send('Question deleted');
         }else{
@@ -160,13 +157,13 @@ router.delete('/question/:id', (req,res)=> {
 /******   ANSWER ********/
 
 router.post('/answer', (req,res) =>{
-    const {ID_Answer, Answer, ID_Question, ID_Survey,ID_User}  = req.body;
+    const {ID_Answer, Answer, ID_Question, ID_Survey}  = req.body;
 
-    const query = `INSERT INTO Answer(ID_Answer, Answer, ID_Question, ID_Survey, ID_User) 
-                    VALUES (?,?,?,?,?)`
+    const query = `INSERT INTO Answer(ID_Answer, Answer, ID_Question, ID_Survey) 
+                    VALUES (?,?,?,?)`
 
     db.query(query,
-        [ID_Answer, Answer, ID_Question, ID_Survey,ID_User], (err,rows,fields) =>{
+        [ID_Answer, Answer, ID_Question, ID_Survey], (err,rows,fields) =>{
         if(!err){
             res.send('Answer Added');  
         }else{
@@ -177,15 +174,14 @@ router.post('/answer', (req,res) =>{
 })
 
 router.put('/answer/:id', (req,res)=> {
-    //const {ID_Answer, ID_Question, ID_Survey, ID_User} = req.params;
+    
     const {id} = req.params;
-    const {Answer, ID_Question, ID_Survey, ID_User} = req.body;
+    const {Answer, ID_Question, ID_Survey} = req.body;
     const query = `UPDATE Answer SET Answer = ?
                     WHERE ID_Answer = ?
                     AND ID_Question = ?
-                    AND ID_Survey = ?
-                    AND ID_User = ?`
-    db.query( query ,[Answer, id, ID_Question, ID_Survey, ID_User], (err,rows,fields) =>{
+                    AND ID_Survey = ?`
+    db.query( query ,[Answer, id, ID_Question, ID_Survey], (err,rows,fields) =>{
         if(!err){
             res.send('Answer save');
         }else{
@@ -199,13 +195,12 @@ router.put('/answer/:id', (req,res)=> {
 router.delete('/answer/:id', (req,res)=> {
     console.log(req.body);
     const {id} = req.params;
-    const {ID_Question, ID_Survey, ID_User} = req.body;
+    const {ID_Question, ID_Survey} = req.body;
     const query = `DELETE FROM Answer
                     WHERE ID_Answer = ?
                     AND ID_Question = ?
-                    AND ID_Survey = ?
-                    AND ID_User = ?`
-    db.query( query ,[id, ID_Question, ID_Survey, ID_User], (err,rows,fields) =>{
+                    AND ID_Survey = ?`
+    db.query( query ,[id, ID_Question, ID_Survey], (err,rows,fields) =>{
         if(!err){
             res.send('Answer delete');
         }else{

@@ -7,12 +7,12 @@ const db = require('../database');
 /******  SURVEYED  ********/
 
 router.post('/', (req,res) =>{
-    const {ID_Survey, ID_User}  = req.body;
+    const {ID_Survey}  = req.body;
 
-    const query = `INSERT INTO Surveyed(Name, Email, ID_Survey, ID_User) 
-                    VALUES ('','',?,?)`
+    const query = `INSERT INTO Surveyed(Name, Email, ID_Survey) 
+                    VALUES ('','',?)`
 
-    db.query(query, [ID_Survey, ID_User], (err,rows,fields) =>{
+    db.query(query, [ID_Survey], (err,rows,fields) =>{
         if(!err){
             res.json(rows.insertId);
         }else{
@@ -50,13 +50,13 @@ router.get('/', (req,res) =>{
 /******  SURVEYED ANSWER  ********/
 
 router.post('/answer', (req,res) =>{
-    const {Answer, ID_Question, ID_Survey, ID_User, ID_Surveyed}  = req.body;
+    const {Answer, ID_Question, ID_Survey, ID_Surveyed}  = req.body;
 
     const query = `INSERT INTO surveyed_answer(Answer, ID_Question,
-                    ID_Survey, ID_User, ID_Surveyed) 
-                    VALUES (?,?,?,?,?)`
+                    ID_Survey, ID_Surveyed) 
+                    VALUES (?,?,?,?)`
 
-    db.query(query, [Answer, ID_Question, ID_Survey, ID_User, ID_Surveyed], 
+    db.query(query, [Answer, ID_Question, ID_Survey, ID_Surveyed], 
         (err,rows,fields) =>{
 
         if(!err){
