@@ -29,11 +29,11 @@ router.get('/', (req,res) =>{
     const query = `SELECT s.*, sy.ID_Surveyed ,q.ID_Question, q.Question, q.Type, 
                         sa.Answer as Answer_surveyed, a.ID_Answer, a.Answer as Answer_survey
                     FROM survey s
-                    INNER JOIN surveyed sy ON sy.ID_Survey = s.ID_Survey
-                    LEFT JOIN question q ON q.ID_Survey = s.ID_Survey
-                    LEFT JOIN surveyed_answer sa ON sa.ID_Question = q.ID_Question 
+                    INNER JOIN Surveyed sy ON sy.ID_Survey = s.ID_Survey
+                    LEFT JOIN Question q ON q.ID_Survey = s.ID_Survey
+                    LEFT JOIN Surveyed_Answer sa ON sa.ID_Question = q.ID_Question 
                         AND sa.ID_Surveyed = sy.ID_Surveyed
-                    LEFT JOIN answer a ON a.ID_Question = q.ID_Question
+                    LEFT JOIN Answer a ON a.ID_Question = q.ID_Question
                     WHERE s.ID_Survey = ?
                     AND sy.ID_Surveyed = ?`
     
@@ -52,7 +52,7 @@ router.get('/', (req,res) =>{
 router.post('/answer', (req,res) =>{
     const {Answer, ID_Question, ID_Survey, ID_Surveyed}  = req.body;
 
-    const query = `INSERT INTO surveyed_answer(Answer, ID_Question,
+    const query = `INSERT INTO Surveyed_Answer(Answer, ID_Question,
                     ID_Survey, ID_Surveyed) 
                     VALUES (?,?,?,?)`
 
