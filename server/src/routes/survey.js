@@ -5,9 +5,14 @@ const db = require('../database');
 
 /******   SURVEY  ********/
 
-router.get('/', (req,res) =>{
+router.get('/user/:id', (req,res) =>{
 
-    db.query('SELECT * FROM Survey', (err, rows, fields) =>{
+    const {id} = req.params;
+
+    const query = `SELECT * FROM Survey
+                    WHERE ID_User = ?`
+
+    db.query(query, [id], (err, rows, fields) =>{
         if(!err){
             res.json(rows);
         }else{

@@ -3,7 +3,6 @@
 
         <select class="tab-allquestions__select"
             v-model="currentSurveyed"
-            @input="setQuestions"
         >
             <option class="tab-allquestions__option"
                 v-for="(sur, i) of surveyed"
@@ -15,7 +14,7 @@
         </select>
 
         <div class="tab-allquestions__answer-card card"
-            v-for="question of questions"
+            v-for="question of surveyed[currentSurveyed].questions"
             :key="question.ID_Question"
         >
 
@@ -45,13 +44,9 @@ export default {
     data() {
         return {
             currentSurveyed: 0,
-            surveyed: [],
-            questions: []
-        }
-    },
-    methods: {
-        setQuestions() {
-            this.questions = this.surveyed[this.currentSurveyed].questions;
+            surveyed: [
+                {questions: []}
+            ],
         }
     },
     created() {
@@ -77,8 +72,6 @@ export default {
                     ]
                 }
             ]);
-
-            this.questions = this.surveyed[this.currentSurveyed].questions;
 
         }).catch(err => {
             console.log(err);

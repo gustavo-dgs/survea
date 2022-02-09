@@ -10,7 +10,9 @@
             </div>
             <div class="header__secundario">
                 <ion-icon name="search-outline"></ion-icon>
-                <button>Mis encuestas</button>
+                <button
+                    @click="$router.push('/')"
+                >Mis encuestas</button>
             </div>
         </header>
 
