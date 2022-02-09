@@ -11,10 +11,10 @@ router.get('/:id', (req,res) =>{
     const {id} = req.params;
    
     const query = `SELECT q.ID_Question, q.Question, a.Answer, COUNT(s.Answer) as Total
-                    FROM question q
-                    LEFT JOIN answer a ON a.ID_Question = q.ID_Question
+                    FROM Question q
+                    LEFT JOIN Answer a ON a.ID_Question = q.ID_Question
                         AND a.ID_Survey = q.ID_Survey
-                    LEFT JOIN surveyed_answer s ON s.ID_Question = a.ID_Question 
+                    LEFT JOIN Surveyed_Answer s ON s.ID_Question = a.ID_Question 
                         AND s.ID_Survey = a.ID_Survey
                     WHERE q.ID_Survey = ?
                     AND s.Answer LIKE CONCAT("%", a.Answer, "%")
@@ -23,8 +23,8 @@ router.get('/:id', (req,res) =>{
                     UNION ALL
                     
                     SELECT q.ID_Question, q.Question, s.Answer, COUNT(s.Answer) as Total
-                    FROM question q
-                    LEFT JOIN surveyed_answer s ON s.ID_Question = q.ID_Question 
+                    FROM Question q
+                    LEFT JOIN Surveyed_Answer s ON s.ID_Question = q.ID_Question 
                         AND s.ID_Survey = q.ID_Survey
                     WHERE q.ID_Survey = ?
                     AND q.Type <> 'checkbox'
@@ -47,8 +47,8 @@ router.get('/answers/:id', (req,res) =>{
     const {id} = req.params;
    
     const query = `SELECT s.ID_Surveyed, q.ID_Question, q.Question, s.Answer
-                    FROM question q
-                    LEFT JOIN surveyed_answer s ON s.ID_Question = q.ID_Question 
+                    FROM Question q
+                    LEFT JOIN Surveyed_Answer s ON s.ID_Question = q.ID_Question 
                         AND s.ID_Survey = q.ID_Survey
                     WHERE q.ID_Survey = ?
                     ORDER BY s.ID_Surveyed, q.ID_Question`
