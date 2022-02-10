@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="./styles/loginS.css">
-    <link rel="stylesheet" href="./styles/profileS.css">
 </head>
+
 <body>
     <div id="app">
         <header class="header">
@@ -23,12 +24,73 @@
                 <button>Mis encuestas</button>
             </div>
         </header>
-        <section class="login">
-            <form action="">
-                <p>Usuario</p>
-                <p>Contrasenna</p>
-            </form>
+        <section class="log-sign">
+            <div class="log-sign__color"></div>
+            <div class="log-sign__color"></div>
+            <div class="log-sign__color"></div>
+            <div class="box-back">
+                <div class="log-sing__box">
+                    <div class="log-sing__box__square" style="--i:0;"></div>
+                    <div class="log-sing__box__square" style="--i:1;"></div>
+                    <div class="log-sing__box__square" style="--i:2;"></div>
+                    <div class="log-sing__box__square" style="--i:3;"></div>
+                    <div class="log-sing__box__square" style="--i:4;"></div>
+                    <div class="log-sign__box__header">
+                        <h2>Login</h2>
+                        <h2>Sign Up</h2>
+                    </div>
+                    <div class="log-sign__box__container">
+                        <form action="" class="log-sign__box__container__login">
+                            <h3>Usuario</h3>
+                            <input type="text" placeholder="Ususario">
+                            <h3>contrasenna</h3>
+                            <input type="password" placeholder="Contrasenna">
+                            <input type="submit" value="Login">
+                            <p class="log-sign__box__container__login__forget">He olvidado la contrasenna <a href="#">Click Aqui</a> </p>
+                        </form>
+                        <form action="" class="log-sign__box__container__register">
+                            <h3>Nombre</h3>
+                            <input type="text" placeholder="Nombre">
+                            <h3>Apellido</h3>
+                            <input type="text" placeholder="Apellido">
+                            <h3>Correo</h3>
+                            <input type="text" placeholder="Correo">
+                            <h3>Contrasenna</h3>
+                            <input type="password" placeholder="Contrasenna">
+                            <h3>Verifica tu contrasenna</h3>
+                            <input type="password" placeholder="Verifica tu contrasenna">
+                            <input type="submit" value="Register">
+                        </form>
+                    </div>
+                </div>
+            </div>
         </section>
     </div>
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        const { createApp } = Vue;
+
+        const app = Vue.createApp({
+
+            data() {
+                return {
+                    containerState:true
+                }
+            },
+            methods: {
+                
+            },
+            mounted() {
+
+            }
+
+        })
+
+    </script>
 </body>
+
 </html>
