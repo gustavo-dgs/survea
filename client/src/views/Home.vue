@@ -44,13 +44,13 @@
             return {
                 navegationActive: false,
                 mainActive: false,
-                ID_User: 1,
                 surveys: []
             }
         },
+        inject: ['ID_User'],
         created() {
             this.axios
-                .get('survey')
+                .get(`survey/user/${this.ID_User}`)
                 .then(res => {
                     this.surveys = res.data;
                 }).catch(error => {

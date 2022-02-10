@@ -12,6 +12,10 @@ import Header from './components/Header.vue'
 export default {
   components: {
     Header
+  },
+
+  provide: {
+    ID_User: 1
   }
 }
 </script>
