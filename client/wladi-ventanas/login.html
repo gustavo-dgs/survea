@@ -36,10 +36,12 @@
                     <div class="log-sing__box__square" style="--i:3;"></div>
                     <div class="log-sing__box__square" style="--i:4;"></div>
                     <div class="log-sign__box__header">
-                        <h2>Login</h2>
-                        <h2>Sign Up</h2>
+                        <h2 @click="containerState=true" >Login</h2>
+                        <h2 @click="containerState=false">Sign Up</h2>
                     </div>
-                    <div class="log-sign__box__container">
+                    <div class="log-sign__box__container"
+                        :style ="{ 'justify-content': switchForm }" 
+                    >
                         <form action="" class="log-sign__box__container__login">
                             <h3>Usuario</h3>
                             <input type="text" placeholder="Ususario">
@@ -75,21 +77,22 @@
         const { createApp } = Vue;
 
         const app = Vue.createApp({
-
             data() {
                 return {
                     containerState:true
                 }
             },
-            methods: {
-                
-            },
-            mounted() {
-
+            computed:{
+                switchForm(){
+                    return this.containerState ? "flex-start" : "flex-end"
+                }
             }
 
         })
 
+    </script>
+    <script>
+        app.mount("#app")
     </script>
 </body>
 
