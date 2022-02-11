@@ -6,18 +6,21 @@
         <div class="log-sign__color"></div>
         <div class="log-sign__color"></div>
 
-        <div class="box-back">
-            <div class="log-sing__box__square" style="--i:0;"></div>
-            <div class="log-sing__box__square" style="--i:1;"></div>
-            <div class="log-sing__box__square" style="--i:2;"></div>
-            <div class="log-sing__box__square" style="--i:3;"></div>
-            <div class="log-sing__box__square" style="--i:4;"></div>
+        <div class="log-sing__box__square a" ></div>
+        <div class="log-sing__box__square b" ></div>
+        <div class="log-sing__box__square c" ></div>
+        <div class="log-sing__box__square d" ></div>
+        <div class="log-sing__box__square e" ></div>
 
-            <div class="log-sing__box">
+        <div class="box-back">
+
+            <div class="log-sing__box"
+                ref="logSing__box"
+            >
             
                 <div class="log-sign__box__header">
-                    <h2 @click="containerState=true" >Login</h2>
-                    <h2 @click="containerState=false">Sign Up</h2>
+                    <h2 @click="switchForm" >Login</h2>
+                    <h2 @click="switchForm">Sign Up</h2>
                 </div>
 
                 <div class="log-sign__box__container"
@@ -28,9 +31,9 @@
                         @submit.prevent="loginUser"
                     >
                         <h3 class="log-sing__label">Email</h3>
-                        <input class="log-sing__input" type="email" placeholder="Email">
+                        <input class="log-sing__input" type="email" >
                         <h3 class="log-sing__label">Password</h3>
-                        <input class="log-sing__input" type="password" placeholder="Password">
+                        <input class="log-sing__input" type="password" >
                         <input class="log-sing__input" type="submit" value="Login">
                         <p class="log-sign__box__container__login__forget">He olvidado la Password <a href="#">Click Aqui</a> </p>
                     </form>
@@ -40,15 +43,15 @@
                         @submit.prevent="registerUser"
                     >
                         <h3 class="log-sing__label">Name</h3>
-                        <input class="log-sing__input" type="text" placeholder="Name">
+                        <input class="log-sing__input" type="text" >
                         <h3 class="log-sing__label">Last Name</h3>
-                        <input class="log-sing__input" type="text" placeholder="Last Name">
+                        <input class="log-sing__input" type="text" >
                         <h3 class="log-sing__label">Email</h3>
-                        <input class="log-sing__input" type="email" placeholder="Email">
+                        <input class="log-sing__input" type="email" >
                         <h3 class="log-sing__label">Password</h3>
-                        <input class="log-sing__input" type="password" placeholder="Password">
+                        <input class="log-sing__input" type="password" >
                         <h3 class="log-sing__label">Chack your Password</h3>
-                        <input class="log-sing__input" type="password" placeholder="Chack your Password">
+                        <input class="log-sing__input" type="password" >
                         <input class="log-sing__input" type="submit" value="Register">
                     </form>
                 </div>
@@ -70,6 +73,15 @@ export default {
     },
     
     methods: {
+        switchForm() {
+            if (this.containerState) {
+                this.$refs.logSing__box.style.height = '600px';
+            } else {
+                this.$refs.logSing__box.style.height = '400px';
+            }
+
+            this.containerState = !this.containerState;
+        },
         registerUser(event) {
             const arr = Array.from(event.target.elements);
            
@@ -126,40 +138,46 @@ export default {
 
 .log-sign{
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     background: linear-gradient( to bottom, #f1f4f9, #dff1ff );
     height: 100vh;
+    overflow: hidden;
 }
 .log-sign__color{
-    position: absolute;
+    position: relative;
     filter: blur(150px);
+    flex-shrink: 0;
 }
+
 .log-sign__color:nth-child(1){
-    top: -350px;
-    width: 600px;
+    top: 45vh;
+    width: 600px; 
     height: 600px;
     background: #ff359b;
+    z-index: 5;
 }
 .log-sign__color:nth-child(2){
-    bottom: 0;
-    left: 100px;
+    left: -20vw;
+    top: 300px;
     width: 500px;
     height: 500px;
     background: #fffd87;
+    z-index: 10;
 }
 .log-sign__color:nth-child(3){
-    bottom: 50px;
-    right: 100px;
+    top: -280px;
+    left: 25vw;
     width: 300px;
     height: 300px;
     background: #00d2ff;
+    z-index: 15;
 }
-.box-back{
-    position: relative;
-}
+
 .log-sing__box__square{
-    position: absolute;
+    position: relative;
+    flex-shrink: 0;
     backdrop-filter: blur(5px);
     box-shadow: 0 25px 45px rgba(0,0,0,0.1);
     border: 1px solid rgba(255,255,255,0.5);
@@ -169,7 +187,45 @@ export default {
     border-radius: 10px;
     animation: animate 10s linear infinite;
     animation-delay: calc(-1s * var(--i));
+    z-index: 30;
+    top: -700px;
+    
 }
+
+.a{
+    left: 200px;
+    width: 100px;
+    height: 100px;
+    z-index: 20;
+}
+.b{
+    top: -650px;
+    left: -240px;
+    width: 120px;
+    height: 120px;
+    z-index: 85;
+}
+.c{
+    left: 200px;
+    top: -550px;
+    width: 80px;
+    height: 80px;
+    z-index: 85;
+}
+.d{
+    top: -590px;
+    left: -100px;
+    width: 50px;
+    height: 50px;
+    z-index: 20;
+}
+.e{
+    top: -1130px;
+    width: 60px;
+    height: 60px;
+    z-index: 20;
+}
+
 @keyframes animate{
     0%,100%{
         transform: translateY(-40px);
@@ -178,41 +234,25 @@ export default {
         transform: translateY(40px);
     }
 }
-.log-sing__box__square:nth-child(1){
-    top: -50px;
-    right: -60px;
-    width: 100px;
-    height: 100px;
+
+.box-back{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+    padding: 20px;
 }
-.log-sing__box__square:nth-child(2){
-    top: 150px;
-    left: -100px;
-    width: 120px;
-    height: 120px;
-    z-index: 2;
-}
-.log-sing__box__square:nth-child(3){
-    bottom: -50px;
-    right: -60px;
-    width: 80px;
-    height: 80px;
-    z-index: 2;
-}
-.log-sing__box__square:nth-child(4){
-    bottom: -80px;
-    left: 100px;
-    width: 50px;
-    height: 50px;
-}
-.log-sing__box__square:nth-child(5){
-    top: -80px;
-    left: 140px;
-    width: 60px;
-    height: 60px;
-}
+
 .log-sing__box{
-    position: relative;
-    width: 400px;
+    min-width: 320px;
+    max-width: 400px;
+    flex-grow: 1;
+    
+    height: 400px;
     background: rgba(150, 150, 150, 0.247);
     border-radius: 10px;
     display: flex;
@@ -224,24 +264,18 @@ export default {
     border: 1px solid rgba(255,255,255,0.5);
     border-right: 1px solid rgba(255,255,255,0.2);
     border-bottom: 1px solid rgba(255,255,255,0.2);
-    transition: 0.4s;
-    /* overflow-x: auto; */
+    transition: height 1.5s;
 
-}
-
-.log-sing__box > * {
-    margin: 15px 0;
 }
 
 .log-sign__box__header{
     display: flex;
     align-items: center;
     width: 100%;
+    height: 60px;
 }
 .log-sign__box__header h2{
     width: 50%;
-    padding-top: 15px;
-    padding-bottom: 15px;
     font-size: 20px;
     text-align: center;
     color: #fff;
@@ -251,13 +285,13 @@ export default {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    width: 400px;
+    width: 100%;
     overflow-x: hidden;
     overflow-y: hidden;
     transition: 0.4s;
 }
 .log-sign__box__container form{
-    width: 400px;
+    width: 100%;
     height: auto;
     padding: 5px 9%;
     transition: 0.4s;
@@ -271,7 +305,7 @@ export default {
     margin-bottom: 5px;
 }
 .log-sign__box__container form input{
-    width: 300px;
+    width: 100%;
     margin-bottom: 20px;
     background: rgba(255,255,255,0.2);
     border: none;
@@ -281,14 +315,12 @@ export default {
     border: 1px solid rgba(255,255,255,0.5);
     border-right: rgba(255,255,255,0.2);
     border-bottom: rgba(255,255,255,0.2);
-    font-size: 10px;
+    font-size: 15px;
     letter-spacing: 1px;
     color: #fff;
     box-shadow: 0 5px 15px rgba(0,0,0,0.05);
 }
-.log-sign__box__container form input::placeholder{
-    color: #fff;
-}
+
 .log-sign__box__container form input[type="submit"]{
     background: #fff;
     color: #666;
