@@ -10,9 +10,13 @@
             </div>
             <div class="header__secundario">
                 <ion-icon name="search-outline"></ion-icon>
-                <button
-                    @click="$router.push('/')"
-                >Mis encuestas</button>
+
+                <router-link :to="`/user/${$route.params.ID_User}`"
+                    class="button button--secondary header__button"
+                > 
+                    Mis encuestas 
+                </router-link>
+               
             </div>
         </header>
 
@@ -52,13 +56,12 @@
             toggle (){
                 this.navegationActive = !this.navegationActive;
                 // this.mainActive = !this.mainActive;s
-            }
+            },
         }
     }
 </script>
 
 <style>
-
 
     /* ---- header ----- */
     .header{
@@ -106,7 +109,7 @@
         font-size: 30px;
         color: #fff;
     }
-    .header__secundario button{
+    .header__secundario--button{
         padding: 5px;
         border-radius: 10px;
         /*  */
@@ -114,10 +117,14 @@
         background: transparent;
         color: #fff;
     }
-    .header__secundario button:hover{
+    .header__secundario--button:hover{
         text-decoration: underline 3px;
         background: #fff;
         color: #44974f;
+    }
+
+    .header__button {
+        font-size: 15px;
     }
 
     /* ---- menu ---- */

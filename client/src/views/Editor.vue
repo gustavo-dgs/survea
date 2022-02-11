@@ -145,7 +145,7 @@ export default {
                 .then(res => {
                     this.surveyReact.survey.ID_Survey = res.data;
                     watchEditor();
-                    this.$router.replace(`/editor/${res.data}`)
+                    this.$router.replace(`editor/${res.data}`)
                 })
                 .catch(err => {
                     console.log(err);
@@ -293,7 +293,7 @@ export default {
             }
         },
         previewSurvey() {
-            this.$router.push(`/survey/${this.$route.params.ID_Survey}`);
+            this.$router.push(`/user/${this.$route.params.ID_User}/survey/${this.$route.params.ID_Survey}`);
         },
         deleteSurvey() {
             this.axios
@@ -307,7 +307,7 @@ export default {
                 })
         },
         goToResults() {
-            this.$router.push(`/results/${this.$route.params.ID_Survey}`);
+            this.$router.push(`/user/${this.$route.params.ID_User}/results/${this.$route.params.ID_Survey}`);
         }
     }
 };
