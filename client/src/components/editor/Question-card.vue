@@ -1,16 +1,15 @@
 <template>
 
     <div class="question-card"
-        :draggable="isDraggable"
         @dragstart="dragStart($event)"
         @dragend="dragEnd($event)"
+        draggable="true"
     >
         <div class="toolbar">
             <ion-icon 
                 class="toolbar__icon icon" 
                 name="apps"
                 @click="showMenu($event)"
-                @mousedown="isDraggable=true"
             ></ion-icon>
         </div>
 
@@ -47,6 +46,7 @@
                 class="body__title"
                 placeholder="Question title"
                 v-model="question.Question"
+                draggable="false"
             ></resizable-textarea>
             
             <hr/>
@@ -189,12 +189,13 @@
             },
             dragStart(event) {
                 event.target.style.opacity = .2;
+                event.dataTransfer.setData('text/plain', null);
                 this.$emit('show-dropzones');
                 this.$emit('dragged-card', this.question);
             },  
             dragEnd(event) {
                 event.target.style.opacity = 1;
-                this.isDraggable = false;
+                this.isDraggable = false
                 this.$emit('hide-dropzones');
             },
             updateData(resolve){
@@ -203,10 +204,9 @@
                 .put(`survey/question/${this.question.ID_Question}`, {
                     Type: this.question.Type,
                     Question: this.question.Question,
-                    qOrder: this.surveyReact.survey.questions.length,
+                    qOrder: this.question.qOrder,
                     Description: this.question.Description,
                     ID_Survey: this.surveyReact.survey.ID_Survey,
-                    ID_User: this.surveyReact.survey.ID_User
                 })
                 .then(resolve)
                 .catch(err => {
@@ -237,7 +237,7 @@
     .toolbar {
         background: #0bcccc;
         border-radius: 20px 0 0 20px;
-        width: 26px;
+        width: 30px;
         display: flex;
         flex-direction: row;
         justify-content: center;

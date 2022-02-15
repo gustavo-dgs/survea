@@ -1,22 +1,14 @@
 <template>
-  <div class="main-container">
-    <Header/>
-    <router-view class="main-container__router-view"/>
+  <div class="app">
+    <router-view class="app__router-view"/>
   </div>
   
 </template>
 
 <script>
-import Header from './components/Header.vue'
 
 export default {
-  components: {
-    Header
-  },
-
-  provide: {
-    ID_User: 1
-  }
+ 
 }
 </script>
 
@@ -28,8 +20,6 @@ export default {
     box-sizing: border-box;
   }
   
-  /* #app {
-  } */
 
    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,600;1,100&display=swap');
     *{
@@ -83,7 +73,7 @@ export default {
     /* BUTTON */
 
     .button {
-        padding: 5px;
+        padding: 10px;
         border-radius: 20px;
         height: 35px;
         display: flex;

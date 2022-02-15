@@ -93,7 +93,7 @@
 
 <script>
 import QuestionCard from '../components/editor/Question-card.vue'
-import { provide, reactive,  toRefs } from 'vue'
+import { provide, reactive } from 'vue'
 
 export default {
     setup() {
@@ -102,9 +102,6 @@ export default {
                 ID_Survey: 0,
                 Title: '',
                 Description: '',
-                ID_User: 1,
-                StartDate: new Date,
-                FinalDate: new Date,
                 questions: []
             }
         });
@@ -139,13 +136,13 @@ export default {
         }
 
         if (this.$route.name === 'Create'){
-
+            this.surveyReact.survey.ID_User = this.$route.params.ID_User;
             this.axios
                 .post('survey', this.surveyReact.survey)
                 .then(res => {
                     this.surveyReact.survey.ID_Survey = res.data;
                     watchEditor();
-                    this.$router.replace(`/editor/${res.data}`)
+                    this.$router.replace(`editor/${res.data}`)
                 })
                 .catch(err => {
                     console.log(err);
@@ -177,7 +174,9 @@ export default {
                             columns: [
                                 'ID_Question',
                                 'Question',
+                                'Description',
                                 'Type',
+                                'qOrder'
                             ]
                         },
                         {
@@ -189,7 +188,10 @@ export default {
                             ]
                         }
                     ])[0];
-
+                    
+                     
+                    this.surveyReact.survey.questions.sort((a, b) => a.qOrder - b.qOrder);
+                    
                     watchEditor();
                   
                 })
@@ -242,7 +244,6 @@ export default {
                     qOrder: this.surveyReact.survey.questions.length,
                     Description: question.Description,
                     ID_Survey: this.surveyReact.survey.ID_Survey,
-                    ID_User: this.surveyReact.survey.ID_User
                 })
                 .then( res => {
                     console.log(res);
@@ -259,7 +260,6 @@ export default {
                 .delete(`survey/question/${question.ID_Question}`, {
                     data: {
                         ID_Survey: this.surveyReact.survey.ID_Survey,
-                        ID_User: this.surveyReact.survey.ID_User
                     }
                 })
                 .then( res => {
@@ -293,7 +293,7 @@ export default {
             }
         },
         previewSurvey() {
-            this.$router.push(`/survey/${this.$route.params.ID_Survey}`);
+            this.$router.push(`/user/${this.$route.params.ID_User}/survey/${this.$route.params.ID_Survey}`);
         },
         deleteSurvey() {
             this.axios
@@ -307,7 +307,7 @@ export default {
                 })
         },
         goToResults() {
-            this.$router.push(`/results/${this.$route.params.ID_Survey}`);
+            this.$router.push(`/user/${this.$route.params.ID_User}/results/${this.$route.params.ID_Survey}`);
         }
     }
 };

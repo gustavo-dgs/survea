@@ -47,10 +47,9 @@
                 surveys: []
             }
         },
-        inject: ['ID_User'],
         created() {
             this.axios
-                .get(`survey/user/${this.ID_User}`)
+                .get(`survey/user/${this.$route.params.ID_User}`)
                 .then(res => {
                     this.surveys = res.data;
                 }).catch(error => {
@@ -64,11 +63,11 @@
             },
 
             goToEditor(ID_Survey) {
-                this.$router.push(`/editor/${ID_Survey}`);
+                this.$router.push(`${this.$route.params.ID_User}/editor/${ID_Survey}`);
             },
 
             newCard() {
-                this.$router.push(`/create`);
+                this.$router.push(`${this.$route.params.ID_User}/create`);
             }
         }
     }

@@ -28,6 +28,6 @@
         width: 100%;
         background:  #0bcccc;
         opacity: .2;
-        height: 4px;
+        height: 10px;
     }
 </style>

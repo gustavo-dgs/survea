@@ -1,6 +1,10 @@
 .DS_Store
 node_modules
 /dist
+<<<<<<< HEAD
+=======
+vscode
+>>>>>>> f1d612b9883327d52102267a5a8946daf8868a49
 
 
 # local env files

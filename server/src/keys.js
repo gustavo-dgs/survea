@@ -1,9 +1,9 @@
 module.exports={
     database:{
-        host: 'sql10.freemysqlhosting.net',
-        user: 'sql10471292',
-        password: 'G4Qgr5hK3Y',
-        database:'sql10471292',
+        host: 'survea-mysql-server.mysql.database.azure.com',
+        user: 'survea_admin',
+        password: 'Password123',
+        database:'survea_db',
         multipleStatements: true
     }
 }
