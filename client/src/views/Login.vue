@@ -103,8 +103,16 @@ export default {
             }
 
             this.axios.post('signup', user)
-                .then(res => console.log(res))
+                .then(res => {
+                    if (res.data.code === 200) {
+                        this.$router.push(`/user/${res.data.User.ID_User}`);
+                    } else {
+                        alert(res.data.msg);
+                    }
+                })
                 .catch(err => console.log(err));
+
+            
         },
 
         loginUser(event) {
@@ -244,14 +252,14 @@ export default {
     justify-content: center;
     align-items: center;
     z-index: 50;
-    padding: 20px;
+    overflow-y: auto;
 }
 
 .log-sing__box{
     min-width: 320px;
     max-width: 400px;
     flex-grow: 1;
-    
+    margin: 20px;
     height: 400px;
     background: rgba(150, 150, 150, 0.247);
     border-radius: 10px;

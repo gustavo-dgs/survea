@@ -4,13 +4,15 @@ const morgan = require('morgan');
 const path = require('path');
 const cors = require('cors');
 const history = require('connect-history-api-fallback');
+require('dotenv').config();
+
 //inicializaciones
 const app= express();
+
 //configuraciones
 app.set('port', process.env.PORT || 4000);
 
-
-//Middlewares
+//Middleware 
 app.use(session({
     secret: 'secret_code',
     resave: true,
@@ -34,7 +36,7 @@ app.use('/api/results', require('./routes/results'));
 
 //Public
 app.use(history());
-app.use(express.static(path.join(__dirname, '/public')));
+app.use(express.static(path.join(__dirname, '/dist')));
 
 //INICIAR EL SERVIDOR
 app.listen(app.get('port'), () =>{

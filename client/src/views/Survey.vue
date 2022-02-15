@@ -140,7 +140,7 @@ export default {
                             });
                         }
 
-                        this.$router.push('/');
+                        this.$router.push(`/user/${this.$route.params.ID_User}/editor/${this.survey.ID_Survey}`);
                         
                     })
                     .catch(err => {

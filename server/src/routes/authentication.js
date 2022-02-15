@@ -20,8 +20,14 @@ router.post('/signup', (req, res) => {
     db.query('INSERT INTO User(Name, Lastname, Email, Password) VALUES (?,?,?,?)',
         [name, lastname, email, passencryp]
         , (err, rows, fields) => {
+
             if (!err) {
-                res.json({ code: 200, status: true, msg: 'User succesfully created' });
+                res.json({
+                    code: 200, 
+                    status: true, 
+                    msg: 'User succesfully created', 
+                    User: {ID_User: rows.insertId} 
+                });
             } else {
                 res.json({ code: 402, status: false, msg: 'User not created', err: err });
             }
