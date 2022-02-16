@@ -7,7 +7,7 @@
             v-model="question.Question"
             disabled
         ></resizable-textarea>
-        
+
         <hr/>
 
         <bar-chard class="chart-card__chart"
@@ -21,15 +21,14 @@
 import QuestionCardVue from '../editor/Question-card.vue'
 import BarChartVue from './BarChart.vue'
 
-
 export default {
-    components: {
-        'question-card': QuestionCardVue,
-        'bar-chard': BarChartVue
-    },
-    props: {
-        question: Object
-    }
+  components: {
+    'question-card': QuestionCardVue,
+    'bar-chard': BarChartVue
+  },
+  props: {
+    question: Object
+  }
 }
 </script>
 

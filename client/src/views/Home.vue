@@ -1,76 +1,99 @@
 <template>
-    <div class="main">
+    <div class="home">
+
+        <div class=" menu home__menu">
+            <button class="button button--primary" 
+                @click="newCard"
+            >
+                <ion-icon  class="menu__icon icon"
+                    name="add-outline"
+                ></ion-icon>
+                <span>NEW SURVEY</span> 
+            </button>
+            <!-- <button class="button button--secondary">Vista</button> -->
+        </div>
+
+        <div class="home__inner">
+            <div class="survey-list">
+
+            <div class="row survey-list__header">
+                <div class="row__icon col col1">
+                    <ion-icon class="icon"
+                        name="document-outline"
+                    ></ion-icon>
+                </div>
+                <span class="col col2"
+                >Title</span>
+                <span class="col col3"
+                >Descripcion</span>
+                <span class="col col4"
+                >Last Modification</span>
+            </div>
+
+            <template
+                v-for="survey of surveys" 
+                :key="survey.ID_Survey"
+            >
             
-        <!--OJO AQUI :class="{active: mainActive}" -->
-        <section class="main__tablon" >
-            <div class="main__tablon__cabecera">
-                <button class="button button--secondary"   @click="newCard">Nuevo</button>
-                <button class="button button--secondary">Vista</button>
-            </div>
-
-
-            <div class="main__tablon__feed">
-                <div class="main__tablon__feed__titulos">
-                    <p>Numero</p>
-                    <p>Descripcion</p>
-                    <p>Fecha</p>
-                    <p>Edit</p>
-                </div>
-
-
-                <div class="main__tablon__feed__carrousel">
-                    <div class="element"
-                        v-for="survey of surveys" :key="survey.ID_Survey"
-                        @click="goToEditor(survey.ID_Survey)"
-                    >
-                        <p>{{ survey.Title }}</p>
-                        <p>{{ survey.Description }}</p>
-                        <p>{{ survey.StartDate }}</p>
-                        <ion-icon name="settings-outline"></ion-icon>
+                <div class="row survey-list__row"
+                    @click="goToEditor(survey.ID_Survey)"
+                >
+                    <div class="row__icon col col1">
+                        <ion-icon class="icon icon--secondary "
+                            name="document-text-outline"
+                        ></ion-icon>
                     </div>
+                    <span class="col col2">{{ survey.Title === '' ? 'Untitle' : survey.Title }}</span>
+                    <span class="col col3">{{ survey.Description }}</span>
+                    <span class="col col4">{{ survey.LastModification.slice(0,10) }}</span>
+                
                 </div>
-            </div>
 
+            </template>
+            
 
-        </section>
-    
+        </div>
+
+        </div>
+
+        
     </div>
 </template>
 
 <script>
 
-    export default {
-        data() {
-            return {
-                navegationActive: false,
-                mainActive: false,
-                surveys: []
-            }
-        },
-        created() {
-            this.axios
-                .get(`survey/user/${this.$route.params.ID_User}`)
-                .then(res => {
-                    this.surveys = res.data;
-                }).catch(error => {
-                    console.log(error);
-                });
-        },
-        methods: {
-            toggle (){
-                this.navegationActive = !this.navegationActive;
-                this.mainActive = !this.mainActive;
-            },
-
-            goToEditor(ID_Survey) {
-                this.$router.push(`${this.$route.params.ID_User}/editor/${ID_Survey}`);
-            },
-
-            newCard() {
-                this.$router.push(`${this.$route.params.ID_User}/create`);
-            }
-        }
+export default {
+  data () {
+    return {
+      navegationActive: false,
+      homeActive: false,
+      surveys: []
     }
+  },
+  created () {
+    this.axios
+      .get(`survey/user/${this.$route.params.ID_User}`)
+      .then(res => {
+        this.surveys = res.data
+      }).catch(error => {
+        console.log(error)
+      })
+  },
+  methods: {
+    toggle () {
+      this.navegationActive = !this.navegationActive
+      this.homeActive = !this.homeActive
+    },
+
+    goToEditor (ID_Survey) {
+      this.$router.push(`${this.$route.params.ID_User}/editor/${ID_Survey}`)
+    },
+
+    newCard () {
+      this.$router.push(`${this.$route.params.ID_User}/create`)
+    }
+  }
+}
 </script>
 
 <style>
@@ -78,73 +101,78 @@
     secondary: colors.red.lighten4, // #FFCDD2
     accent: colors.indigo.base, // #3F51B5 */
 
-    /* object-fit: cover; */
-    
-    /* --------------- MAIN --------------- */
-    .main{
-        /* display: flex; */
-    }
-    
-    /* ---- Tablon ---- */
-    .main__tablon{
+    /* --------------- home --------------- */
+    .home{
         display: flex;
-        align-items: center;
-        flex-direction: column;
-        justify-content: flex-start;
-        /*  */
-        width: 100%;
-        height: 100%;
-    }
-    .main__tablon.active{
-        display: none;
-    }
-    .main__tablon__cabecera{
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        /*  */
-        margin-top: 5%;
-        /*  */
-        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
     }
 
-    .main__tablon__feed{
-        margin-top: 5%;
-        /*  */
-        width: 80%;
-        /*  */
-        border-radius: 5%;
-    }
-    .main__tablon__feed__titulos{
+    .home__inner {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
-        /*  */
-        margin-top: 5%;
-        padding: 0 5%;
+        flex-direction: column;
+        overflow-x: scroll;
         width: 100%;
-        /*  */
-        color: #fff;
-        text-decoration: solid underline;
+        padding: 20px;
     }
-    .main__tablon__feed__carrousel{
-        display: grid;
-        width: 100%;
-    }
-    .main__tablon__feed__carrousel .element{
+
+    .survey-list {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
-        /*  */
-        padding: 5% 5%;
-        /*  */
-        color: #fff;
-        transition: 0.3s;
+        flex-direction: column;
+        background: #fff;
+        width: 100%;
+        min-width: min-content;
+        flex-grow: 1;
+        border-radius: 20px;
+        
     }
-    .main__tablon__feed__carrousel .element:hover{
-        border: solid 3px ;
-        transform: scale(1.2);
+
+    .row {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        border-top: 1px solid #b1b1b1;
+        /* margin-top: 1px solid #808080; */
+    }
+
+    .survey-list__header {
+        border-top: none;
+    }
+
+    .survey-list__row:hover{
+        /* border: solid 3px ; */
+        transform: scale(1.02);
+        background: #e2e2e2;
         cursor: pointer;
+        box-shadow: 0 25px 45px rgba(0,0,0,0.1);
     }
+
+    .col {
+        flex-basis: 5%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        min-width: 50px;
+    }
+
+    .col2 {
+        flex-grow: 1;
+        flex-basis: 30%;
+    }
+
+    .col3{
+        flex-grow: 1;
+        flex-basis: 45%;
+    }
+
+    .col4 {
+        flex-grow: 1;
+        flex-basis: 20%;
+        min-width: 120px;
+    }
+
 
 </style>

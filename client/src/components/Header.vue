@@ -13,10 +13,10 @@
 
                 <router-link :to="`/user/${$route.params.ID_User}`"
                     class="button button--secondary header__button"
-                > 
-                    Mis encuestas 
+                >
+                    Mis encuestas
                 </router-link>
-               
+
             </div>
         </header>
 
@@ -40,25 +40,25 @@
         </section>
 
     </div>
-    
+
 </template>
 
 <script>
-    export default {
+export default {
 
-        data() {
-            return {
-                navegationActive: false
-            }
-        },
-        
-        methods: {
-            toggle (){
-                this.navegationActive = !this.navegationActive;
-                // this.mainActive = !this.mainActive;s
-            },
-        }
+  data () {
+    return {
+      navegationActive: false
     }
+  },
+
+  methods: {
+    toggle () {
+      this.navegationActive = !this.navegationActive
+      // this.mainActive = !this.mainActive;s
+    }
+  }
+}
 </script>
 
 <style>
@@ -134,7 +134,7 @@
         position: absolute;
         background: #2c2525;
         z-index: 10;
-        
+
         /*  */
         display: flex;
         flex-direction: column;
@@ -147,7 +147,6 @@
         transition: 0.3s;
         overflow-x: hidden;
 
-        
     }
     .main__profile-menu.active{
         width: 100%;
@@ -182,5 +181,11 @@
     }
     .main__profile-Menu__carrousel p{
         color: #ffffff25;
+    }
+
+    @media only screen and (min-width: 992px) {
+
+
+        
     }
 </style>

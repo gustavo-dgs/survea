@@ -12,55 +12,50 @@
 
 <script>
 import ChartCardVue from './ChartCard.vue'
-import { provide, reactive,  toRefs } from 'vue'
+import { provide, reactive, toRefs } from 'vue'
 
 export default {
-    setup() {
-        const questionsReact = reactive({
-            questions: []
-        });
+  setup () {
+    const questionsReact = reactive({
+      questions: []
+    })
 
-        let {questions} = toRefs(questionsReact);
+    const { questions } = toRefs(questionsReact)
 
-        provide('questions', questions);
+    provide('questions', questions)
 
-        return {
-            questions
-        }
-
-    },
-    components: {
-        'chart-card': ChartCardVue
-    },
-    created() {
-        
-        this.axios.get(`results/${this.$route.params.ID_Survey}`)
-        .then( res => {
-
-            this.questions = this.$splitResulSet(res.data, [
-                {
-                    thisId: 'ID_Question',
-                    son: 'answers',
-                    columns: [
-                        'ID_Question',
-                        'Question',
-                    ]
-                },
-                {
-                    thisId: 'Answer',
-                    linkId: 'ID_Question',
-                    columns: [
-                        'Answer',
-                        'Total'
-                    ]
-                }
-            ]);
-
-        }).catch(err => {
-            console.log(err);
-        });
-        
+    return {
+      questions
     }
+  },
+  components: {
+    'chart-card': ChartCardVue
+  },
+  created () {
+    this.axios.get(`results/${this.$route.params.ID_Survey}`)
+      .then(res => {
+        this.questions = this.$splitResulSet(res.data, [
+          {
+            thisId: 'ID_Question',
+            son: 'answers',
+            columns: [
+              'ID_Question',
+              'Question'
+            ]
+          },
+          {
+            thisId: 'Answer',
+            linkId: 'ID_Question',
+            columns: [
+              'Answer',
+              'Total'
+            ]
+          }
+        ])
+      }).catch(err => {
+        console.log(err)
+      })
+  }
 }
 </script>
 

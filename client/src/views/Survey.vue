@@ -19,8 +19,6 @@
             <!-- <span> {{ this.survey.questions }} </span> -->
         </header>
 
-       
-
         <div class="question-list">
 
             <div class="question-list__inner"
@@ -48,109 +46,99 @@
 
 <script>
 import QuestionCard from '../components/survey/Question-card.vue'
-import { provide, reactive,  toRefs } from 'vue'
+import { provide, reactive, toRefs } from 'vue'
 
 export default {
-    setup() {
-        const surveyReact = reactive({
-            survey: {}
-        });
+  setup () {
+    const surveyReact = reactive({
+      survey: {}
+    })
 
-        let {survey} = toRefs(surveyReact);
+    const { survey } = toRefs(surveyReact)
 
-        provide('survey', survey);
+    provide('survey', survey)
 
-        return {
-            survey
-        }
-
-    },
-    created() {
-
-           
-        this.axios.get(`survey/${this.$route.params.ID_Survey}`)
-        .then( res => {
-
-            this.survey = this.$splitResulSet(res.data, [
-                {
-                    thisId: 'ID_Survey',
-                    son: 'questions',
-                    columns: [
-                        'ID_Survey',
-                        'Title',
-                        'Description',
-                        'StartDate',
-                        'FinalDate',
-                        'ID_User'
-                    ]
-                },
-                {
-                    thisId: 'ID_Question',
-                    linkId: 'ID_Survey',
-                    son: 'answers',
-                    columns: [
-                        'ID_Question',
-                        'Question',
-                        'Type',
-                    ]
-                },
-                {
-                    thisId: 'ID_Answer',
-                    linkId: 'ID_Question',
-                    columns: [
-                        'ID_Answer',
-                        'Answer',
-                    ]
-                }
-            ])[0];
-
-        }).catch(err => {
-            console.log(err);
-        });
-        
-    },
-    components: {
-        QuestionCard
-    },
-    
-    methods: {
-        saveSurvey() {
-
-            function checkQuestions (value, index, array) {
-                return value.Answer === '';
-            }
-
-            if (this.survey.questions.some(checkQuestions)){
-                alert('The Survey is not complete');
-            } else {
-                this.axios
-                    .post('/surveyed', {
-                        ID_Survey: this.survey.ID_Survey,
-                        ID_User: this.survey.ID_User,
-                    })
-                    .then( async res => {
-
-                        for (let question of this.survey.questions) {
-                            await this.axios.post('surveyed/answer', {
-                                Answer: question.Answer,
-                                ID_Question: question.ID_Question,
-                                ID_Survey: this.survey.ID_Survey,
-                                ID_User: this.survey.ID_User,
-                                ID_Surveyed: res.data
-                            });
-                        }
-
-                        this.$router.push(`/user/${this.$route.params.ID_User}/editor/${this.survey.ID_Survey}`);
-                        
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
-            }
-
-        }
+    return {
+      survey
     }
-};
+  },
+  created () {
+    this.axios.get(`survey/${this.$route.params.ID_Survey}`)
+      .then(res => {
+        this.survey = this.$splitResulSet(res.data, [
+          {
+            thisId: 'ID_Survey',
+            son: 'questions',
+            columns: [
+              'ID_Survey',
+              'Title',
+              'Description',
+              'StartDate',
+              'FinalDate',
+              'ID_User'
+            ]
+          },
+          {
+            thisId: 'ID_Question',
+            linkId: 'ID_Survey',
+            son: 'answers',
+            columns: [
+              'ID_Question',
+              'Question',
+              'Type'
+            ]
+          },
+          {
+            thisId: 'ID_Answer',
+            linkId: 'ID_Question',
+            columns: [
+              'ID_Answer',
+              'Answer'
+            ]
+          }
+        ])[0]
+      }).catch(err => {
+        console.log(err)
+      })
+  },
+  components: {
+    QuestionCard
+  },
+
+  methods: {
+    saveSurvey () {
+      function checkQuestions (value, index, array) {
+        return value.Answer === ''
+      }
+
+      if (this.survey.questions.some(checkQuestions)) {
+        alert('The Survey is not complete')
+      } else {
+        this.axios
+          .post('/surveyed', {
+            ID_Survey: this.survey.ID_Survey,
+            ID_User: this.survey.ID_User
+          })
+          .then(async res => {
+            for (const question of this.survey.questions) {
+              await this.axios.post('surveyed/answer', {
+                Answer: question.Answer,
+                ID_Question: question.ID_Question,
+                ID_Survey: this.survey.ID_Survey,
+                ID_User: this.survey.ID_User,
+                ID_Surveyed: res.data
+              })
+            }
+
+            this.$router.push(`/user/${this.$route.params.ID_User}/editor/${this.survey.ID_Survey}`)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      }
+    }
+  }
+}
 </script>
 
 <style>

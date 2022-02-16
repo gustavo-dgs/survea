@@ -2,16 +2,15 @@
   <div class="app">
     <router-view class="app__router-view"/>
   </div>
-  
+
 </template>
 
 <script>
 
 export default {
- 
+
 }
 </script>
-
 
 <style>
   * {
@@ -19,7 +18,6 @@ export default {
     padding: 0;
     box-sizing: border-box;
   }
-  
 
    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,600;1,100&display=swap');
     *{
@@ -59,14 +57,14 @@ export default {
 
     .icon--delete {
         color: #bb2924;
-        
+
     }
 
     .icon--primary {
       color: #fff;
     }
 
-    .icon--secundary {
+    .icon--secondary {
         color: #0d8bd4;
     }
 
@@ -121,6 +119,19 @@ export default {
 
   .card > * {
     margin: 5px 0;
+  }
+
+  /*** MENU ****/
+
+  .menu {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    background: #e0e3e7;
+    padding: 10px;
+    
   }
 
 </style>

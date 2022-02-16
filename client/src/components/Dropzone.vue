@@ -8,19 +8,19 @@
 </template>
 
 <script>
-    export default {
-        props: {
-            index: Number,
-        },
-        emits: ['order-item'],
-        methods: {
-            drop(event){
-                event.preventDefault();
-                event.target.style.opacity = .2;
-                this.$emit('order-item', this.index);
-            }
-        }
+export default {
+  props: {
+    index: Number
+  },
+  emits: ['order-item'],
+  methods: {
+    drop (event) {
+      event.preventDefault()
+      event.target.style.opacity = 0.2
+      this.$emit('order-item', this.index)
     }
+  }
+}
 </script>
 
 <style>

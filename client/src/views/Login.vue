@@ -1,5 +1,5 @@
 <template>
-    
+
     <section class="log-sign">
 
         <div class="log-sign__color"></div>
@@ -17,14 +17,14 @@
             <div class="log-sing__box"
                 ref="logSing__box"
             >
-            
+
                 <div class="log-sign__box__header">
                     <h2 @click="switchForm" >Login</h2>
                     <h2 @click="switchForm">Sign Up</h2>
                 </div>
 
                 <div class="log-sign__box__container"
-                    :style ="{ 'justify-content': switchForm }" 
+                    :style ="{ 'justify-content': switchForm }"
                 >
                     <form class="log-sign__box__container__login"
                         v-if="containerState"
@@ -59,86 +59,83 @@
 
         </div>
 
-        
     </section>
-    
+
 </template>
 
 <script>
 export default {
-    data() {
-        return {
-            containerState:true
-        }
-    },
-    
-    methods: {
-        switchForm() {
-            if (this.containerState) {
-                this.$refs.logSing__box.style.height = '600px';
-            } else {
-                this.$refs.logSing__box.style.height = '400px';
-            }
-
-            this.containerState = !this.containerState;
-        },
-        registerUser(event) {
-            const arr = Array.from(event.target.elements);
-           
-            if (arr.some(x => x.value === '')) {
-                alert('Error: the form is not complete');
-                return;
-            }
-
-            if (arr[3].value !== arr[4].value) {
-                alert('Error: the passwords do not match');
-                return;
-            }
-
-            const user = {
-                name: arr[0].value,
-                lastname: arr[1].value, 
-                email: arr[2].value, 
-                password: arr[3].value
-            }
-
-            this.axios.post('signup', user)
-                .then(res => {
-                    if (res.data.code === 200) {
-                        this.$router.push(`/user/${res.data.User.ID_User}`);
-                    } else {
-                        alert(res.data.msg);
-                    }
-                })
-                .catch(err => console.log(err));
-
-            
-        },
-
-        loginUser(event) {
-            const arr = Array.from(event.target.elements);
-           
-            if (arr.some(x => x.value === '')) {
-                alert('Error: the form is not complete');
-                return;
-            }
-
-            this.axios.get(`login`, {
-                params: {
-                    email: arr[0].value, 
-                    password: arr[1].value
-                }
-            })
-                .then(res => {
-                    if (res.data.code === 200) {
-                        this.$router.push(`/user/${res.data.User.ID_User}`);
-                    } else {
-                        alert(res.data.msg);
-                    }
-                })
-                .catch(err => console.log(err));
-        }
+  data () {
+    return {
+      containerState: true
     }
+  },
+
+  methods: {
+    switchForm () {
+      if (this.containerState) {
+        this.$refs.logSing__box.style.height = '600px'
+      } else {
+        this.$refs.logSing__box.style.height = '400px'
+      }
+
+      this.containerState = !this.containerState
+    },
+    registerUser (event) {
+      const arr = Array.from(event.target.elements)
+
+      if (arr.some(x => x.value === '')) {
+        alert('Error: the form is not complete')
+        return
+      }
+
+      if (arr[3].value !== arr[4].value) {
+        alert('Error: the passwords do not match')
+        return
+      }
+
+      const user = {
+        name: arr[0].value,
+        lastname: arr[1].value,
+        email: arr[2].value,
+        password: arr[3].value
+      }
+
+      this.axios.post('signup', user)
+        .then(res => {
+          if (res.data.code === 200) {
+            this.$router.push(`/user/${res.data.User.ID_User}`)
+          } else {
+            alert(res.data.msg)
+          }
+        })
+        .catch(err => console.log(err))
+    },
+
+    loginUser (event) {
+      const arr = Array.from(event.target.elements)
+
+      if (arr.some(x => x.value === '')) {
+        alert('Error: the form is not complete')
+        return
+      }
+
+      this.axios.get('login', {
+        params: {
+          email: arr[0].value,
+          password: arr[1].value
+        }
+      })
+        .then(res => {
+          if (res.data.code === 200) {
+            this.$router.push(`/user/${res.data.User.ID_User}`)
+          } else {
+            alert(res.data.msg)
+          }
+        })
+        .catch(err => console.log(err))
+    }
+  }
 }
 </script>
 
@@ -161,7 +158,7 @@ export default {
 
 .log-sign__color:nth-child(1){
     top: 45vh;
-    width: 600px; 
+    width: 600px;
     height: 600px;
     background: #ff359b;
     z-index: 5;
@@ -197,7 +194,7 @@ export default {
     animation-delay: calc(-1s * var(--i));
     z-index: 30;
     top: -700px;
-    
+
 }
 
 .a{

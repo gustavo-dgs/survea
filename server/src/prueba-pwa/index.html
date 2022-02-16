@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="assets/favicon.ico">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/idb@7/build/umd.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <section class="log-sign">
+
+        <div class="log-sign__color"></div>
+        <div class="log-sign__color"></div>
+        <div class="log-sign__color"></div>
+
+        <div class="log-sing__box__square a" ></div>
+        <div class="log-sing__box__square b" ></div>
+        <div class="log-sing__box__square c" ></div>
+        <div class="log-sing__box__square d" ></div>
+        <div class="log-sing__box__square e" ></div>
+
+        <div class="box-back">
+
+            <div class="log-sing__box"
+            >
+            
+                <div class="log-sign__box__header">
+                    <h2 onclick="switchForm()" >Login</h2>
+                    <h2 onclick="switchForm()">Sign Up</h2>
+                </div>
+
+                <div class="log-sign__box__container"
+                >
+                    <form class="log-sign__box__container__login"
+                        
+                    >
+                        <h3 class="log-sing__label">Email</h3>
+                        <input class="log-sing__input" type="email" >
+                        <h3 class="log-sing__label">Password</h3>
+                        <input class="log-sing__input" type="password" >
+                        <input class="log-sing__input" type="submit" value="Login">
+                        <p class="log-sign__box__container__login__forget">He olvidado la Password <a href="#">Click Aqui</a> </p>
+                    </form>
+
+                    <form  class="log-sign__box__container__register disabled"
+        
+                    >
+                        <h3 class="log-sing__label">Name</h3>
+                        <input class="log-sing__input" type="text" >
+                        <h3 class="log-sing__label">Last Name</h3>
+                        <input class="log-sing__input" type="text" >
+                        <h3 class="log-sing__label">Email</h3>
+                        <input class="log-sing__input" type="email" >
+                        <h3 class="log-sing__label">Password</h3>
+                        <input class="log-sing__input" type="password" >
+                        <h3 class="log-sing__label">Chack your Password</h3>
+                        <input class="log-sing__input" type="password" >
+                        <input class="log-sing__input" type="submit" value="Register">
+                    </form>
+                </div>
+                <button class="add-button">
+                    ADD DATA
+                </button>
+                <button class="get-button">
+                    GET DATA
+                </button>
+                <button class="delete-button">
+                    DELETE DATA
+                </button>
+                <h1 class="titulo"></h1>
+            </div>
+
+        </div>
+
+        
+    </section>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+<!-- <script src="https://cdn.jsdelivr.net/npm/idb@7/build/umd.js"></script> -->
+
+
+
+
+</html>

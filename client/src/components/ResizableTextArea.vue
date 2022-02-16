@@ -1,5 +1,5 @@
 <template>
-    <textarea 
+    <textarea
         class="resizable-textarea"
         @input="resizeTextArea($event)"
         rows="1"
@@ -9,23 +9,23 @@
 </template>
 
 <script>
-    export default {
-        props: {
-            modelValue: String
-        },
-        emits: ['update:modelValue'],
-        methods: {
-            resizeTextArea (event){
-                const textArea = event.target;
-                textArea.style.height = "auto";
-                textArea.style.height = (textArea.scrollHeight) + "px";
-                this.$emit('update:modelValue', textArea.value);
-            },
-            focus() {
-                this.$refs.textArea.focus();
-            }
-        }
+export default {
+  props: {
+    modelValue: String
+  },
+  emits: ['update:modelValue'],
+  methods: {
+    resizeTextArea (event) {
+      const textArea = event.target
+      textArea.style.height = 'auto'
+      textArea.style.height = (textArea.scrollHeight) + 'px'
+      this.$emit('update:modelValue', textArea.value)
+    },
+    focus () {
+      this.$refs.textArea.focus()
     }
+  }
+}
 </script>
 
 <style>

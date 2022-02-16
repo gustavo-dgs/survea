@@ -20,15 +20,12 @@
             :is="currentTabComponent"
         ></component>
 
-
-
     </div>
 </template>
 
 <script>
-import TabAllQuestions from '../components/results/TabAllQuestions.vue';
-import TabCharts from '../components/results/TabCharts.vue';
-
+import TabAllQuestions from '../components/results/TabAllQuestions.vue'
+import TabCharts from '../components/results/TabCharts.vue'
 
 export default {
     data() {
@@ -68,6 +65,7 @@ export default {
         'tab-charts': TabCharts,
         'tab-allquestions': TabAllQuestions
     }
+  
 
 }
 </script>
