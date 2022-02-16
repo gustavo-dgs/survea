@@ -23,7 +23,7 @@
                 v-model="question.Question"
                 disabled
             ></resizable-textarea>
-            
+
             <hr/>
 
             <resizable-textarea
@@ -32,7 +32,7 @@
                 placeholder="Not answered"
                 disabled
             ></resizable-textarea>
-        
+
         </div>
     </div>
 </template>
@@ -40,43 +40,40 @@
 <script>
 
 export default {
-   
-    data() {
-        return {
-            currentSurveyed: 0,
-            surveyed: [
-                {questions: []}
-            ],
-        }
-    },
-    created() {
-        
-        this.axios.get(`results/answers/${this.$route.params.ID_Survey}`)
-        .then( res => {
 
-            this.surveyed = this.$splitResulSet(res.data, [
-                {
-                    thisId: 'ID_Surveyed',
-                    son: 'questions',
-                    columns: [
-                        'ID_Surveyed'
-                    ]
-                },
-                {
-                    thisId: 'ID_Question',
-                    linkId: 'ID_Surveyed',
-                    columns: [
-                        'ID_Question',
-                        'Question',
-                        'Answer',
-                    ]
-                }
-            ]);
-
-        }).catch(err => {
-            console.log(err);
-        });
+  data () {
+    return {
+      currentSurveyed: 0,
+      surveyed: [
+        { questions: [] }
+      ]
     }
+  },
+  created () {
+    this.axios.get(`results/answers/${this.$route.params.ID_Survey}`)
+      .then(res => {
+        this.surveyed = this.$splitResulSet(res.data, [
+          {
+            thisId: 'ID_Surveyed',
+            son: 'questions',
+            columns: [
+              'ID_Surveyed'
+            ]
+          },
+          {
+            thisId: 'ID_Question',
+            linkId: 'ID_Surveyed',
+            columns: [
+              'ID_Question',
+              'Question',
+              'Answer'
+            ]
+          }
+        ])
+      }).catch(err => {
+        console.log(err)
+      })
+  }
 }
 </script>
 

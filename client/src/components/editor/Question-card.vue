@@ -6,21 +6,21 @@
         draggable="true"
     >
         <div class="toolbar">
-            <ion-icon 
-                class="toolbar__icon icon" 
+            <ion-icon
+                class="toolbar__icon icon"
                 name="apps"
                 @click="showMenu($event)"
             ></ion-icon>
         </div>
 
-        <div class="menu"
+        <div class="menu question-card__menu"
             :style="menuStyle"
         >
             <ion-icon
                 class="menu__copy icon icon--secundary"
                 name="copy"
             ></ion-icon>
-            
+
             <select class="menu__select"
                 v-model="question.Type"
             >
@@ -41,14 +41,14 @@
         </div>
 
         <div class="body">
-            
+
             <resizable-textarea
                 class="body__title"
                 placeholder="Question title"
                 v-model="question.Question"
                 draggable="false"
             ></resizable-textarea>
-            
+
             <hr/>
 
             <resizable-textarea
@@ -56,7 +56,7 @@
                 placeholder="Question description"
                 v-model="question.Description"
             ></resizable-textarea>
-            
+
             <!-- FORMS -->
 
             <div v-if="question.Type === 'select'" class="question-form question-form--type--select">
@@ -144,83 +144,80 @@
 
     </div>
 
-        
-
 </template>
 
 <script>
-    import OptionsList from './OptionsList.vue'
-    
-    export default {
-        data() {
-            return {
-                questionsTypesArr: ['select', 'checkbox', 'radio', 'text', 
-                                    'textarea', 'date', 'email','number', 
-                                    'time', 'tel'],
-                menuStyle: {
-                    display: 'none',
-                    top: 0,
-                    bottom: 0
-                },
-                isDraggable: false,
-                lastTimeOut: null
-            }
-        },
-        emits: [
-            'delete-question-card', 
-            'show-dropzones',
-            'hide-dropzones',
-            'dragged-card'
-        ],
-        props: {
-            question: Object,
-        },
-        components: {
-            'options-list': OptionsList
-        },
-        inject: ['surveyReact'],
-        methods: {
-            showMenu() {
-                if ( this.menuStyle.display === 'none') {
-                    this.menuStyle.display = 'flex';
-                } else {
-                    this.menuStyle.display = 'none';
-                }
-            },
-            dragStart(event) {
-                event.target.style.opacity = .2;
-                event.dataTransfer.setData('text/plain', null);
-                this.$emit('show-dropzones');
-                this.$emit('dragged-card', this.question);
-            },  
-            dragEnd(event) {
-                event.target.style.opacity = 1;
-                this.isDraggable = false
-                this.$emit('hide-dropzones');
-            },
-            updateData(resolve){
+import OptionsList from './OptionsList.vue'
 
-                this.axios
-                .put(`survey/question/${this.question.ID_Question}`, {
-                    Type: this.question.Type,
-                    Question: this.question.Question,
-                    qOrder: this.question.qOrder,
-                    Description: this.question.Description,
-                    ID_Survey: this.surveyReact.survey.ID_Survey,
-                })
-                .then(resolve)
-                .catch(err => {
-                    console.log(err);
-                });
-            }
-        },
-        created (){
-            let properties = ['Question', 'Type', 'qOrder', 'Description'];
-            for (let p of properties) {
-                this.$watchSurvey('question.' + p, this);
-            }
-        }
+export default {
+  data () {
+    return {
+      questionsTypesArr: ['select', 'checkbox', 'radio', 'text',
+        'textarea', 'date', 'email', 'number',
+        'time', 'tel'],
+      menuStyle: {
+        display: 'none',
+        top: 0,
+        bottom: 0
+      },
+      isDraggable: false,
+      lastTimeOut: null
     }
+  },
+  emits: [
+    'delete-question-card',
+    'show-dropzones',
+    'hide-dropzones',
+    'dragged-card'
+  ],
+  props: {
+    question: Object
+  },
+  components: {
+    'options-list': OptionsList
+  },
+  inject: ['surveyReact'],
+  methods: {
+    showMenu () {
+      if (this.menuStyle.display === 'none') {
+        this.menuStyle.display = 'flex'
+      } else {
+        this.menuStyle.display = 'none'
+      }
+    },
+    dragStart (event) {
+      event.target.style.opacity = 0.2
+      event.dataTransfer.setData('text/plain', null)
+      this.$emit('show-dropzones')
+      this.$emit('dragged-card', this.question)
+    },
+    dragEnd (event) {
+      event.target.style.opacity = 1
+      this.isDraggable = false
+      this.$emit('hide-dropzones')
+    },
+    updateData (resolve) {
+      this.axios
+        .put(`survey/question/${this.question.ID_Question}`, {
+          Type: this.question.Type,
+          Question: this.question.Question,
+          qOrder: this.question.qOrder,
+          Description: this.question.Description,
+          ID_Survey: this.surveyReact.survey.ID_Survey
+        })
+        .then(resolve)
+        .catch(err => {
+          console.log(err)
+        })
+    }
+  },
+  created () {
+    const properties = ['Question', 'Type', 'qOrder', 'Description']
+    for (const p of properties) {
+      this.$watchSurvey('question.' + p, this)
+    }
+  }
+}
 </script>
 
 <style>
@@ -255,14 +252,7 @@
         cursor: grabbing;
     }
 
-    .menu {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-evenly;
-        align-items: center;
-        background: #e0e3e7;
-        padding: 10px;
+    .question-card__menu {
         border-radius: 0 20px 0 0;
     }
 

@@ -1,6 +1,6 @@
 <template>
     <div class="option">
-        <ion-icon class="icon option__icon option__icon--form-type" 
+        <ion-icon class="icon option__icon option__icon--form-type"
             :name="iconName"></ion-icon>
 
         <resizable-textarea class="option__resizable-textarea"
@@ -8,7 +8,7 @@
             placeholder="Write an option"
             v-model="answer.Answer"
         ></resizable-textarea>
-        
+
         <ion-icon class="icon icon--delete option__icon option__icon--delete"
             name="close-circle-outline"
             @click="deleteOption()"
@@ -18,38 +18,38 @@
 
 <script>
 export default {
-    inject: ['surveyReact'],
-    props: {
-        answer: Object,
-        question: Object,
-        iconName: String
+  inject: ['surveyReact'],
+  props: {
+    answer: Object,
+    question: Object,
+    iconName: String
+  },
+  emits: ['delete-option'],
+  methods: {
+    updateData (resolve) {
+      this.axios
+        .put(`survey/answer/${this.answer.ID_Answer}`, {
+          ID_Question: this.question.ID_Question,
+          ID_Survey: this.surveyReact.survey.ID_Survey,
+          ID_User: this.surveyReact.survey.ID_User,
+          Answer: this.answer.Answer,
+          aOrder: this.answer.aOrder
+        })
+        .then(resolve)
+        .catch(err => {
+          console.log(err)
+        })
     },
-    emits: ['delete-option'],
-    methods: {
-        updateData(resolve) {
-            this.axios
-                .put(`survey/answer/${this.answer.ID_Answer}`, {
-                    ID_Question: this.question.ID_Question,
-                    ID_Survey: this.surveyReact.survey.ID_Survey,
-                    ID_User: this.surveyReact.survey.ID_User,
-                    Answer: this.answer.Answer,
-                    aOrder: this.answer.aOrder
-                })
-                .then(resolve)
-                .catch(err => {
-                    console.log(err);
-                });
-        },
-        deleteOption() {
-            this.$emit('delete-option', this.answer);
-        },
-        focus()  {
-            this.$refs.textArea.focus();
-        }
+    deleteOption () {
+      this.$emit('delete-option', this.answer)
     },
-    created() {
-        this.$watchSurvey('answer.Answer', this);
+    focus () {
+      this.$refs.textArea.focus()
     }
+  },
+  created () {
+    this.$watchSurvey('answer.Answer', this)
+  }
 }
 </script>
 
