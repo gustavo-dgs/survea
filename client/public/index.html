@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <link rel="manifest" href="manifest.json">
     <title><%= htmlWebpackPlugin.options.title %></title>
 
     <!-- IONICONS -->
@@ -19,4 +20,19 @@
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
+  <script>
+    // window.addEventListener("load", async () => {
+    //   if ('serviceWorker' in navigator) {
+    //     const reg = await navigator.serviceWorker.register("sw.js")
+    //     console.log("Service worker has been registered for scope: " + reg.scope);
+    //   }
+    // });
+
+    // window.addEventListener("load", async () => {
+    //   if ('serviceWorker' in navigator) {
+    //     const reg = await navigator.serviceWorker.register("service-workers.js")
+    //     console.log("Service worker has been registered for scope: " + reg.scope);
+    //   }
+    // });
+  </script>
 </html>

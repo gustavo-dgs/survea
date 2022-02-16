@@ -1,1 +1,89 @@
-<!DOCTYPE html><html lang=""><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.ico"><title>client</title><script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script><script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script><link href="/css/chunk-0fabab0f.9ddcfe31.css" rel="prefetch"><link href="/css/chunk-2c5a73ea.6085bf3c.css" rel="prefetch"><link href="/css/chunk-4cdcebf4.6b3cd956.css" rel="prefetch"><link href="/css/chunk-4e4b0951.a7b6ca95.css" rel="prefetch"><link href="/css/chunk-58b4fd27.90c7f27e.css" rel="prefetch"><link href="/css/chunk-71c5baf6.8caf4ccf.css" rel="prefetch"><link href="/css/chunk-f4e873ce.56bd52ff.css" rel="prefetch"><link href="/js/chunk-0fabab0f.5f8657c7.js" rel="prefetch"><link href="/js/chunk-2c5a73ea.90542edf.js" rel="prefetch"><link href="/js/chunk-4cdcebf4.b5bd1c5a.js" rel="prefetch"><link href="/js/chunk-4e4b0951.666d3697.js" rel="prefetch"><link href="/js/chunk-58b4fd27.a9b6e25f.js" rel="prefetch"><link href="/js/chunk-71c5baf6.5d1da08b.js" rel="prefetch"><link href="/js/chunk-f4e873ce.d8fcd716.js" rel="prefetch"><link href="/css/app.a440f352.css" rel="preload" as="style"><link href="/js/app.ca13a382.js" rel="preload" as="script"><link href="/js/chunk-vendors.895ab8e6.js" rel="preload" as="script"><link href="/css/app.a440f352.css" rel="stylesheet"></head><body><noscript><strong>We're sorry but client doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id="app"></div><script src="/js/chunk-vendors.895ab8e6.js"></script><script src="/js/app.ca13a382.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="assets/favicon.ico">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/idb@7/build/umd.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <section class="log-sign">
+
+        <div class="log-sign__color"></div>
+        <div class="log-sign__color"></div>
+        <div class="log-sign__color"></div>
+
+        <div class="log-sing__box__square a" ></div>
+        <div class="log-sing__box__square b" ></div>
+        <div class="log-sing__box__square c" ></div>
+        <div class="log-sing__box__square d" ></div>
+        <div class="log-sing__box__square e" ></div>
+
+        <div class="box-back">
+
+            <div class="log-sing__box"
+            >
+            
+                <div class="log-sign__box__header">
+                    <h2 onclick="switchForm()" >Login</h2>
+                    <h2 onclick="switchForm()">Sign Up</h2>
+                </div>
+
+                <div class="log-sign__box__container"
+                >
+                    <form class="log-sign__box__container__login"
+                        
+                    >
+                        <h3 class="log-sing__label">Email</h3>
+                        <input class="log-sing__input" type="email" >
+                        <h3 class="log-sing__label">Password</h3>
+                        <input class="log-sing__input" type="password" >
+                        <input class="log-sing__input" type="submit" value="Login">
+                        <p class="log-sign__box__container__login__forget">He olvidado la Password <a href="#">Click Aqui</a> </p>
+                    </form>
+
+                    <form  class="log-sign__box__container__register disabled"
+        
+                    >
+                        <h3 class="log-sing__label">Name</h3>
+                        <input class="log-sing__input" type="text" >
+                        <h3 class="log-sing__label">Last Name</h3>
+                        <input class="log-sing__input" type="text" >
+                        <h3 class="log-sing__label">Email</h3>
+                        <input class="log-sing__input" type="email" >
+                        <h3 class="log-sing__label">Password</h3>
+                        <input class="log-sing__input" type="password" >
+                        <h3 class="log-sing__label">Chack your Password</h3>
+                        <input class="log-sing__input" type="password" >
+                        <input class="log-sing__input" type="submit" value="Register">
+                    </form>
+                </div>
+                <button class="add-button">
+                    ADD DATA
+                </button>
+                <button class="get-button">
+                    GET DATA
+                </button>
+                <button class="delete-button">
+                    DELETE DATA
+                </button>
+                <h1 class="titulo"></h1>
+            </div>
+
+        </div>
+
+        
+    </section>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+<!-- <script src="https://cdn.jsdelivr.net/npm/idb@7/build/umd.js"></script> -->
+
+
+
+
+</html>

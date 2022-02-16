@@ -4,8 +4,8 @@
     "theme_color": "#21930d",
     "background_color": "#2c2525",
     "display": "standalone",
-    "scope": "/user",
-    "start_url": "http://localhost:8080",
+    "scope": "/",
+    "start_url": "/",
     "description": "Application for make and share surveys",
     "icons": [
         {

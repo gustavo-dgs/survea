@@ -6,15 +6,14 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import watchPlugin from './plugins/watchPlugin'
 import databasePlugin from './plugins/databasePlugin'
- 
 import ResizableTextArea from './components/ResizableTextArea.vue';
 import Dropzone from './components/Dropzone.vue';
+const path = require('path');
 require('dotenv').config();
 //import config from '../config';
 
 // Agregamos la URL base de nuestra API
-console.log(process.env);
-axios.defaults.baseURL = `http://${process.env.VUE_APP_SERVER}`;
+axios.defaults.baseURL = process.env.VUE_APP_SERVER;
     
 createApp(App).component('resizable-textarea', ResizableTextArea)
     .component('dropzone', Dropzone)
