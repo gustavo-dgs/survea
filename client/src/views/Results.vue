@@ -10,6 +10,12 @@
             {{ tabsTitles[i] }}
         </button>
 
+        <button class="button tab-button"
+            @click="Excel"
+        >
+           Excel
+        </button>
+
         <component class="tab-body"
             :is="currentTabComponent"
         ></component>
@@ -31,6 +37,27 @@ export default {
             tabsTitles:['Charts', 'All Questions'],
             currentTab: 'tab-charts'
         }
+    },
+    methods:{
+        Excel(){
+            this.axios.get(`results/excel/${this.$route.params.ID_Survey}`,{
+            responseType: "blob", // important
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+        .then(response => {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "Encuesta.xlsx");
+          document.body.appendChild(link);
+          link.click();
+        })
+        .catch(() => {
+          // Complete the animation of the  progress bar.
+        });
+        },
     },
     computed: {
         currentTabComponent() {
