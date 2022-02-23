@@ -71,7 +71,7 @@ router.put('/:id', (req,res)=> {
 });
 
 router.delete('/:id', (req,res)=> {
-    const {id} = req.params;
+    const id = Number.parseInt(req.params.id);
     const query = `
                     DELETE FROM Surveyed_Answer
                     WHERE ID_Survey = ?;
@@ -90,10 +90,10 @@ router.delete('/:id', (req,res)=> {
 
     db.query( query ,[id, id, id, id, id], (err,rows,fields) =>{
         if(!err){
-            res.send('Survey deleted');
+            res.status(200).send('Survey deleted');
         }else{
             console.log(err);
-            res.send('Error deleting');
+            res.status(400).send('Error deleting');
         }
     });
 

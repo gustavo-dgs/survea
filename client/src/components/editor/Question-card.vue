@@ -17,7 +17,7 @@
             :style="menuStyle"
         >
             <ion-icon
-                class="menu__copy icon icon--secundary"
+                class="menu__copy icon icon--secondary"
                 name="copy"
             ></ion-icon>
 
@@ -186,7 +186,7 @@ export default {
       }
     },
     dragStart (event) {
-      event.target.style.opacity = 0.2
+      event.target.style.opacity = 0.2;
       event.dataTransfer.setData('text/plain', null)
       this.$emit('show-dropzones')
       this.$emit('dragged-card', this.question)

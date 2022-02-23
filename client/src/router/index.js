@@ -22,8 +22,8 @@ const routes = [
         component: () => import('../views/Editor.vue')
       },
       {
-        path: 'survey/:ID_Survey',
-        name: 'Survey',
+        path: 'preview-survey/:ID_Survey',
+        name: 'Preview',
         component: () => import('../views/Survey.vue')
       },
       {
@@ -37,8 +37,17 @@ const routes = [
     path: '/',
     name: 'Login',
     component: () => import('../views/Login.vue')
+  },
+  {
+    path: '/survey/ID_Surey',
+    name: 'Survey',
+    component: () => import('../views/Survey.vue')
+  },
+  { path: '/:pathMatch(.*)*', 
+    name: 'NotFound', 
+    component: () => import('../views/NotFound.vue') 
   }
-
+  
 ]
 
 const router = createRouter({

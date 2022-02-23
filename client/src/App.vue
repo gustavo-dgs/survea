@@ -18,6 +18,10 @@ export default {
     padding: 0;
     box-sizing: border-box;
   }
+  .app {
+    width: 100%;
+    height: 100vh;
+  }
 
    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,600;1,100&display=swap');
     *{
@@ -29,6 +33,7 @@ export default {
     body{
         background: #2c2525;
         overflow-x: hidden;
+        /* overflow-y: hidden; */
     }
     body::-webkit-scrollbar{
         width: 8px;
@@ -42,6 +47,16 @@ export default {
     }
     body::-webkit-scrollbar-thumb:active {
         background-color: #d6d3da;
+    }
+
+    /* CONTAINER */
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
     }
 
     /* ICONS */
@@ -104,6 +119,11 @@ export default {
         text-decoration: underline 3px;
         background: #fff;
         color: #44974f;
+    }
+
+    .button--terciary {
+        background: #0d8bd4;
+        color: #fff;
     }
 
   /*** CARDS ***/

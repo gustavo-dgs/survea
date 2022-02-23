@@ -2,14 +2,52 @@
 
     <div class="editor">
 
-        <div class="menu editor__menu">
+        <div class="share-window"
+            v-show="isShareWindowVisible"
+            @click="isShareWindowVisible=false"
+        >
+            <div class="share-window__inner"
+                @click.stop
+            >
+                <ion-icon class="share-window__exit icon"
+                    name="close-outline"
+                    @click="isShareWindowVisible=false"
+                ></ion-icon>
 
+                <h2 class="share-window__title">
+                    <ion-icon class="share-window__icon icon icon--secondary"
+                        name="globe-outline"
+                    ></ion-icon>
+                    Share Link
+                </h2>
+
+                <input class="share-window__link"
+                    type="text"
+                    ref="link"
+                    @click="$event.target.setSelectionRange(0, $event.target.value.length)"
+                    :value="`${VUE_APP_SERVER}/survey/${this.$route.params.ID_Survey}`"
+                    readonly
+                >
+
+                <button class="share-window__button button button--terciary"
+                    @click="copyToClipboard()"
+                >
+                    <span class="share-window__tooltip"
+                        ref="tooltip"
+                    >Copied</span>
+                    COPY
+                </button>
+            </div>
+        </div>
+
+        <div class="menu editor__menu">
+            
             <ion-icon class="menu__chart icon icon--create"
                 name="bar-chart"
                 @click="goToResults"
             ></ion-icon>
 
-            <ion-icon class="menu__preview icon icon--secundary"
+            <ion-icon class="menu__preview icon icon--secondary"
                 name="eye"
                 @click="previewSurvey"
             ></ion-icon>
@@ -18,9 +56,9 @@
                 {{ updateStatus }}
             </h4>
 
-            <ion-icon
-                class="menu__copy icon icon--secundary"
-                name="copy"
+            <ion-icon class="menu__copy icon icon--secondary"
+                name="share-social-outline"
+                @click="shareSurvey()"
             ></ion-icon>
 
             <ion-icon class="menu__delete icon icon--delete"
@@ -92,6 +130,7 @@
 <script>
 import QuestionCard from '../components/editor/Question-card.vue'
 import { provide, reactive } from 'vue'
+require('dotenv').config()
 
 export default {
   setup () {
@@ -110,11 +149,6 @@ export default {
       surveyReact
     }
   },
-  // provide() {
-  //     return {
-  //         survey: this.surveyReact.survey
-  //     }
-  // },
   data () {
     return {
       questionsId: 0,
@@ -122,7 +156,9 @@ export default {
       draggedCard: null,
       updateStatus: 'All save',
       lastTimeOut: null,
-      lastStatusTimeOut: null
+      lastStatusTimeOut: null,
+      isShareWindowVisible: false,
+      VUE_APP_SERVER: process.env.VUE_APP_SERVER
     }
   },
   created () {
@@ -196,6 +232,16 @@ export default {
     QuestionCard
   },
   methods: {
+
+    copyToClipboard () {
+        navigator.clipboard.writeText(this.$refs.link.value);
+        this.$refs.tooltip.style.visibility = "visible";
+        this.$refs.tooltip.style.opacity = 1;
+        setTimeout(() =>  {
+            this.$refs.tooltip.style.opacity = 0;
+            this.$refs.tooltip.style.visibility = "hidden";
+        }, 3000);
+    },
 
     updateData (resolve) {
       this.axios
@@ -279,14 +325,19 @@ export default {
       }
     },
     previewSurvey () {
-      this.$router.push(`/user/${this.$route.params.ID_User}/survey/${this.$route.params.ID_Survey}`)
+      this.$router.push(`/user/${this.$route.params.ID_User}/preview-survey/${this.$route.params.ID_Survey}`)
     },
+
+    shareSurvey () {
+      this.isShareWindowVisible = true;
+    },
+
     deleteSurvey () {
       this.axios
         .delete(`survey/${this.surveyReact.survey.ID_Survey}`)
         .then(res => {
           console.log(res)
-          this.$router.push('/')
+          this.$router.push(`/user/${this.$route.params.ID_User}`)
         })
         .catch(err => {
           console.log(err)
@@ -306,11 +357,118 @@ export default {
         flex-direction: column;
         align-items: center;
         width: 100%;
-        margin: auto;
     }
 
     .editor > * {
         width: 100%;
+    }
+
+    .share-window {
+        position: fixed;
+        background: rgba(0, 0, 0, 0.473);
+        width: 100vw;
+        height: 100vh;
+        z-index: 150;
+        right: 0px;
+        top: 0px;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .share-window__inner {
+        position: relative;
+        min-width: 320px;
+        max-width: 450px;
+        height: min-content;
+        display: flex;
+        flex-grow: 1;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        background: #fff;
+        padding: 10px;
+        box-shadow: rgba(0, 0, 0, 0.22) 0px 25.6px 57.6px 0px, rgba(0, 0, 0, 0.18) 0px 4.8px 14.4px 0px;
+    }
+
+    .share-window__inner > * {
+        margin: 8px 10px;
+    }
+
+    .share-window__exit {
+        color: #a09a9a;
+        position: absolute;
+        z-index: 200;
+        bottom: 60%;
+        right: 0;
+        top: 0;
+    }
+
+    .share-window__exit:hover {
+        outline: 2px solid #000;
+    }
+    
+    .share-window__title {
+        width: 100%;
+        text-align: center;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .share-window__icon {
+        font-size: 35px;
+        margin-right: 10px;
+    }
+
+    .share-window__link {
+        flex-grow: 1;
+        border: 1px solid #a09a9a;
+        font-family: 'Segoe UI',Tahoma,Arial,sans-serif;
+        font-size: 15px;
+        padding: 5px;
+    }
+
+    .share-window__link:focus {
+        outline: none;
+        border: 2px solid #0d8bd4;
+    }
+
+    .share-window__button {
+        justify-content: center;
+        align-items: center;
+    }
+
+    .share-window__tooltip {
+        visibility: hidden;
+        width: 100px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        border-radius: 10px;
+        padding: 8px 6px;
+        position: absolute;
+        z-index: 200;
+        bottom: 50%;
+        opacity: 0;
+        transition: opacity 0.3s, visibility .5s;
+        white-space: nowrap;
+        cursor: default;
+    }
+
+    .share-window__tooltip::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #555 transparent transparent transparent;
     }
 
     .editor__menu {

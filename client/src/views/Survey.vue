@@ -16,7 +16,6 @@
                 disabled
             ></resizable-textarea>
 
-            <!-- <span> {{ this.survey.questions }} </span> -->
         </header>
 
         <div class="question-list">
@@ -35,6 +34,7 @@
             <button
                 class="survey__button button button--primary"
                 @click="saveSurvey"
+                v-if="$route.name !== 'Preview'"
             >Finish Survey
             </button>
 
@@ -148,7 +148,6 @@ export default {
         flex-direction: column;
         align-items: center;
         width: 100%;
-        margin: auto;
     }
 
     .survey > * {

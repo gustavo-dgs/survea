@@ -1,75 +1,54 @@
 <template>
-    <div class="header-container">
-        <header class="header">
-            <div class="header__primario">
-                <ion-icon @click="toggle" class="header__primario--menu-icon" name="menu-outline"></ion-icon>
-                <div class="header__primario__logo">
-                    <ion-icon name="newspaper-outline"></ion-icon>
-                    <p>Survea</p>
+  
+    <header class="header">
+        <div class="header__primario">
+            <ion-icon class=" icon header__primario--menu-icon" 
+                name="menu-outline"
+                @click="this.$emit('show-aside');" 
+            ></ion-icon>
+            <div class="header__primario__logo">
+                <div class="img-container">
+                    <img class="header__img" src="../assets/apple-touch-icon.png" alt="survea_logo.png">
                 </div>
+                <span>SURVEA</span>
             </div>
-            <div class="header__secundario">
-                <ion-icon name="search-outline"></ion-icon>
+        </div>
+        <div class="header__secundario">
+            <ion-icon name="search-outline"></ion-icon>
 
-                <router-link :to="`/user/${$route.params.ID_User}`"
-                    class="button button--secondary header__button"
-                >
-                    Mis encuestas
-                </router-link>
+            <router-link :to="`/user/${$route.params.ID_User}`"
+                class="button button--secondary header__button"
+            >
+                Mis encuestas
+            </router-link>
 
-            </div>
-        </header>
-
-        <section class="main__profile-menu" :class="{active: navegationActive}">
-            <img class="main__profile-menu--imagen" src="../assets/profile/profile_02.jpg" alt="profile_02.jpg">
-            <div class="main__profile-Menu__carrousel">
-                <ul>
-                    <li>Example</li>
-                    <li>Example</li>
-                    <li>Example</li>
-                    <li>Example</li>
-                    <li>Example</li>
-                    <li>Example</li>
-                    <li>Example</li>
-                    <li>Example</li>
-                    <li>Example</li>
-                    <li>Example</li>
-                </ul>
-                <p>(C)2022 - UCAB Extension Guayana</p>
-            </div>
-        </section>
-
-    </div>
+        </div>
+    </header>
 
 </template>
 
 <script>
 export default {
 
-  data () {
-    return {
-      navegationActive: false
-    }
-  },
-
-  methods: {
-    toggle () {
-      this.navegationActive = !this.navegationActive
-      // this.mainActive = !this.mainActive;s
-    }
-  }
+  emits: ['show-aside']
+  
 }
 </script>
 
 <style>
 
     /* ---- header ----- */
+
+    :root {
+        --header-height: 60px;
+    }
+
     .header{
         display: flex;
         align-items: center;
         justify-content: space-between;
         /*  */
-        height: 60px;
+        height: var(--header-height);
         width: 100%;
         background: #44974f;
     }
@@ -78,6 +57,7 @@ export default {
         align-items: center;
         margin-left: 10px;
     }
+
     .header__primario--menu-icon{
         margin-right: 15px;
         /*  */
@@ -85,6 +65,19 @@ export default {
         /*  */
         color: #ffffff;
     }
+
+    .img-container {
+        width: 40px;
+        height: 40px;
+        margin-right: 20px;
+    }
+
+    .header__img {
+        height: 100%;
+        width: 100%;
+        border-radius: 10px;
+    }
+
     .header__primario__logo{
         display: flex;
         align-items: center;
@@ -127,65 +120,11 @@ export default {
         font-size: 15px;
     }
 
-    /* ---- menu ---- */
-    .main__profile-menu{
-
-        /* cambios de GUS */
-        position: absolute;
-        background: #2c2525;
-        z-index: 10;
-
-        /*  */
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        /*  */
-        margin-top: 35px;
-        width: 0;
-        /*  */
-        transition: 0.3s;
-        overflow-x: hidden;
-
-    }
-    .main__profile-menu.active{
-        width: 100%;
-    }
-    .main__profile-menu--imagen{
-        width: 200px;
-        height: 200px;
-        border-radius: 100%;
-        /*  */
-        object-fit: cover;
-        border: solid;
-    }
-    .main__profile-Menu__carrousel{
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        justify-content: flex-start;
-        /*  */
-        margin-top: 25px;
-    }
-    .main__profile-Menu__carrousel ul{
-        margin-bottom: 25px;
-    }
-    .main__profile-Menu__carrousel ul li{
-        margin-bottom: 15px;
-        /*  */
-        color: #fff;
-        list-style: none;
-    }
-    .main__profile-Menu__carrousel ul li:hover{
-        text-decoration: underline 3px;
-    }
-    .main__profile-Menu__carrousel p{
-        color: #ffffff25;
-    }
-
     @media only screen and (min-width: 992px) {
 
-
-        
+        .header__primario--menu-icon {
+            display: none;
+        }
     }
+    
 </style>

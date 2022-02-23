@@ -1,24 +1,26 @@
 <template>
     <div class="results">
 
-        <button class="button tab-button"
-            v-for="(tab, i) in tabs"
-            :key="tab"
-            :class="{ 'tab-button--active': currentTab === tab }"
-            @click="currentTab = tab"
-        >
-            {{ tabsTitles[i] }}
-        </button>
+        <div class="results__inner">
+            <button class="button tab-button"
+                v-for="(tab, i) in tabs"
+                :key="tab"
+                :class="{ 'tab-button--active': currentTab === tab }"
+                @click="currentTab = tab"
+            >
+                {{ tabsTitles[i] }}
+            </button>
 
-        <button class="button tab-button"
-            @click="Excel"
-        >
-           Excel
-        </button>
+            <button class="button tab-button"
+                @click="Excel"
+            >
+            Excel
+            </button>
 
-        <component class="tab-body"
-            :is="currentTabComponent"
-        ></component>
+            <component class="tab-body"
+                :is="currentTabComponent"
+            ></component>
+        </div>
 
     </div>
 </template>
@@ -71,10 +73,16 @@ export default {
 </script>
 
 <style>
-    .results {
+    /* .results {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+    } */
+
+    .results__inner {
         display: grid;
         grid-template-rows: min-content, max-content;
-        grid-template-columns: repeat(2, minmax(min-content, 300px));
+        grid-template-columns: repeat(3, minmax(min-content, 300px));
         padding: 40px;
         grid-row-gap: 20px;
         grid-column-gap: 20px;

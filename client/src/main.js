@@ -13,7 +13,7 @@ require('dotenv').config()
 // import config from '../config';
 
 // Agregamos la URL base de nuestra API
-axios.defaults.baseURL = process.env.VUE_APP_SERVER
+axios.defaults.baseURL = process.env.VUE_APP_SERVER + '/api'
 
 createApp(App).component('resizable-textarea', ResizableTextArea)
   .component('dropzone', Dropzone)

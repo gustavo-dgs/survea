@@ -16,43 +16,43 @@
         <div class="home__inner">
             <div class="survey-list">
 
-            <div class="row survey-list__header">
-                <div class="row__icon col col1">
-                    <ion-icon class="icon"
-                        name="document-outline"
-                    ></ion-icon>
-                </div>
-                <span class="col col2"
-                >Title</span>
-                <span class="col col3"
-                >Descripcion</span>
-                <span class="col col4"
-                >Last Modification</span>
-            </div>
-
-            <template
-                v-for="survey of surveys" 
-                :key="survey.ID_Survey"
-            >
-            
-                <div class="row survey-list__row"
-                    @click="goToEditor(survey.ID_Survey)"
-                >
+                <div class="row survey-list__header">
                     <div class="row__icon col col1">
-                        <ion-icon class="icon icon--secondary "
-                            name="document-text-outline"
+                        <ion-icon class="icon"
+                            name="document-outline"
                         ></ion-icon>
                     </div>
-                    <span class="col col2">{{ survey.Title === '' ? 'Untitle' : survey.Title }}</span>
-                    <span class="col col3">{{ survey.Description }}</span>
-                    <span class="col col4">{{ survey.LastModification.slice(0,10) }}</span>
-                
+                    <span class="col col2"
+                    >Title</span>
+                    <span class="col col3"
+                    >Descripcion</span>
+                    <span class="col col4"
+                    >Last Modification</span>
                 </div>
 
-            </template>
-            
+                <template
+                    v-for="survey of surveys" 
+                    :key="survey.ID_Survey"
+                >
+                
+                    <div class="row survey-list__row"
+                        @click="goToEditor(survey.ID_Survey)"
+                    >
+                        <div class="row__icon col col1">
+                            <ion-icon class="icon icon--secondary "
+                                name="document-text-outline"
+                            ></ion-icon>
+                        </div>
+                        <span class="col col2">{{ survey.Title === '' ? 'Untitle' : survey.Title }}</span>
+                        <span class="col col3">{{ survey.Description }}</span>
+                        <span class="col col4">{{ survey.LastModification.slice(0,10) }}</span>
+                    
+                    </div>
 
-        </div>
+                </template>
+                
+
+            </div>
 
         </div>
 
@@ -65,7 +65,6 @@
 export default {
   data () {
     return {
-      navegationActive: false,
       homeActive: false,
       surveys: []
     }
@@ -80,10 +79,6 @@ export default {
       })
   },
   methods: {
-    toggle () {
-      this.navegationActive = !this.navegationActive
-      this.homeActive = !this.homeActive
-    },
 
     goToEditor (ID_Survey) {
       this.$router.push(`${this.$route.params.ID_User}/editor/${ID_Survey}`)
@@ -104,15 +99,18 @@ export default {
     /* --------------- home --------------- */
     .home{
         display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
+        position: relative;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
     }
 
     .home__inner {
         display: flex;
         flex-direction: column;
-        overflow-x: scroll;
+        overflow-x: auto;
         width: 100%;
         padding: 20px;
     }
